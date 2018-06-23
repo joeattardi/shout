@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "shout",
+    "password": "shout",
+    "database": "shout_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "shout",
+    "password": "shout",
+    "database": "shout_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "shout",
+    "password": "shout",
+    "database": "shout_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
