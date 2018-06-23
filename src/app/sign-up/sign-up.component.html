@@ -1,11 +1,23 @@
 <div id="signup-container">
   <div id="signup-form">
-    <form [formGroup]="signupForm">
-      <h1><fa-icon [icon]="faComment"></fa-icon></h1>
-
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div id="signup-form-header">
+        <h1 *ngIf="isNormalState"><fa-icon [icon]="faComment"></fa-icon></h1>
+        <div *ngIf="isErrorState" id="error-message" class="status-message">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+          <div class="message">Oops! We encountered an error while processing your signup. Please try again.</div>
+        </div>
+        <div *ngIf="isLoadingState" id="loading-message" class="status-message">
+          <div class="spinner-container">
+            <app-spinner></app-spinner>
+          </div>
+          <div class="message">We're processing your signup, hang on...</div>
+        </div>
+      </div>
+      
       <div class="row">
         <label for="first-name">First name</label>
-        <input formControlName="firstName" id="first-name" type="text" [class.error]="hasRequiredError('firstName')">
+        <input #firstName formControlName="firstName" id="first-name" type="text" [class.error]="hasRequiredError('firstName')">
         <div class="error" *ngIf="hasRequiredError('firstName')">First name is required.</div>
       </div>
       <div class="row">
@@ -31,7 +43,7 @@
       </div>
 
       <div id="button-container">
-        <button class="button-primary" [disabled]="!signupForm.valid">Sign Up</button>
+        <button class="button-primary" [disabled]="!signupForm.valid || isLoadingState">Sign Up</button>
         <button type="button" routerLink="/">Cancel</button>
       </div>
     </form>

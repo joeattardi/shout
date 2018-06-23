@@ -18,6 +18,10 @@ button {
   transition: all 0.25s;
   outline: none;
 
+  &:disabled:hover {
+    background: transparent;
+  }
+
   &:hover {
     background: $button-hover-color;
   }
@@ -30,6 +34,10 @@ button {
   &.button-primary {
     background: $button-color;
     color: #FFFFFF;
+
+    &:disabled:hover {
+      background: $button-color;
+    }
 
     &:hover {
       background: lighten($button-color, 10%);
