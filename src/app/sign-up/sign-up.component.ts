@@ -25,15 +25,18 @@ export class SignUpComponent {
   signupForm: FormGroup;
 
   constructor(fb: FormBuilder) {
-    this.signupForm = fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
-    }, {
-      validator: passwordMatchValidator
-    });
+    this.signupForm = fb.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        username: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required]
+      },
+      {
+        validator: passwordMatchValidator
+      }
+    );
   }
 
   hasRequiredError(controlName: string): boolean {

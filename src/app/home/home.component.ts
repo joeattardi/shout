@@ -10,9 +10,7 @@ import { faComment } from '@fortawesome/free-solid-svg-icons';
 export class HomeComponent implements OnInit {
   faComment = faComment;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

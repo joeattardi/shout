@@ -10,9 +10,9 @@ describe('SignUpComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ ReactiveFormsModule ],
-      declarations: [ SignUpComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      imports: [ReactiveFormsModule],
+      declarations: [SignUpComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     });
 
     fixture = TestBed.createComponent(SignUpComponent);
@@ -50,7 +50,7 @@ describe('SignUpComponent', () => {
     checkRequired('confirmPassword');
   });
 
-  it('should have a validation error if the passwords don\'t match', () => {
+  it('should have a validation error if the passwords dont match', () => {
     const password = component.signupForm.get('password');
     password.setValue('abc123');
 
