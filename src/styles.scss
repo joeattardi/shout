@@ -1,1 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
+@import './variables';
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  background: transparent;
+  border: 1px solid $button-color;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  color: $button-color;
+  margin: 0.5em;
+  padding: 0.5em 1.5em;
+  min-width: 10em;
+  cursor: pointer;
+  transition: all 0.25s;
+  outline: none;
+
+  &:hover {
+    background: $button-hover-color;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &.button-primary {
+    background: $button-color;
+    color: #FFFFFF;
+
+    &:hover {
+      background: lighten($button-color, 10%);
+    }
+  }
+}
+
+input {
+  font-size: 1em;
+  padding: 0.5em;
+  border: 1px solid #AAAAAA;
+  border-radius: 3px;
+  transition: all 0.25s;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-brand-color;
+    box-shadow: 0 0 10px #AAAAAA;
+  }
+
+  &.error {
+    border-color: $error-color;
+  }
+}

@@ -1,0 +1,39 @@
+<div id="signup-container">
+  <div id="signup-form">
+    <form [formGroup]="signupForm">
+      <h1><fa-icon [icon]="faComment"></fa-icon></h1>
+
+      <div class="row">
+        <label for="first-name">First name</label>
+        <input formControlName="firstName" id="first-name" type="text" [class.error]="hasRequiredError('firstName')">
+        <div class="error" *ngIf="hasRequiredError('firstName')">First name is required.</div>
+      </div>
+      <div class="row">
+        <label for="last-name">Last name</label>
+        <input formControlName="lastName" id="last-name" type="text" [class.error]="hasRequiredError('lastName')">
+        <div class="error" *ngIf="hasRequiredError('lastName')">Last name is required.</div>
+      </div>
+      <div class="row">
+        <label for="username">Username</label>
+        <input formControlName="username" id="username" type="text" [class.error]="hasRequiredError('username')">
+        <div class="error" *ngIf="hasRequiredError('username')">Username is required.</div>
+      </div>
+      <div class="row">
+        <label for="password">Password</label>
+        <input formControlName="password" id="password" type="password" [class.error]="hasRequiredError('password')">
+        <div class="error" *ngIf="hasRequiredError('password')">Password is required.</div>
+      </div>
+      <div class="row">
+        <label for="confirm-password">Confirm password</label>
+        <input formControlName="confirmPassword" id="confirm-password" type="password" [class.error]="hasConfirmPasswordError">
+        <div class="error" *ngIf="hasRequiredError('confirmPassword')">Please confirm your password.</div>
+        <div class="error" *ngIf="hasPasswordMatchError && !hasRequiredError('confirmPassword')">Passwords do not match.</div>
+      </div>
+
+      <div id="button-container">
+        <button class="button-primary" [disabled]="!signupForm.valid">Sign Up</button>
+        <button type="button" routerLink="/">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
