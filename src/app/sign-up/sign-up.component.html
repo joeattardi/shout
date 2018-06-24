@@ -26,6 +26,12 @@
         <div class="error" *ngIf="hasRequiredError('lastName')">Last name is required.</div>
       </div>
       <div class="row">
+        <label for="email">Email address</label>
+        <input formControlName="email" id="email" type="email" [class.error]="hasEmailError">
+        <div class="error" *ngIf="hasRequiredError('email')">Email address is required.</div>
+        <div class="error" *ngIf="hasInvalidEmailError">Invalid email address.</div>
+      </div>
+      <div class="row">
         <label for="username">Username</label>
         <input formControlName="username" id="username" type="text" [class.error]="hasRequiredError('username')">
         <div class="error" *ngIf="hasRequiredError('username')">Username is required.</div>

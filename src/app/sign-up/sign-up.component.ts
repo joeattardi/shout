@@ -1,20 +1,10 @@
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AfterViewInit, ElementRef, Component, ViewChild } from '@angular/core';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
+import { emailValidator, passwordMatchValidator } from './sign-up.validators';
 import { SignUpService } from './sign-up.service';
-
-function passwordMatchValidator(form: AbstractControl): ValidationErrors | null {
-  const password = form.get('password').value;
-  const confirmPassword = form.get('confirmPassword').value;
-
-  if (password !== confirmPassword) {
-    return { passwordMatch: true };
-  }
-
-  return null;
-}
 
 enum State {
   NORMAL,
@@ -45,6 +35,7 @@ export class SignUpComponent implements AfterViewInit {
       {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
+        email: ['', Validators.compose([Validators.required, emailValidator])],
         username: ['', Validators.required],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required]
@@ -66,7 +57,7 @@ export class SignUpComponent implements AfterViewInit {
       this.state = State.LOADING;
     }, 500);
 
-    this.signUpService.signup(formValue.firstName, formValue.lastName, formValue.username, formValue.password).subscribe(
+    this.signUpService.signup(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password).subscribe(
       result => {
         if (this.loadingTimeout) {
           clearTimeout(this.loadingTimeout);
@@ -106,5 +97,15 @@ export class SignUpComponent implements AfterViewInit {
 
   get hasConfirmPasswordError(): boolean {
     return this.hasRequiredError('confirmPassword') || this.hasPasswordMatchError;
+  }
+
+  get hasEmailError(): boolean {
+    const control = this.signupForm.get('email');
+    return control.errors !== null && control.touched;
+  }
+
+  get hasInvalidEmailError(): boolean {
+    const control = this.signupForm.get('email');
+    return control.errors && !control.errors.required && control.errors.email && control.touched;
   }
 }

@@ -7,10 +7,11 @@ import { Observable } from 'rxjs';
 export class SignUpService {
   constructor(private httpClient: HttpClient) {}
 
-  signup(firstName: string, lastName: string, username: string, password: string): Observable<any> {
+  signup(firstName: string, lastName: string, email: string, username: string, password: string): Observable<any> {
     return this.httpClient.post('/api/signup', {
       firstName,
       lastName,
+      email,
       username,
       password
     });
