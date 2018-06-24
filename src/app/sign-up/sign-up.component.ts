@@ -1,10 +1,12 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AfterViewInit, ElementRef, Component, ViewChild } from '@angular/core';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { emailValidator, passwordMatchValidator } from './sign-up.validators';
 import { SignUpService } from './sign-up.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 enum State {
   NORMAL,
@@ -16,7 +18,13 @@ enum State {
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
-  providers: [SignUpService]
+  providers: [SignUpService],
+  animations: [
+    trigger('fade', [
+      state('in', style({ opacity: 1, transform: 'rotateX(0deg)' })),
+      transition(':enter', [style({ opacity: 0, transform: 'rotateX(90deg)' }), animate('0.2s')])
+    ])
+  ]
 })
 export class SignUpComponent implements AfterViewInit {
   faComment = faComment;
@@ -36,7 +44,7 @@ export class SignUpComponent implements AfterViewInit {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         email: ['', Validators.compose([Validators.required, emailValidator])],
-        username: ['', Validators.required],
+        username: ['', Validators.required, this.validateUsernameTaken.bind(this)],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required]
       },
@@ -48,6 +56,21 @@ export class SignUpComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.firstNameField.nativeElement.focus();
+  }
+
+  validateUsernameTaken(control: AbstractControl) {
+    return control.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(value => this.signUpService.checkUsernameTaken(value)),
+      map(res => {
+        if (res['result'] === 'taken') {
+          return control.setErrors({ usernameTaken: true });
+        }
+
+        return control.setErrors(null);
+      })
+    );
   }
 
   onSubmit(): void {
@@ -107,5 +130,10 @@ export class SignUpComponent implements AfterViewInit {
   get hasInvalidEmailError(): boolean {
     const control = this.signupForm.get('email');
     return control.errors && !control.errors.required && control.errors.email && control.touched;
+  }
+
+  get hasUsernameTakenError(): boolean {
+    const control = this.signupForm.get('username');
+    return control.errors && !control.errors.required && control.errors.usernameTaken && control.touched;
   }
 }

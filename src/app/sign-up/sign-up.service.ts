@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
-
 @Injectable()
 export class SignUpService {
   constructor(private httpClient: HttpClient) {}
 
-  signup(firstName: string, lastName: string, email: string, username: string, password: string): Observable<any> {
+  checkUsernameTaken(username: string) {
+    return this.httpClient.get(`/api/username_check?username=${username}`);
+  }
+
+  signup(firstName: string, lastName: string, email: string, username: string, password: string) {
     return this.httpClient.post('/api/signup', {
       firstName,
       lastName,
