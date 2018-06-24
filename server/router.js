@@ -6,8 +6,8 @@ const usernameCheck = require('./username-check');
 
 const router = express.Router();
 
-router.post('/login', login);
-router.post('/signup', signup);
-router.get('/username_check', usernameCheck);
+router.post('/login', login.validation, login.handler);
+router.post('/signup', signup.validation, signup.handler);
+router.get('/username_check', usernameCheck.validation, usernameCheck.handler);
 
 module.exports = router;

@@ -1,8 +1,15 @@
+const { check, validationResult } = require('express-validator/check');
+
 const User = require('../models').User;
 const logger = require('./logger');
 const passwords = require('./passwords');
 
-module.exports = async function(req, res) {
+exports.handler = async function(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.mapped() });
+  }
+
   const username = req.body.username;
   logger.info(`Received login request for user "${username}"`);
 
@@ -33,7 +40,6 @@ module.exports = async function(req, res) {
     return res.status(403).json({
       result: 'login_incorrect'
     });
-
   } catch (error) {
     logger.error(`Error while logging in user "${username}": ${error}`);
     res.status(500).json({
@@ -41,3 +47,13 @@ module.exports = async function(req, res) {
     });
   }
 };
+
+exports.validation = [
+  check('username', 'Username is required')
+    .not()
+    .isEmpty(),
+
+  check('password', 'Password is required')
+    .not()
+    .isEmpty()
+];

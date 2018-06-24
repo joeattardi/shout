@@ -1,7 +1,14 @@
+const { query, validationResult } = require('express-validator/check');
+
 const User = require('../models').User;
 const logger = require('./logger');
 
-module.exports = async function(req, res) {
+exports.handler = async function(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.mapped() });
+  }
+
   const username = req.query.username;
 
   logger.debug(`Looking for user with username "${username}"`);
@@ -29,3 +36,9 @@ module.exports = async function(req, res) {
     });
   }
 };
+
+exports.validation = [
+  query('username', 'Username is required')
+    .not()
+    .isEmpty()
+];
