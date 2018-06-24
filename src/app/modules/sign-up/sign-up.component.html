@@ -2,7 +2,7 @@
   <div id="signup-form">
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div id="signup-form-header">
-        <h1 *ngIf="isNormalState"><fa-icon [icon]="faComment"></fa-icon></h1>
+        <h1 @fade *ngIf="isNormalState"><fa-icon [icon]="faComment"></fa-icon></h1>
         <div @fade *ngIf="isErrorState" id="error-message" class="status-message">
           <fa-icon [icon]="faExclamationTriangle"></fa-icon>
           <div class="message">Oops! We encountered an error while processing your signup. Please try again.</div>
