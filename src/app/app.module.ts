@@ -8,27 +8,28 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { SharedModule } from './modules/shared/shared.module';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SpinnerComponent } from './spinner/spinner.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', loadChildren: './modules/login/login.module#LoginModule' },
   { path: 'signup', component: SignUpComponent }
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, SignUpComponent, SpinnerComponent],
+  declarations: [AppComponent, HomeComponent, SignUpComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
