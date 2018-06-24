@@ -1,12 +1,13 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { AfterViewInit, ElementRef, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ElementRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { emailValidator, passwordMatchValidator } from './sign-up.validators';
 import { SignUpService } from './sign-up.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 
 enum State {
   NORMAL,
@@ -26,7 +27,7 @@ enum State {
     ])
   ]
 })
-export class SignUpComponent implements AfterViewInit {
+export class SignUpComponent implements AfterViewInit, OnInit {
   faComment = faComment;
   faExclamationTriangle = faExclamationTriangle;
 
@@ -38,7 +39,7 @@ export class SignUpComponent implements AfterViewInit {
 
   @ViewChild('firstName') private firstNameField: ElementRef;
 
-  constructor(fb: FormBuilder, private signUpService: SignUpService) {
+  constructor(fb: FormBuilder, private signUpService: SignUpService, private title: Title) {
     this.signupForm = fb.group(
       {
         firstName: ['', Validators.required],
@@ -54,7 +55,11 @@ export class SignUpComponent implements AfterViewInit {
     );
   }
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
+    this.title.setTitle('Shout: Sign Up');
+  }
+
+  ngAfterViewInit(): void {
     this.firstNameField.nativeElement.focus();
   }
 

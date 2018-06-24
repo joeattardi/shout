@@ -1,3 +1,40 @@
-<p>
-  login works!
-</p>
+<div id="login-container">
+  <div id="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div id="login-form-header">
+        <h1 @fade *ngIf="isNormalState"><fa-icon [icon]="faComment"></fa-icon></h1>
+        <div @fade *ngIf="isLoginIncorrectState" id="login-incorrect-message" class="status-message">
+          <div class="message">Looks like your username or password wasn't correct. Please try again.</div>
+        </div>
+        <div @fade *ngIf="isErrorState" id="error-message" class="status-message">
+            <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+            <div class="message">Oops! We encountered an error while logging you in. Please try again.</div>
+          </div>
+        <div @fade *ngIf="isLoadingState" id="loading-message" class="status-message">
+          <div class="spinner-container">
+            <app-spinner></app-spinner>
+          </div>
+          <div class="message">Logging you in...</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="username">Username</label>
+        <input #username formControlName="username" id="username" type="text" [class.error]="hasRequiredError('username')">
+        <div class="error" *ngIf="hasRequiredError('username')">Please enter your username.</div>
+      </div>
+      <div class="row">
+        <label for="password">Password</label>
+        <input formControlName="password" id="password" type="password" [class.error]="hasRequiredError('password')">
+        <div class="error" *ngIf="hasRequiredError('password')">Please enter your password.</div>
+      </div>
+
+      <div id="button-container">
+        <button class="button-primary" [disabled]="!loginForm.valid || isLoadingState">Log In</button>
+        <div id="signup-link">
+          Don't have an account? <a routerLink="/signup">Sign up here</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

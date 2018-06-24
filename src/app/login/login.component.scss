@@ -1,0 +1,95 @@
+@import '../../variables';
+
+#login-container {
+  display: flex;
+  justify-content: center;
+  background: $primary-brand-color;
+  height: 100vh;
+
+  #login-form {
+    padding: 1rem;
+    height: auto;
+    align-self: center;
+    width: 25rem;
+    border: 1px solid #AAAAAA;
+    border-radius: 5px;
+    background: #FFFFFF;
+
+    #login-form-header {
+      display: flex;
+      height: 5em;
+      align-items: center;
+      justify-content: center;
+
+      h1 {
+        text-align: center;
+        font-size: 3em;
+      }
+
+      .status-message {
+        padding: 1em;
+        border-radius: 5px;
+        font-size: 0.9em;
+        width: 100%;
+        display: flex;
+
+        .message {
+          align-self: center;
+        }
+      }
+
+      #login-incorrect-message, #error-message {
+        background: $error-color;
+        color: #FFFFFF;
+
+        fa-icon {
+          font-size: 3em;
+          margin-right: 0.5em;
+        }
+      }
+
+      #loading-message {
+        background: $light-brand-color;
+        color: darken($light-brand-color, 50%);
+
+        .spinner-container {
+          margin-right: 0.5em;
+        }
+      }
+    }
+
+    div.row {
+      margin: 0.5em;
+
+      label {
+        display: block;
+        color: #333333;
+        margin-bottom: 0.25em;
+        font-size: 0.8em;
+      }
+
+      input {
+        width: 23rem;
+      }
+
+      div.error {
+        font-size: 0.8em;
+        color: $error-color;
+      }
+    }
+
+    #button-container {
+      text-align: center;
+
+      #signup-link {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+
+::ng-deep .loader, .loader:after {
+  width: 3em !important;
+  height: 3em !important;
+  border-width: 0.5em !important;
+}
