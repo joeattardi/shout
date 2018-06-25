@@ -12,7 +12,7 @@ import { CoreModule } from './modules/core/core.module';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/chat', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent }
+  { path: 'home', component: HomeComponent },
   { path: 'chat', loadChildren: './modules/chat/chat.module#ChatModule' },
   { path: 'login', loadChildren: './modules/login/login.module#LoginModule' },
   { path: 'signup', loadChildren: './modules/sign-up/sign-up.module#SignUpModule' }
