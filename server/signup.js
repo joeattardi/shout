@@ -25,7 +25,13 @@ exports.handler = async function(req, res) {
 
     logger.debug(`Successfully created user with id ${user.id}`);
     res.status(201).json({
-      result: 'success'
+      result: 'success',
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        email: user.email
+      }
     });
   } catch (error) {
     logger.error(`Failed to create user "${req.body.username}": ${error}`);

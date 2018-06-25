@@ -1,0 +1,39 @@
+@import '../../../variables';
+
+#outer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  background: $header-color;
+  padding: 0.5em;
+  color: #FFFFFF;
+  display: flex;
+
+  #logo {
+    flex-grow: 1;
+  }
+
+  #user-container {
+    fa-icon {
+      font-size: 0.7em;
+      margin-right: 0.5em;
+    }
+
+    #user-name {
+      font-size: 0.8em;
+    }
+  }
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+}
+
+#sidebar {
+  background: $sidebar-color;
+  width: 13em;
+}

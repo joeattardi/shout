@@ -62,9 +62,9 @@ export class LoginComponent implements AfterViewInit, OnInit {
   login(): void {
     this.state = State.LOADING;
     this.loginService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
-      result => {
+      (result: any) => {
         this.state = State.NORMAL;
-        this.authService.loggedIn = true;
+        this.authService.currentUser = result.user;
         this.router.navigate(['/chat']);
       },
       errorResponse => {

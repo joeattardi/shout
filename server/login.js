@@ -33,7 +33,13 @@ exports.handler = async function(req, res) {
 
     if (passwordResult) {
       return res.status(200).json({
-        result: 'logged_in'
+        result: 'logged_in',
+        user: {
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        }
       });
     }
 

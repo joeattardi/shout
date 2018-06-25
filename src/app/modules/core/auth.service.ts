@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 
+import { User } from '../core/core.types';
+
 @Injectable()
 export class AuthService {
-  loggedIn = false;
+  currentUser: User = null;
+
+  get isLoggedIn() {
+    return this.currentUser !== null;
+  }
 }
