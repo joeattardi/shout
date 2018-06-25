@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -17,7 +16,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule, HttpClientModule, FontAwesomeModule, SharedModule],
+  imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule, FontAwesomeModule, SharedModule],
   declarations: [SignUpComponent]
 })
 export class SignUpModule {}
