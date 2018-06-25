@@ -59,15 +59,15 @@
     }
 
     div.row {
-      margin: 0.5em; 
+      margin: 0.5em;
 
       label {
         display: block;
-        color: #333333;
+        color: $text-color;
         margin-bottom: 0.25em;
         font-size: 0.8em;
       }
-      
+
       input {
         width: 23rem;
       }

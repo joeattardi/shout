@@ -56,7 +56,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Shout: Log In');
+    this.title.setTitle('shout: Log In');
   }
 
   login(): void {

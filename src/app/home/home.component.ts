@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,7 +11,9 @@ import { faComment } from '@fortawesome/free-solid-svg-icons';
 export class HomeComponent implements OnInit {
   faComment = faComment;
 
-  constructor() {}
+  constructor(private title: Title) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.title.setTitle('shout');
+  }
 }

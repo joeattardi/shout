@@ -9,4 +9,8 @@ export class AuthService {
   get isLoggedIn() {
     return this.currentUser !== null;
   }
+
+  logOut() {
+    this.currentUser = null;
+  }
 }

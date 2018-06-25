@@ -64,7 +64,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('Shout: Sign Up');
+    this.title.setTitle('shout: Sign Up');
   }
 
   ngAfterViewInit(): void {
