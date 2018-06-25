@@ -2,8 +2,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { AfterViewInit, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
+import { AuthService } from '../core/auth.service';
 import { LoginService } from './login.service';
 
 enum State {
@@ -35,7 +38,13 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   @ViewChild('username') private usernameField: ElementRef;
 
-  constructor(fb: FormBuilder, private loginService: LoginService, private title: Title) {
+  constructor(
+    fb: FormBuilder,
+    private loginService: LoginService,
+    private title: Title,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.loginForm = fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -55,7 +64,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
     this.loginService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       result => {
         this.state = State.NORMAL;
-        console.log('Login result:', result);
+        this.authService.loggedIn = true;
+        this.router.navigate(['/chat']);
       },
       errorResponse => {
         if (errorResponse.status === 403) {

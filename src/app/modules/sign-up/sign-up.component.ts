@@ -2,10 +2,12 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AfterViewInit, ElementRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
+import { AuthService } from '../core/auth.service';
 import { emailValidator, passwordMatchValidator } from './sign-up.validators';
 import { SignUpService } from './sign-up.service';
 
@@ -39,7 +41,13 @@ export class SignUpComponent implements AfterViewInit, OnInit {
 
   @ViewChild('firstName') private firstNameField: ElementRef;
 
-  constructor(fb: FormBuilder, private signUpService: SignUpService, private title: Title) {
+  constructor(
+    fb: FormBuilder,
+    private signUpService: SignUpService,
+    private title: Title,
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.signupForm = fb.group(
       {
         firstName: ['', Validators.required],
@@ -81,17 +89,12 @@ export class SignUpComponent implements AfterViewInit, OnInit {
   onSubmit(): void {
     const formValue = this.signupForm.value;
 
-    this.loadingTimeout = setTimeout(() => {
-      this.state = State.LOADING;
-    }, 500);
-
+    this.state = State.LOADING;
     this.signUpService.signup(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password).subscribe(
       result => {
-        if (this.loadingTimeout) {
-          clearTimeout(this.loadingTimeout);
-        }
         this.state = State.NORMAL;
-        console.log('Signup result:', result);
+        this.authService.loggedIn = true;
+        this.router.navigate(['/chat']);
       },
       error => {
         if (this.loadingTimeout) {
