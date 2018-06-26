@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ClickOutsideModule } from 'ng-click-outside';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxPopperModule } from 'ngx-popper';
 
 import { AuthGuard } from './auth-guard.service';
 import { ChatComponent } from './chat.component';
@@ -17,7 +17,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), FontAwesomeModule, ClickOutsideModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    FontAwesomeModule,
+    NgxPopperModule.forRoot({
+      disableDefaultStyling: true
+    })
+  ],
   providers: [AuthGuard],
   declarations: [ChatComponent]
 })
