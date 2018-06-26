@@ -13,8 +13,15 @@
 
   <popper-content #userMenu>
     <div class="popup-menu">
-      <div id="user-full-name">{{ user.firstName }} {{ user.lastName }}</div>
-      <div>{{ user.username }}</div>
+      <div id="user-menu-header">
+        <div id="user-avatar">
+          <fa-icon [icon]="faUser"></fa-icon>
+        </div>
+        <div id="user-name">
+          <div id="user-full-name">{{ user.firstName }} {{ user.lastName }}</div>
+          <div>{{ user.username }}</div>
+        </div>
+      </div>
       <button (click)="logOut()">Log out</button>
     </div>
   </popper-content>

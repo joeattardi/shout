@@ -12,6 +12,7 @@ header {
   color: #FFFFFF;
   display: flex;
   position: relative;
+  user-select: none;
 
   #logo {
     flex-grow: 1;
@@ -43,6 +44,15 @@ main {
 
 .popup-menu {
   margin-top: 1px;
+
+  #user-menu-header {
+    display: flex;
+
+    #user-avatar {
+      font-size: 2em;
+      margin-right: 0.25em;
+    }
+  }
 
   #user-full-name {
     font-weight: bold;
