@@ -14,10 +14,17 @@ header {
 
   #user-container {
     cursor: pointer;
+    display: flex;
 
     fa-icon {
       font-size: 0.7em;
       margin-right: 0.5em;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+      margin-right: 0.25em;
     }
 
     #user-name {
@@ -35,6 +42,11 @@ header {
     #user-avatar {
       font-size: 2em;
       margin-right: 0.25em;
+
+      svg {
+        width: 1.5em;
+        height: 1.5em;
+      }
     }
   }
 

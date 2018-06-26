@@ -9,6 +9,8 @@ import { AuthGuard } from './auth-guard.service';
 import { ChatComponent } from './chat.component';
 import { HeaderComponent } from './header.component';
 
+import { SharedModule } from '../shared/shared.module';
+
 const routes: Routes = [
   {
     path: '',
@@ -24,7 +26,8 @@ const routes: Routes = [
     FontAwesomeModule,
     NgxPopperModule.forRoot({
       disableDefaultStyling: true
-    })
+    }),
+    SharedModule
   ],
   providers: [AuthGuard],
   declarations: [ChatComponent, HeaderComponent]

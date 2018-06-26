@@ -5,7 +5,8 @@
     [popperTarget]="header"
     popperPlacement="bottom-end"
     popperTrigger="click">
-    <fa-icon [icon]="icons.user"></fa-icon>
+    <!-- <fa-icon [icon]="icons.user"></fa-icon> -->
+    <svg [appIdenticon]="user.username"></svg>
     <span id="user-name">{{ user.firstName }} {{ user.lastName }}</span>
   </div>
 </header>
@@ -14,7 +15,7 @@
   <div class="popup-menu">
     <div id="user-menu-header">
       <div id="user-avatar">
-        <fa-icon [icon]="icons.user"></fa-icon>
+        <svg [appIdenticon]="user.username"></svg>
       </div>
       <div id="user-name">
         <div id="user-full-name">{{ user.firstName }} {{ user.lastName }}</div>
