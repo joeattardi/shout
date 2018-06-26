@@ -1,0 +1,26 @@
+<header #header>
+  <div id="logo"><fa-icon [icon]="icons.comment"></fa-icon></div>
+  <div id="user-container"
+    [popper]="userMenu"
+    [popperTarget]="header"
+    popperPlacement="bottom-end"
+    popperTrigger="click">
+    <fa-icon [icon]="icons.user"></fa-icon>
+    <span id="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+  </div>
+</header>
+
+<popper-content #userMenu>
+  <div class="popup-menu">
+    <div id="user-menu-header">
+      <div id="user-avatar">
+        <fa-icon [icon]="icons.user"></fa-icon>
+      </div>
+      <div id="user-name">
+        <div id="user-full-name">{{ user.firstName }} {{ user.lastName }}</div>
+        <div>{{ user.username }}</div>
+      </div>
+    </div>
+    <button (click)="logOut()">Log out</button>
+  </div>
+</popper-content>

@@ -12,11 +12,6 @@ import { User } from '../core/core.types';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  faComment = faComment;
-  faUser = faUser;
-
-  showUserMenu = false;
-
   constructor(private authService: AuthService, private router: Router, private title: Title) {}
 
   ngOnInit(): void {
@@ -25,20 +20,5 @@ export class ChatComponent implements OnInit {
 
   get user(): User {
     return this.authService.currentUser;
-  }
-
-  toggleUserMenu(): void {
-    this.showUserMenu = !this.showUserMenu;
-  }
-
-  hideUserMenu(): void {
-    if (this.showUserMenu) {
-      this.showUserMenu = false;
-    }
-  }
-
-  logOut(): void {
-    this.authService.logOut();
-    this.router.navigate(['/home']);
   }
 }

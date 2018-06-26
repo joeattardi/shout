@@ -1,0 +1,44 @@
+@import '../../../variables';
+
+header {
+  background: $header-color;
+  padding: 0.5em;
+  color: #FFFFFF;
+  display: flex;
+  position: relative;
+  user-select: none;
+
+  #logo {
+    flex-grow: 1;
+  }
+
+  #user-container {
+    cursor: pointer;
+
+    fa-icon {
+      font-size: 0.7em;
+      margin-right: 0.5em;
+    }
+
+    #user-name {
+      font-size: 0.8em;
+    }
+  }
+}
+
+.popup-menu {
+  margin-top: 1px;
+
+  #user-menu-header {
+    display: flex;
+
+    #user-avatar {
+      font-size: 2em;
+      margin-right: 0.25em;
+    }
+  }
+
+  #user-full-name {
+    font-weight: bold;
+  }
+}

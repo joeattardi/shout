@@ -7,6 +7,7 @@ import { NgxPopperModule } from 'ngx-popper';
 
 import { AuthGuard } from './auth-guard.service';
 import { ChatComponent } from './chat.component';
+import { HeaderComponent } from './header.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,6 @@ const routes: Routes = [
     })
   ],
   providers: [AuthGuard],
-  declarations: [ChatComponent]
+  declarations: [ChatComponent, HeaderComponent]
 })
 export class ChatModule {}
