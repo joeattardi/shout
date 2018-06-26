@@ -4,10 +4,12 @@
     [popper]="userMenu"
     [popperTarget]="header"
     popperPlacement="bottom-end"
-    popperTrigger="click">
-    <!-- <fa-icon [icon]="icons.user"></fa-icon> -->
+    popperTrigger="click"
+    (popperOnShown)="showUpArrow()"
+    (popperOnHidden)="showDownArrow()">
     <svg [appIdenticon]="user.username"></svg>
     <span id="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+    <fa-icon [icon]="userMenuIcon"></fa-icon>
   </div>
 </header>
 

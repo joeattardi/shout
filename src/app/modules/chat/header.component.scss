@@ -10,15 +10,21 @@ header {
 
   #logo {
     flex-grow: 1;
+    display: flex;
+    align-items: center;
   }
 
   #user-container {
     cursor: pointer;
+    padding: 0.25em;
+    border-radius: 3px;
     display: flex;
+    align-items: center;
+    transition: background-color 0.25s;
 
     fa-icon {
       font-size: 0.7em;
-      margin-right: 0.5em;
+      margin-left: 0.5em;
     }
 
     svg {
@@ -29,6 +35,10 @@ header {
 
     #user-name {
       font-size: 0.8em;
+    }
+
+    &:hover {
+      background: lighten($header-color, 5%);
     }
   }
 }
