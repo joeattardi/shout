@@ -1,8 +1,8 @@
 const express = require('express');
 
-const login = require('./login');
-const signup = require('./signup');
-const usernameCheck = require('./username-check');
+const login = require('./handlers/login');
+const signup = require('./handlers/signup');
+const usernameCheck = require('./handlers/username-check');
 
 const router = express.Router();
 

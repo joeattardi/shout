@@ -2,10 +2,10 @@ const { readFileSync } = require('fs');
 
 const { check, validationResult } = require('express-validator/check');
 
-const User = require('../models').User;
-const jwt = require('./jwt');
-const logger = require('./logger');
-const passwords = require('./passwords');
+const User = require('../../models').User;
+const jwt = require('../jwt');
+const logger = require('../logger');
+const passwords = require('../passwords');
 
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
