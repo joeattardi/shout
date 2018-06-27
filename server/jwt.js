@@ -6,9 +6,9 @@ const logger = require('./logger');
 
 const jwtKeyPath = process.env.JWT_PRIVATE_KEY;
 if (!jwtKeyPath) {
-  logger.error('No JWT key specified. Authentication will not work without a JWT key.');
+  logger.error('No JWT private key specified. Authentication will not work without JWT keys.');
 }
-logger.info(`Loading JWT key from ${jwtKeyPath}`);
+logger.info(`Loading JWT private key from ${jwtKeyPath}`);
 const jwtKey = readFileSync(jwtKeyPath);
 
 function sign(subject, expiresIn) {

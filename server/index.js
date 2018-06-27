@@ -34,7 +34,7 @@ logger.info('Verifying database connection');
 db.sequelize
   .authenticate()
   .then(() => {
-    logger.info('Database connection successful')
+    logger.info('Database connection successful');
   })
   .catch(error => {
     logger.error('Unable to connect to database, shutting down');
@@ -44,6 +44,15 @@ db.sequelize
 app.use(bodyParser.json());
 app.use('/api', router);
 app.use(express.static(path.join(__dirname, '../dist/shout')));
+
+app.use(function(err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(403).json({
+      result: 'error',
+      error: 'Invalid token specified'
+    });
+  }
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/shout/index.html'));

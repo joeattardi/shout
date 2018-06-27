@@ -34,6 +34,15 @@ export class AuthService {
       .pipe(tap(response => this.setSession(response)));
   }
 
+  getCurrentUser() {
+    const token = localStorage.getItem('token');
+    return this.httpClient.get('/api/current_user', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
   checkUsernameTaken(username: string) {
     return this.httpClient.get(`/api/username_check?username=${username}`);
   }
