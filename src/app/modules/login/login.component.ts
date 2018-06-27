@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../core/auth.service';
-import { LoginService } from './login.service';
 
 enum State {
   NORMAL,
@@ -20,7 +19,6 @@ enum State {
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [LoginService],
   animations: [
     trigger('fade', [
       state('in', style({ opacity: 1, transform: 'rotateX(0deg)' })),
@@ -38,13 +36,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   @ViewChild('username') private usernameField: ElementRef;
 
-  constructor(
-    fb: FormBuilder,
-    private loginService: LoginService,
-    private title: Title,
-    private router: Router,
-    private authService: AuthService
-  ) {
+  constructor(fb: FormBuilder, private title: Title, private router: Router, private authService: AuthService) {
     this.loginForm = fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -61,7 +53,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   login(): void {
     this.state = State.LOADING;
-    this.loginService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
+    this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (result: any) => {
         this.state = State.NORMAL;
         this.authService.currentUser = result.user;
