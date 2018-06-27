@@ -1,18 +1,11 @@
 const { readFileSync } = require('fs');
 
 const { check, validationResult } = require('express-validator/check');
-const jwt = require('jsonwebtoken');
 
 const User = require('../models').User;
+const jwt = require('./jwt');
 const logger = require('./logger');
 const passwords = require('./passwords');
-
-const jwtKeyPath = process.env.JWT_PRIVATE_KEY;
-if (!jwtKeyPath) {
-  logger.error('No JWT key specified. Authentication will not work without a JWT key.');
-}
-logger.info(`Loading JWT key from ${jwtKeyPath}`);
-const jwtKey = readFileSync(jwtKeyPath);
 
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
@@ -42,17 +35,11 @@ exports.handler = async function(req, res) {
     const passwordResult = await passwords.validatePassword(req.body.password, hashedPassword);
 
     if (passwordResult) {
-      const jwtBearerToken = jwt.sign({}, jwtKey, {
-        algorithm: 'RS256',
-        expiresIn: 120,
-        subject: user.username
-      });
-
-      logger.debug(`Sending token: ${jwtBearerToken}`);
+      const token = jwt.sign(user.username, 120);
 
       return res.status(200).json({
         result: 'logged_in',
-        token: jwtBearerToken,
+        token: token,
         expiresIn: 120,
         user: {
           username: user.username,
