@@ -22,6 +22,22 @@ export class AuthService {
       .pipe(tap(response => this.setSession(response)));
   }
 
+  signup(firstName: string, lastName: string, email: string, username: string, password: string) {
+    return this.httpClient
+      .post('/api/signup', {
+        firstName,
+        lastName,
+        email,
+        username,
+        password
+      })
+      .pipe(tap(response => this.setSession(response)));
+  }
+
+  checkUsernameTaken(username: string) {
+    return this.httpClient.get(`/api/username_check?username=${username}`);
+  }
+
   logOut() {
     this.currentUser = null;
 

@@ -39,7 +39,7 @@ exports.handler = async function(req, res) {
 
       return res.status(200).json({
         result: 'logged_in',
-        token: token,
+        token,
         expiresIn: 120,
         user: {
           username: user.username,

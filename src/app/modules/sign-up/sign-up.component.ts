@@ -9,7 +9,6 @@ import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operato
 
 import { AuthService } from '../core/auth.service';
 import { emailValidator, passwordMatchValidator } from './sign-up.validators';
-import { SignUpService } from './sign-up.service';
 
 enum State {
   NORMAL,
@@ -21,7 +20,6 @@ enum State {
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
-  providers: [SignUpService],
   animations: [
     trigger('fade', [
       state('in', style({ opacity: 1, transform: 'rotateX(0deg)' })),
@@ -41,13 +39,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
 
   @ViewChild('firstName') private firstNameField: ElementRef;
 
-  constructor(
-    fb: FormBuilder,
-    private signUpService: SignUpService,
-    private title: Title,
-    private router: Router,
-    private authService: AuthService
-  ) {
+  constructor(fb: FormBuilder, private title: Title, private router: Router, private authService: AuthService) {
     this.signupForm = fb.group(
       {
         firstName: ['', Validators.required],
@@ -75,7 +67,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
     return control.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(value => this.signUpService.checkUsernameTaken(value)),
+      switchMap(value => this.authService.checkUsernameTaken(value)),
       map(res => {
         if (res['result'] === 'taken') {
           return control.setErrors({ usernameTaken: true });
@@ -90,7 +82,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
     const formValue = this.signupForm.value;
 
     this.state = State.LOADING;
-    this.signUpService.signup(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password).subscribe(
+    this.authService.signup(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password).subscribe(
       (result: any) => {
         this.state = State.NORMAL;
         this.authService.currentUser = result.user;

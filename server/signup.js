@@ -1,6 +1,7 @@
 const { check, validationResult } = require('express-validator/check');
 
 const User = require('../models').User;
+const jwt = require('./jwt');
 const logger = require('./logger');
 const passwords = require('./passwords');
 
@@ -24,8 +25,11 @@ exports.handler = async function(req, res) {
     });
 
     logger.debug(`Successfully created user with id ${user.id}`);
+    const token = jwt.sign(user.username, 120);
     res.status(201).json({
       result: 'success',
+      token,
+      expiresIn: 120,
       user: {
         firstName: user.firstName,
         lastName: user.lastName,
