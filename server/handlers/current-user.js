@@ -34,6 +34,4 @@ exports.handler = async function(req, res) {
       error
     });
   }
-
-  res.status(200).json('It works!');
 };

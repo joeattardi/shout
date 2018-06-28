@@ -2,6 +2,8 @@
   <app-header></app-header>
   <main>
     <div id="sidebar"></div>
-    <div id="content"></div>
+    <div id="content">
+      <app-spinner *ngIf="isLoadingState" [overlay]="true"></app-spinner>
+    </div>
   </main>
 </div>

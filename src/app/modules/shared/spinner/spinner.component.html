@@ -1,1 +1,5 @@
-<div class="loader"></div>
+<div *ngIf="overlay" class="loader-overlay">
+  <div class="loader"></div>
+</div>
+
+<div *ngIf="!overlay" class="loader"></div>

@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 import * as moment from 'moment';
-import * as jwtDecode from 'jwt-decode';
 
 import { User } from '../core/core.types';
 
