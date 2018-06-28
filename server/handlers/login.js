@@ -20,7 +20,7 @@ exports.handler = async function(req, res) {
     logger.debug(`Looking for user "${username}"`);
     const user = await User.findOne({
       where: {
-        username: username
+        username
       }
     });
     logger.debug(user !== null ? `Found user "${username}"` : `Did not find user "${username}"`);
