@@ -31,6 +31,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.0",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
+    "color": "^3.0.0",
     "core-js": "^2.5.4",
     "dotenv": "^6.0.0",
     "email-validator": "^2.0.4",

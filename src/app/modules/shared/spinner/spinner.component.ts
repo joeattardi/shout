@@ -1,6 +1,7 @@
 import { trigger, style, transition, animate } from '@angular/animations';
-
 import { Component, HostBinding, Input } from '@angular/core';
+
+import * as Color from 'color';
 
 @Component({
   selector: 'app-spinner',
@@ -16,8 +17,19 @@ import { Component, HostBinding, Input } from '@angular/core';
 export class SpinnerComponent {
   @Input() overlay = false;
 
+  @Input() size = '3em';
+
+  @Input() borderWidth = '0.5em';
+
+  @Input() color = '#FFFFFF';
+
   @HostBinding('@fade')
-  get fade() {
+  get fade(): boolean {
     return true;
+  }
+
+  get backgroundColor(): string {
+    const color = Color(this.color).alpha(0.2);
+    return `rgba(${color.red()}, ${color.green()}, ${color.blue()}, ${color.alpha()})`;
   }
 }

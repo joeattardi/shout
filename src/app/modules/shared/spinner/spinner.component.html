@@ -1,5 +1,8 @@
-<div *ngIf="overlay" class="loader-overlay">
-  <div class="loader"></div>
+<div [class.loader-overlay]="overlay">
+  <div class="loader"
+    [style.width]="size"
+    [style.height]="size"
+    [style.borderWidth]="borderWidth"
+    [style.borderColor]="backgroundColor"
+    [style.borderLeftColor]="color"></div>
 </div>
-
-<div *ngIf="!overlay" class="loader"></div>
