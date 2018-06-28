@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+const { existsSync, readFileSync } = require('fs');
 
 const jwt = require('jsonwebtoken');
 
@@ -9,10 +9,17 @@ logger.info(`JWT expire time set to ${jwtExpireTime} seconds`);
 
 const jwtKeyPath = process.env.JWT_PRIVATE_KEY;
 if (!jwtKeyPath) {
-  logger.error('No JWT private key specified. Authentication will not work without JWT keys.');
+  logger.error('No JWT private key specified');
+  process.exit(1);
 }
-logger.info(`Loading JWT private key from ${jwtKeyPath}`);
-const jwtKey = readFileSync(jwtKeyPath);
+
+let jwtKey;
+if (existsSync(jwtKeyPath)) {
+  logger.info(`Loading JWT private key from ${jwtKeyPath}`);
+  jwtKey = readFileSync(jwtKeyPath);
+} else {
+  logger.error(`JWT private key "${jwtKeyPath}" not found`);
+}
 
 function sign(subject, expiresIn) {
   logger.info(`Creating JWT for user ${subject}`);

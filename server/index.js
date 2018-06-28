@@ -6,12 +6,6 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const logger = require('./logger');
-const router = require('./router');
-
-const version = require('../package').version;
-const db = require('../models');
-
-const app = express();
 
 process.on('exit', () => {
   logger.info(`Server shutting down on ${new Date().toString()}`);
@@ -20,6 +14,13 @@ process.on('exit', () => {
 process.on('SIGINT', () => {
   process.exit(0);
 });
+
+const router = require('./router');
+
+const version = require('../package').version;
+const db = require('../models');
+
+const app = express();
 
 process.stdout.write('================================================================\n');
 process.stdout.write('shout!\n');
@@ -37,7 +38,7 @@ db.sequelize
     logger.info('Database connection successful');
   })
   .catch(error => {
-    logger.error('Unable to connect to database, shutting down');
+    logger.error('Unable to connect to database');
     process.exit(1);
   });
 

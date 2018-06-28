@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+const { existsSync, readFileSync } = require('fs');
 
 const express = require('express');
 const expressJwt = require('express-jwt');
@@ -11,10 +11,18 @@ const usernameCheck = require('./handlers/username-check');
 
 const jwtPublicKeyPath = process.env.JWT_PUBLIC_KEY;
 if (!jwtPublicKeyPath) {
-  logger.error('No JWT public key specified. Authentication will not work without JWT keys.');
+  logger.error('No JWT public key specified');
+  process.exit(1);
 }
-logger.info(`Loading JWT public key from ${jwtPublicKeyPath}`);
-const jwtPublicKey = readFileSync(jwtPublicKeyPath);
+
+let jwtPublicKey;
+if (existsSync(jwtPublicKeyPath)) {
+  logger.info(`Loading JWT public key from ${jwtPublicKeyPath}`);
+  jwtPublicKey = readFileSync(jwtPublicKeyPath);
+} else {
+  logger.error(`JWT public key "${jwtPublicKeyPath}" not found`);
+  process.exit(1);
+}
 
 const authenticationCheck = expressJwt({
   secret: jwtPublicKey
