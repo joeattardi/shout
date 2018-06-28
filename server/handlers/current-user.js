@@ -2,8 +2,6 @@ const User = require('../../models').User;
 const logger = require('../logger');
 
 exports.handler = async function(req, res) {
-  console.log(req.user);
-
   const username = req.user.sub;
   try {
     const user = await User.findOne({
