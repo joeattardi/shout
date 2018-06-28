@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 import * as moment from 'moment';
+import * as jwtDecode from 'jwt-decode';
 
 import { User } from '../core/core.types';
 
@@ -56,7 +57,11 @@ export class AuthService {
 
   isLoggedIn() {
     this.currentUser = JSON.parse(localStorage.getItem('user'));
-    return !!this.currentUser && moment().isBefore(this.getExpiration());
+    return !!this.getToken() && moment().isBefore(this.getExpiration());
+  }
+
+  private getToken() {
+    return localStorage.getItem('token');
   }
 
   private getExpiration() {

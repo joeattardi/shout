@@ -25,11 +25,11 @@ exports.handler = async function(req, res) {
     });
 
     logger.debug(`Successfully created user with id ${user.id}`);
-    const token = jwt.sign(user.username, 120);
+    const token = jwt.sign(user.username, jwt.jwtExpireTime);
     res.status(201).json({
       result: 'success',
       token,
-      expiresIn: 120,
+      expiresIn: jwt.jwtExpireTime,
       user: {
         firstName: user.firstName,
         lastName: user.lastName,

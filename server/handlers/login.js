@@ -35,12 +35,12 @@ exports.handler = async function(req, res) {
     const passwordResult = await passwords.validatePassword(req.body.password, hashedPassword);
 
     if (passwordResult) {
-      const token = jwt.sign(user.username, 120);
+      const token = jwt.sign(user.username, jwt.jwtExpireTime);
 
       return res.status(200).json({
         result: 'logged_in',
         token,
-        expiresIn: 120,
+        expiresIn: jwt.jwtExpireTime,
         user: {
           username: user.username,
           email: user.email,
