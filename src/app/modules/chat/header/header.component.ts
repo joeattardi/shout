@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 import { faChevronDown, faChevronUp, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthService } from '../core/auth.service';
-import { User } from '../core/core.types';
+import { AuthService } from '../../core/auth.service';
+import { User } from '../../core/core.types';
 
 @Component({
   selector: 'app-header',

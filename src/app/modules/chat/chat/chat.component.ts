@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { AuthService } from '../core/auth.service';
-import { User } from '../core/core.types';
+import { AuthService } from '../../core/auth.service';
+import { User } from '../../core/core.types';
 
 enum State {
   LOADING,

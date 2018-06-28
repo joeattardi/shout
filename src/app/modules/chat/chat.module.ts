@@ -6,8 +6,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxPopperModule } from 'ngx-popper';
 
 import { AuthGuard } from './auth-guard.service';
-import { ChatComponent } from './chat.component';
-import { HeaderComponent } from './header.component';
+import { ChatComponent } from './chat/chat.component';
+import { HeaderComponent } from './header/header.component';
 
 import { SharedModule } from '../shared/shared.module';
 
