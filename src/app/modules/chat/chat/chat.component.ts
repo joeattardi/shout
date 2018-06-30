@@ -6,6 +6,7 @@ import { User } from '../../core/core.types';
 
 enum State {
   LOADING,
+  EDITING_PROFILE,
   NORMAL
 }
 
@@ -37,5 +38,9 @@ export class ChatComponent implements OnInit {
 
   get isNormalState(): boolean {
     return this.state === State.NORMAL;
+  }
+
+  get isEditingProfileState(): boolean {
+    return this.state === State.EDITING_PROFILE;
   }
 }

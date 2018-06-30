@@ -10,6 +10,12 @@
   justify-content: center;
 }
 
+.loader-no-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .loader {
   border-radius: 50%;
 }

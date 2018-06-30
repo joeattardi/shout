@@ -1,5 +1,7 @@
+@import '../../../../variables';
+
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.8);
@@ -12,8 +14,35 @@
 
 .modal {
   background: #FFFFFF;
-  border: 1px solid #999999;
   border-radius: 3px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-  padding: 0.5em;
+
+  .modal-header {
+    background: $primary-brand-color;
+    padding: 0.5em;
+    display: flex;
+    border-radius: 3px 3px 0 0;
+
+    .modal-header-title {
+      flex-grow: 1;
+      margin-right: 0.5em;
+      color: #FFFFFF;
+    }
+
+    fa-icon {
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+  }
+
+  .modal-body {
+    padding: 0.5em;
+  }
+
+  .modal-footer {
+    background: #EEEEEE;
+    border-top: 1px solid #CCCCCC;
+    padding: 0.5em;
+    border-radius: 0 0 3px 3px;
+  }
 }

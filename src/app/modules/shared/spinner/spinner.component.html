@@ -1,4 +1,4 @@
-<div [class.loader-overlay]="overlay">
+<div [class.loader-no-overlay]="!overlay" [class.loader-overlay]="overlay">
   <div class="loader"
     [style.width]="size"
     [style.height]="size"

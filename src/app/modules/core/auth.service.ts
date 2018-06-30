@@ -62,7 +62,7 @@ export class AuthService {
     return !!this.getToken() && moment().isBefore(this.getExpiration());
   }
 
-  private getToken() {
+  getToken() {
     return localStorage.getItem('token');
   }
 

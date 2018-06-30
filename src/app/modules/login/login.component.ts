@@ -62,6 +62,9 @@ export class LoginComponent implements AfterViewInit, OnInit {
       errorResponse => {
         if (errorResponse.status === 403) {
           this.state = State.LOGIN_INCORRECT;
+          this.loginForm.patchValue({
+            password: ''
+          });
         } else {
           this.state = State.ERROR;
         }

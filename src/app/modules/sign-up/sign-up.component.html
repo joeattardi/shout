@@ -2,16 +2,10 @@
   <div id="signup-form">
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div id="signup-form-header">
-        <h1 @fade *ngIf="isNormalState"><fa-icon [icon]="faComment"></fa-icon></h1>
-        <div @fade *ngIf="isErrorState" id="error-message" class="status-message">
+        <h1 @fade *ngIf="isNormalState || isLoadingState"><fa-icon [icon]="faComment"></fa-icon></h1>
+        <div @fade *ngIf="isErrorState" class="status-message status-message-error">
           <fa-icon [icon]="faExclamationTriangle"></fa-icon>
           <div class="message">Oops! We encountered an error while processing your signup. Please try again.</div>
-        </div>
-        <div @fade *ngIf="isLoadingState" id="loading-message" class="status-message">
-          <div class="spinner-container">
-            <app-spinner></app-spinner>
-          </div>
-          <div class="message">We're processing your signup, hang on...</div>
         </div>
       </div>
       
@@ -50,7 +44,10 @@
       </div>
 
       <div id="button-container">
-        <button class="button-primary" [disabled]="!signupForm.valid || isLoadingState">Sign Up</button>
+        <button class="button-primary" [disabled]="!signupForm.valid || isLoadingState">
+          <span *ngIf="!isLoadingState">Sign Up</span>
+          <span *ngIf="isLoadingState"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
+        </button>
         <button type="button" routerLink="/">Cancel</button>
       </div>
     </form>

@@ -1,0 +1,81 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-modal (close)="closeModal()">
+    <div class="modal-title">Edit Profile</div>
+      <div class="modal-body">
+        <div class="column" id="profile-avatar-column">
+          <svg [appIdenticon]="identiconUsername"></svg>
+          <!-- <button>Upload new picture</button> -->
+        </div>
+
+        <div #mainColumn class="column" id="profile-main-column">
+          <div id="profile-form-header">
+            <div @fade *ngIf="isErrorState" class="status-message status-message-error">
+              <fa-icon [icon]="icons.error"></fa-icon>
+              <div class="message">Oops! An error occurred while updating your profile. Please try again.</div>
+            </div>
+            <div @fade *ngIf="isPasswordIncorrectState" class="status-message status-message-error">
+              Your current password was incorrect.
+            </div>
+          </div>
+
+          <h2>Your info</h2>
+
+          <div class="row">
+            <label for="first-name">First name</label>
+            <input #firstName formControlName="firstName" id="first-name" type="text" [class.error]="hasRequiredError('firstName')">
+            <div class="error" *ngIf="!hasRequiredError('firstName')">&nbsp;</div>
+            <div class="error" *ngIf="hasRequiredError('firstName')">First name is required.</div>
+          </div>
+
+          <div class="row">
+            <label for="last-name">Last name</label>
+            <input id="last-name" formControlName="lastName" type="text" [class.error]="hasRequiredError('lastName')">
+            <div class="error" *ngIf="!hasRequiredError('lastName')">&nbsp;</div>
+            <div class="error" *ngIf="hasRequiredError('lastName')">Last name is required.</div>
+          </div>
+          
+          <div class="row">
+            <label for="email">Email</label>
+            <input id="email" formControlName="email" type="email" [class.error]="hasEmailError">
+            <div class="error" *ngIf="!hasEmailError">&nbsp;</div>
+            <div class="error" *ngIf="hasRequiredError('email')">Email address is required.</div>
+            <div class="error" *ngIf="hasInvalidEmailError">Invalid email address.</div>
+          </div>
+
+          <h2>Password</h2>
+
+          <div class="row">
+            <label for="currentPassword">Current password</label>
+            <input id="currentPassword" formControlName="currentPassword" type="password" [class.error]="hasRequiredError('currentPassword')">
+            <div class="error" *ngIf="!hasRequiredError('currentPassword')">&nbsp;</div>
+            <div class="error" *ngIf="hasRequiredError('currentPassword')">Current password is required.</div>
+          </div>
+
+          <div class="row">
+            <label for="password">New password</label>
+            <input id="password" formControlName="password" type="password">
+            <div class="error">&nbsp;</div>
+          </div>
+
+          <div class="row">
+            <label for="confirmPassword">Confirm password</label>
+            <input id="confirmPassword" formControlName="confirmPassword" type="password" [class.error]="hasConfirmPasswordError">
+            <div class="error" *ngIf="!hasConfirmPasswordError">&nbsp;</div>
+            <div class="error" *ngIf="hasRequiredError('confirmPassword')">Please confirm your new password.</div>
+            <div class="error" *ngIf="hasPasswordMatchError && !hasRequiredError('confirmPassword')">Passwords do not match.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" (click)="closeModal()">Cancel</button>
+        <button class="button-primary" [disabled]="isSavingState || !form.valid">
+          <span *ngIf="!isSavingState; else loading">Save</span>
+          <ng-template #loading>
+            <span><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
+          </ng-template>
+        </button>
+      </div>
+  </app-modal>
+</form>

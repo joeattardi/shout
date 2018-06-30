@@ -24,6 +24,9 @@
         <div>{{ user.username }}</div>
       </div>
     </div>
+
+    <div><a [routerLink]="['edit-profile']" (click)="hidePopupMenu()">Edit Profile</a></div>
+
     <button (click)="logOut()">Log out</button>
   </div>
 </popper-content>

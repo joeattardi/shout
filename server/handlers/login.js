@@ -1,5 +1,3 @@
-const { readFileSync } = require('fs');
-
 const { check, validationResult } = require('express-validator/check');
 
 const User = require('../../models').User;

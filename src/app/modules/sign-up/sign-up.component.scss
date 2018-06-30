@@ -26,35 +26,8 @@
         font-size: 3em;
       }
 
-      .status-message {
-        padding: 1em;
-        border-radius: 5px;
-        font-size: 0.9em;
-        width: 100%;
-        display: flex;
-
-        .message {
-          align-self: center;
-        }
-      }
-
-      #error-message {
-        background: $error-color;
-        color: #FFFFFF;
-
-        fa-icon {
-          font-size: 3em;
-          margin-right: 0.5em;
-        }
-      }
-
-      #loading-message {
-        background: $light-brand-color;
-        color: darken($light-brand-color, 50%);
-
-        .spinner-container {
-          margin-right: 0.5em;
-        }
+      .spinner-container {
+        margin-right: 0.5em;
       }
     }
 
@@ -69,7 +42,7 @@
       }
 
       input {
-        width: 23rem;
+        width: 100%;
       }
 
       div.error {

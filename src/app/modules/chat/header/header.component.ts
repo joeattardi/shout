@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { faChevronDown, faChevronUp, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +21,8 @@ export class HeaderComponent {
 
   userMenuIcon = this.icons.chevronDown;
 
+  @ViewChild('userMenu') popupMenu;
+
   constructor(private authService: AuthService, private router: Router) {}
 
   get user(): User {
@@ -38,5 +40,9 @@ export class HeaderComponent {
   logOut(): void {
     this.authService.logOut();
     this.router.navigate(['/home']);
+  }
+
+  hidePopupMenu(): void {
+    this.popupMenu.hide();
   }
 }

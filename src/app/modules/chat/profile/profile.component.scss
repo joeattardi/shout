@@ -1,0 +1,60 @@
+@import '../../../../variables';
+
+.modal-body {
+  width: 35em;
+  height: 25em;
+  display: flex;
+
+  svg {
+    width: 10em;
+    height: 10em;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #profile-avatar-column {
+    align-items: center;
+  }
+
+  #profile-main-column {
+    flex-grow: 1;
+    overflow-y: scroll;
+
+    #profile-form-header {
+      margin-bottom: 0.5em;
+    }
+
+    h2 {
+      margin: 0 0 0.5em 0;
+      border-bottom: 1px solid #AAAAAA;
+    }
+
+    .row {
+      margin: 0.25em 0.25em 0 0.25em;
+
+      label {
+        color: $text-color;
+        margin-bottom: 0.25em;
+        font-size: 0.8em;
+        display: block;
+      }
+
+      input {
+        width: 100%;
+      }
+
+      div.error {
+        font-size: 0.8em;
+        color: $error-color;
+      }
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}

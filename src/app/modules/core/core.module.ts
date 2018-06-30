@@ -5,9 +5,10 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AuthService } from './auth.service';
+import { UserService } from './user.service';
 
 @NgModule({
   imports: [CommonModule, BrowserAnimationsModule, HttpClientModule],
-  providers: [AuthService]
+  providers: [AuthService, UserService]
 })
 export class CoreModule {}

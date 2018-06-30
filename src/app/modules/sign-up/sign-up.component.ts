@@ -5,10 +5,9 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { AuthService } from '../core/auth.service';
-import { emailValidator, passwordMatchValidator } from './sign-up.validators';
+import { emailValidator, passwordMatchValidator, usernameTakenValidator } from '../shared/validators';
 
 enum State {
   NORMAL,
@@ -45,7 +44,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         email: ['', Validators.compose([Validators.required, emailValidator])],
-        username: ['', Validators.required, this.validateUsernameTaken.bind(this)],
+        username: ['', Validators.required, usernameTakenValidator(this.authService)],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required]
       },
@@ -61,21 +60,6 @@ export class SignUpComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.firstNameField.nativeElement.focus();
-  }
-
-  validateUsernameTaken(control: AbstractControl) {
-    return control.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(value => this.authService.checkUsernameTaken(value)),
-      map(res => {
-        if (res['result'] === 'taken') {
-          return control.setErrors({ usernameTaken: true });
-        }
-
-        return control.setErrors(null);
-      })
-    );
   }
 
   onSubmit(): void {
