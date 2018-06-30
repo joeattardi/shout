@@ -1,14 +1,20 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { HttpClientModule } from '@angular/common/http';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 
+import { NotificationComponent } from './notification/notification.component';
+import { NotificationService } from './notification/notification.service';
+
 @NgModule({
-  imports: [CommonModule, BrowserAnimationsModule, HttpClientModule],
-  providers: [AuthService, UserService]
+  declarations: [NotificationComponent],
+  exports: [NotificationComponent],
+  imports: [CommonModule, BrowserAnimationsModule, HttpClientModule, FontAwesomeModule],
+  providers: [AuthService, UserService, NotificationService]
 })
 export class CoreModule {}

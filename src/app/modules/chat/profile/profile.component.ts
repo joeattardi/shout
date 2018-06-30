@@ -6,8 +6,11 @@ import { Router } from '@angular/router';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../../core/auth.service';
+import { NotificationService } from '../../core/notification/notification.service';
+import { NotificationTheme } from '../../core/notification/notification.types';
 import { User } from '../../core/core.types';
 import { UserService } from '../../core/user.service';
+
 import { emailValidator, passwordMatchValidator } from '../../shared/validators';
 
 enum State {
@@ -45,7 +48,13 @@ export class ProfileComponent implements AfterViewInit, OnInit {
 
   @ViewChild('mainColumn') mainColumn: ElementRef;
 
-  constructor(private authService: AuthService, private router: Router, fb: FormBuilder, private userService: UserService) {
+  constructor(
+    authService: AuthService,
+    private router: Router,
+    fb: FormBuilder,
+    private userService: UserService,
+    private notificationService: NotificationService
+  ) {
     this.user = authService.currentUser;
     this.identiconUsername = this.user.username;
 
@@ -97,6 +106,10 @@ export class ProfileComponent implements AfterViewInit, OnInit {
       .subscribe(
         () => {
           this.closeModal();
+          this.notificationService.showNotification({
+            theme: NotificationTheme.SUCCESS,
+            message: 'Your profile was updated successfully.'
+          });
         },
         errorResponse => {
           if (errorResponse.status === 403) {

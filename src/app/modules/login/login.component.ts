@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../core/auth.service';
+import { NotificationService } from '../core/notification/notification.service';
+import { NotificationTheme } from '../core/notification/notification.types';
 
 enum State {
   NORMAL,
@@ -36,7 +38,13 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   @ViewChild('username') private usernameField: ElementRef;
 
-  constructor(fb: FormBuilder, private title: Title, private router: Router, private authService: AuthService) {
+  constructor(
+    fb: FormBuilder,
+    private title: Title,
+    private router: Router,
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {
     this.loginForm = fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -58,6 +66,11 @@ export class LoginComponent implements AfterViewInit, OnInit {
         this.state = State.NORMAL;
         this.authService.currentUser = result.user;
         this.router.navigate(['/chat']);
+        this.notificationService.showNotification({
+          theme: NotificationTheme.SUCCESS,
+          message: `Welcome back, ${result.user.firstName}!`,
+          icon: faComment
+        });
       },
       errorResponse => {
         if (errorResponse.status === 403) {

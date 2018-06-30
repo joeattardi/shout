@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../core/auth.service';
+import { NotificationService } from '../core/notification/notification.service';
+import { NotificationTheme } from '../core/notification/notification.types';
+
 import { emailValidator, passwordMatchValidator, usernameTakenValidator } from '../shared/validators';
 
 enum State {
@@ -38,7 +41,13 @@ export class SignUpComponent implements AfterViewInit, OnInit {
 
   @ViewChild('firstName') private firstNameField: ElementRef;
 
-  constructor(fb: FormBuilder, private title: Title, private router: Router, private authService: AuthService) {
+  constructor(
+    fb: FormBuilder,
+    private title: Title,
+    private router: Router,
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {
     this.signupForm = fb.group(
       {
         firstName: ['', Validators.required],
@@ -70,6 +79,10 @@ export class SignUpComponent implements AfterViewInit, OnInit {
       (result: any) => {
         this.authService.currentUser = result.user;
         this.router.navigate(['/chat']);
+        this.notificationService.showNotification({
+          theme: NotificationTheme.SUCCESS,
+          message: `Welcome to shout, ${formValue.firstName}!`
+        });
       },
       error => {
         if (this.loadingTimeout) {
