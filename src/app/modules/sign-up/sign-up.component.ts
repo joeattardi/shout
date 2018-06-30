@@ -120,4 +120,8 @@ export class SignUpComponent implements AfterViewInit, OnInit {
     const control = this.signupForm.get('username');
     return control.errors && !control.errors.required && control.errors.usernameTaken && control.touched;
   }
+
+  get hasUsernameError(): boolean {
+    return this.hasRequiredError('username') || this.hasUsernameTakenError;
+  }
 }

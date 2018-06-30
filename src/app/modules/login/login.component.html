@@ -16,11 +16,13 @@
         <label for="username">Username</label>
         <input #username formControlName="username" id="username" type="text" [class.error]="hasRequiredError('username')">
         <div class="error" *ngIf="hasRequiredError('username')">Please enter your username.</div>
+        <div class="error" *ngIf="!hasRequiredError('username')">&nbsp;</div>
       </div>
       <div class="row">
         <label for="password">Password</label>
         <input formControlName="password" id="password" type="password" [class.error]="hasRequiredError('password')">
         <div class="error" *ngIf="hasRequiredError('password')">Please enter your password.</div>
+        <div class="error" *ngIf="!hasRequiredError('password')">&nbsp;</div>
       </div>
 
       <div id="button-container">

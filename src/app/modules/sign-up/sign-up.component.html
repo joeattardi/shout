@@ -13,34 +13,40 @@
         <label for="first-name">First name</label>
         <input #firstName formControlName="firstName" id="first-name" type="text" [class.error]="hasRequiredError('firstName')">
         <div class="error" *ngIf="hasRequiredError('firstName')">First name is required.</div>
+        <div class="error" *ngIf="!hasRequiredError('firstName')">&nbsp;</div>
       </div>
       <div class="row">
         <label for="last-name">Last name</label>
         <input formControlName="lastName" id="last-name" type="text" [class.error]="hasRequiredError('lastName')">
         <div class="error" *ngIf="hasRequiredError('lastName')">Last name is required.</div>
+        <div class="error" *ngIf="!hasRequiredError('lastName')">&nbsp;</div>
       </div>
       <div class="row">
         <label for="email">Email address</label>
         <input formControlName="email" id="email" type="email" [class.error]="hasEmailError">
         <div class="error" *ngIf="hasRequiredError('email')">Email address is required.</div>
         <div class="error" *ngIf="hasInvalidEmailError">Invalid email address.</div>
+        <div class="error" *ngIf="!hasEmailError">&nbsp;</div>
       </div>
       <div class="row">
         <label for="username">Username</label>
-        <input formControlName="username" id="username" type="text" [class.error]="hasRequiredError('username')">
+        <input formControlName="username" id="username" type="text" [class.error]="hasUsernameError">
         <div class="error" *ngIf="hasRequiredError('username')">Username is required.</div>
         <div class="error" *ngIf="hasUsernameTakenError">That username is already taken.</div>
+        <div class="error" *ngIf="!hasUsernameError">&nbsp;</div>
       </div>
       <div class="row">
         <label for="password">Password</label>
         <input formControlName="password" id="password" type="password" [class.error]="hasRequiredError('password')">
         <div class="error" *ngIf="hasRequiredError('password')">Password is required.</div>
+        <div class="error" *ngIf="!hasRequiredError('password')">&nbsp;</div>
       </div>
       <div class="row">
         <label for="confirm-password">Confirm password</label>
         <input formControlName="confirmPassword" id="confirm-password" type="password" [class.error]="hasConfirmPasswordError">
         <div class="error" *ngIf="hasRequiredError('confirmPassword')">Please confirm your password.</div>
         <div class="error" *ngIf="hasPasswordMatchError && !hasRequiredError('confirmPassword')">Passwords do not match.</div>
+        <div class="error" *ngIf="!hasConfirmPasswordError">&nbsp;</div>
       </div>
 
       <div id="button-container">
