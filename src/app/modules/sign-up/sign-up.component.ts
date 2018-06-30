@@ -68,7 +68,6 @@ export class SignUpComponent implements AfterViewInit, OnInit {
     this.state = State.LOADING;
     this.authService.signup(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password).subscribe(
       (result: any) => {
-        this.state = State.NORMAL;
         this.authService.currentUser = result.user;
         this.router.navigate(['/chat']);
       },
