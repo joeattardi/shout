@@ -4,11 +4,15 @@ const User = require('../../models').User;
 const jwt = require('../jwt');
 const logger = require('../logger');
 const passwords = require('../passwords');
+const { Result, sendResult } = require('../api');
 
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.mapped() });
+    return res.status(400).json({
+      result: Result.ERROR,
+      errors: errors.mapped()
+    });
   }
 
   logger.info(`Received signup request for new user "${req.body.firstName} ${req.body.lastName}", username "${req.body.username}"`);
@@ -27,7 +31,7 @@ exports.handler = async function(req, res) {
     logger.debug(`Successfully created user with id ${user.id}`);
     const token = jwt.sign(user.username, jwt.jwtExpireTime);
     res.status(201).json({
-      result: 'success',
+      result: Result.SUCCESS,
       token,
       expiresIn: jwt.jwtExpireTime,
       user: {
@@ -39,9 +43,7 @@ exports.handler = async function(req, res) {
     });
   } catch (error) {
     logger.error(`Failed to create user "${req.body.username}": ${error}`);
-    res.status(500).json({
-      result: 'error'
-    });
+    sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };
 

@@ -1,5 +1,5 @@
 const User = require('../../models').User;
-const logger = require('../logger');
+const { Result, sendResult } = require('../api');
 
 exports.handler = async function(req, res) {
   const username = req.user.sub;
@@ -12,7 +12,7 @@ exports.handler = async function(req, res) {
 
     if (user) {
       return res.status(200).json({
-        result: 'success',
+        result: Result.SUCCESS,
         user: {
           username: user.username,
           firstName: user.firstName,
@@ -21,15 +21,9 @@ exports.handler = async function(req, res) {
         }
       });
     } else {
-      return res.status(404).json({
-        result: 'not_found',
-        message: 'User not found'
-      });
+      sendResult(res, 404, Result.NOT_FOUND, 'User not found');
     }
   } catch (error) {
-    return res.status(500).json({
-      result: 'error',
-      error
-    });
+    sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };

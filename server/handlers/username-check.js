@@ -2,6 +2,7 @@ const { query, validationResult } = require('express-validator/check');
 
 const User = require('../../models').User;
 const logger = require('../logger');
+const { Result, sendResult } = require('../api');
 
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
@@ -21,19 +22,13 @@ exports.handler = async function(req, res) {
     logger.debug(user !== null ? `Found user "${username}"` : `Did not find user "${username}"`);
 
     if (user === null) {
-      return res.status(200).json({
-        result: 'available'
-      });
+      return sendResult(res, 200, Result.AVAILABLE, 'Username is available');
     }
 
-    res.status(200).json({
-      result: 'taken'
-    });
+    sendResult(res, 200, Result.TAKEN, 'Username is taken');
   } catch (error) {
     logger.error(`Error looking up user by username "${username}": ${error}`);
-    res.status(500).json({
-      result: 'error'
-    });
+    sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };
 

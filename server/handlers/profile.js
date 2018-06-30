@@ -1,6 +1,6 @@
 const { check, validationResult } = require('express-validator/check');
 
-const { sendResult } = require('../response-utils');
+const { Result, sendResult } = require('../api');
 const User = require('../../models').User;
 const logger = require('../logger');
 const passwords = require('../passwords');
@@ -8,32 +8,35 @@ const passwords = require('../passwords');
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.mapped() });
+    return res.status(400).json({
+      result: Result.ERROR,
+      errors: errors.mapped()
+    });
   }
 
   const username = req.user.sub;
   logger.info(`Received profile update request for user "${username}"`);
 
   if (req.body.newPassword && !req.body.currentPassword) {
-    return sendResult(res, 400, 'error', 'Current password is required when changing password');
+    return sendResult(res, 400, Result.ERROR, 'Current password is required when changing password');
   }
 
   const user = await loadUser(username);
   if (!user) {
-    return sendResult(res, 500, 'error', 'An unexpected error has occurred');
+    return sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 
   if (req.body.currentPassword) {
     const passwordResult = await passwords.validatePassword(req.body.currentPassword, user.password);
     if (!passwordResult) {
-      return sendResult(res, 403, 'password_incorrect', 'Current password is incorrect');
+      return sendResult(res, 403, Result.LOGIN_INCORRECT, 'Current password is incorrect');
     }
   }
 
   if (await updateUser(user, req.body.firstName, req.body.lastName, req.body.email, req.body.newPassword)) {
-    sendResult(res, 200, 'success', 'Profile updated');
+    sendResult(res, 200, Result.SUCCESS, 'Profile updated');
   } else {
-    sendResult(res, 500, 'error', 'An unexpected error has occurred');
+    sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };
 

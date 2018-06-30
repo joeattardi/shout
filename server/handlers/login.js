@@ -4,11 +4,15 @@ const User = require('../../models').User;
 const jwt = require('../jwt');
 const logger = require('../logger');
 const passwords = require('../passwords');
+const { Result, sendResult } = require('../api');
 
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.mapped() });
+    return res.status(400).json({
+      result: Result.ERROR,
+      errors: errors.mapped()
+    });
   }
 
   const username = req.body.username;
@@ -24,9 +28,7 @@ exports.handler = async function(req, res) {
     logger.debug(user !== null ? `Found user "${username}"` : `Did not find user "${username}"`);
 
     if (user === null) {
-      return res.status(403).json({
-        result: 'login_incorrect'
-      });
+      return sendResult(res, 403, Result.LOGIN_INCORRECT, 'Login incorrect');
     }
 
     const hashedPassword = user.password;
@@ -36,7 +38,7 @@ exports.handler = async function(req, res) {
       const token = jwt.sign(user.username, jwt.jwtExpireTime);
 
       return res.status(200).json({
-        result: 'logged_in',
+        result: Result.LOGGED_IN,
         token,
         expiresIn: jwt.jwtExpireTime,
         user: {
@@ -48,14 +50,10 @@ exports.handler = async function(req, res) {
       });
     }
 
-    return res.status(403).json({
-      result: 'login_incorrect'
-    });
+    return sendResult(res, 403, Result.LOGIN_INCORRECT, 'Login incorrect');
   } catch (error) {
     logger.error(`Error while logging in user "${username}": ${error}`);
-    res.status(500).json({
-      result: 'error'
-    });
+    sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };
 
