@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
 import { User } from '../../core/core.types';
@@ -15,7 +16,7 @@ enum State {
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  constructor(private authService: AuthService, private title: Title) {}
+  constructor(private authService: AuthService, private title: Title, private router: Router) {}
 
   state = State.NORMAL;
 
@@ -23,9 +24,15 @@ export class ChatComponent implements OnInit {
     this.title.setTitle('shout');
 
     this.state = State.LOADING;
-    this.authService.getCurrentUser().subscribe(() => {
-      this.state = State.NORMAL;
-    });
+    this.authService.getCurrentUser().subscribe(
+      () => {
+        this.state = State.NORMAL;
+      },
+      errorResponse => {
+        this.authService.logOut();
+        this.router.navigate(['/home']);
+      }
+    );
   }
 
   get user(): User {
