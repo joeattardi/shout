@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { faChevronDown, faChevronUp, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../../core/auth.service';
+import { NotificationService } from '../../core/notification/notification.service';
+import { NotificationTheme } from '../../core/notification/notification.types';
 import { User } from '../../core/core.types';
 
 @Component({
@@ -23,7 +25,7 @@ export class HeaderComponent {
 
   @ViewChild('userMenu') popupMenu;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {}
 
   get user(): User {
     return this.authService.currentUser;
@@ -40,6 +42,10 @@ export class HeaderComponent {
   logOut(): void {
     this.authService.logOut();
     this.router.navigate(['/home']);
+    this.notificationService.showNotification({
+      theme: NotificationTheme.SUCCESS,
+      message: 'You have been logged out.'
+    });
   }
 
   hidePopupMenu(): void {
