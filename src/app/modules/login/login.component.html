@@ -2,11 +2,11 @@
   <div id="login-form">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div id="login-form-header">
-        <h1 @fade *ngIf="isNormalState || isLoadingState"><fa-icon [icon]="faComment"></fa-icon></h1>
-        <div @fade *ngIf="isLoginIncorrectState" class="status-message status-message-error">
+        <h1 @fade *ngIf="!(authError$ | async) && !(error$ | async)"><fa-icon [icon]="faComment"></fa-icon></h1>
+        <div @fade *ngIf="(authError$ | async)" class="status-message status-message-error">
           <div class="message">Looks like your username or password wasn't correct. Please try again.</div>
         </div>
-        <div @fade *ngIf="isErrorState" class="status-message status-message-error">
+        <div @fade *ngIf="(error$ | async)" class="status-message status-message-error">
             <fa-icon [icon]="faExclamationTriangle"></fa-icon>
             <div class="message">Oops! We encountered an error while logging you in. Please try again.</div>
           </div>
@@ -26,9 +26,9 @@
       </div>
 
       <div id="button-container">
-        <button class="button-primary" [disabled]="!loginForm.valid || isLoadingState">
-          <span *ngIf="!isLoadingState">Log In</span>
-          <span *ngIf="isLoadingState"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
+        <button class="button-primary" [disabled]="!loginForm.valid || (loading$ | async)">
+          <span *ngIf="!(loading$ | async)">Log In</span>
+          <span *ngIf="loading$ | async"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
         </button>
         <div id="signup-link">
           Don't have an account? <a routerLink="/signup">Sign up here</a>
