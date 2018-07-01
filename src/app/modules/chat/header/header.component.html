@@ -5,11 +5,11 @@
     [popperTarget]="header"
     popperPlacement="bottom-end"
     popperTrigger="click"
-    (popperOnShown)="showUpArrow()"
-    (popperOnHidden)="showDownArrow()">
+    (popperOnShown)="userMenuOpen = true"
+    (popperOnHidden)="userMenuOpen = false">
     <svg [appIdenticon]="user.username"></svg>
     <span id="user-name">{{ user.firstName }} {{ user.lastName }}</span>
-    <fa-icon [icon]="userMenuIcon"></fa-icon>
+    <fa-icon [icon]="icons.chevronDown" [class.open]="userMenuOpen"></fa-icon>
   </div>
 </header>
 

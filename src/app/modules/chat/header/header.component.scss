@@ -25,6 +25,11 @@ header {
     fa-icon {
       font-size: 0.7em;
       margin-left: 0.5em;
+      transition: transform 0.2s;
+
+      &.open {
+        transform: rotate(180deg);
+      }
     }
 
     svg {

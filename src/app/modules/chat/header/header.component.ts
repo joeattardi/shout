@@ -16,12 +16,11 @@ import { User } from '../../core/core.types';
 export class HeaderComponent {
   icons = {
     chevronDown: faChevronDown,
-    chevronUp: faChevronUp,
     comment: faComment,
     user: faUser
   };
 
-  userMenuIcon = this.icons.chevronDown;
+  userMenuOpen = false;
 
   @ViewChild('userMenu') popupMenu;
 
@@ -29,14 +28,6 @@ export class HeaderComponent {
 
   get user(): User {
     return this.authService.currentUser;
-  }
-
-  showUpArrow(): void {
-    this.userMenuIcon = this.icons.chevronUp;
-  }
-
-  showDownArrow(): void {
-    this.userMenuIcon = this.icons.chevronDown;
   }
 
   logOut(): void {
