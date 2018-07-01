@@ -1,4 +1,4 @@
-<div @fade class="notification notification-{{ notification.theme }}">
+<div class="notification notification-{{ notification.theme }}">
   <div class="icon"><fa-icon [icon]="icon"></fa-icon></div>
   <div class="message">{{ notification.message }}</div>
   <div class="close"><fa-icon (click)="closeButtonClicked()" [icon]="icons.close"></fa-icon></div>

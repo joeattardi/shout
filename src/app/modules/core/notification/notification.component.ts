@@ -9,19 +9,7 @@ import { NotificationService } from './notification.service';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss'],
-  animations: [
-    trigger('fade', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'rotateX(90deg)' }),
-        animate('0.2s', style({ opacity: 1, transform: 'rotateX(0deg)' }))
-      ]),
-      transition(':leave', [
-        style({ opacity: 1, transform: 'rotateX(0deg)' }),
-        animate('0.2s', style({ opacity: 0, transform: 'rotateX(90deg)' }))
-      ])
-    ])
-  ]
+  styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent {
   @Input() notification: Notification;

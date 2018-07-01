@@ -8,7 +8,7 @@ export class NotificationService {
 
   showNotification(notificationToShow: Notification) {
     this.notifications = [notificationToShow, ...this.notifications];
-    
+
     if (!notificationToShow.sticky) {
       setTimeout(() => this.removeNotification(notificationToShow), 5000);
     }

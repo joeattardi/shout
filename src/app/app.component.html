@@ -1,5 +1,7 @@
 <div id="notification-container">
-  <app-notification *ngFor="let notification of notifications" [notification]="notification"></app-notification>
+  <div @notification *ngFor="let notification of notifications">
+    <app-notification [notification]="notification"></app-notification>
+  </div>
 </div>
 <div [@fadeAnimation]="getRouterOutletState(o)">
   <router-outlet #o="outlet"></router-outlet>
