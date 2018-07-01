@@ -9,14 +9,14 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 
-import { LoginActionTypes, Login, LoginSuccess, LoginError, LoginAuthError } from '../actions/login.actions';
+import { SignUpActionTypes, SignUp, SignUpSuccess, SignUpError } from '../actions/sign-up.actions';
 
 import { AuthService } from '../../core/auth.service';
 import { NotificationService } from '../../core/notification/notification.service';
 import { NotificationTheme } from '../../core/notification/notification.types';
 
 @Injectable()
-export class LoginEffects {
+export class SignUpEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
@@ -25,30 +25,25 @@ export class LoginEffects {
   ) {}
 
   @Effect()
-  login$: Observable<Action> = this.actions$.pipe(
-    ofType(LoginActionTypes.LOGIN),
-    switchMap((action: Login) => {
-      return this.authService.login(action.username, action.password).pipe(
-        map((result: any) => new LoginSuccess(result.user)),
-        catchError(error => {
-          if (error.status === 403) {
-            return of(new LoginAuthError());
-          }
-          return of(new LoginError());
-        })
+  signup$: Observable<Action> = this.actions$.pipe(
+    ofType(SignUpActionTypes.SIGN_UP),
+    switchMap((action: SignUp) => {
+      return this.authService.signup(action.firstName, action.lastName, action.email, action.username, action.password).pipe(
+        map((result: any) => new SignUpSuccess(result.user)),
+        catchError(error => of(new SignUpError()))
       );
     })
   );
 
   @Effect({ dispatch: false })
-  loginSuccess$: Observable<Action> = this.actions$.pipe(
-    ofType(LoginActionTypes.LOGIN_SUCCESS),
-    tap((action: LoginSuccess) => {
+  signupSuccess$: Observable<Action> = this.actions$.pipe(
+    ofType(SignUpActionTypes.SIGN_UP_SUCCESS),
+    tap((action: SignUpSuccess) => {
       this.authService.currentUser = action.user;
       this.router.navigate(['/chat']);
       this.notificationService.showNotification({
         theme: NotificationTheme.SUCCESS,
-        message: `Welcome back, ${action.user.firstName}!`,
+        message: `Welcome to shout, ${action.user.firstName}!`,
         icon: faComment
       });
     })

@@ -1,22 +1,18 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AfterViewInit, ElementRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { faComment, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../core/auth.service';
-import { NotificationService } from '../core/notification/notification.service';
-import { NotificationTheme } from '../core/notification/notification.types';
 
 import { emailValidator, passwordMatchValidator, usernameTakenValidator } from '../shared/validators';
-
-enum State {
-  NORMAL,
-  LOADING,
-  ERROR
-}
+import { SignUpState, getLoadingState, getErrorState } from './reducers/sign-up.reducer';
+import { SignUp } from './actions/sign-up.actions';
 
 @Component({
   selector: 'app-sign-up',
@@ -33,21 +29,15 @@ export class SignUpComponent implements AfterViewInit, OnInit {
   faComment = faComment;
   faExclamationTriangle = faExclamationTriangle;
 
-  state: State = State.NORMAL;
+  loading$: Observable<boolean>;
+
+  error$: Observable<boolean>;
 
   signupForm: FormGroup;
 
-  private loadingTimeout;
-
   @ViewChild('firstName') private firstNameField: ElementRef;
 
-  constructor(
-    fb: FormBuilder,
-    private title: Title,
-    private router: Router,
-    private authService: AuthService,
-    private notificationService: NotificationService
-  ) {
+  constructor(fb: FormBuilder, private title: Title, private authService: AuthService, private store: Store<SignUpState>) {
     this.signupForm = fb.group(
       {
         firstName: ['', Validators.required],
@@ -61,6 +51,9 @@ export class SignUpComponent implements AfterViewInit, OnInit {
         validator: passwordMatchValidator
       }
     );
+
+    this.loading$ = this.store.select(getLoadingState);
+    this.error$ = this.store.select(getErrorState);
   }
 
   ngOnInit(): void {
@@ -73,36 +66,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
 
   onSubmit(): void {
     const formValue = this.signupForm.value;
-
-    this.state = State.LOADING;
-    this.authService.signup(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password).subscribe(
-      (result: any) => {
-        this.authService.currentUser = result.user;
-        this.router.navigate(['/chat']);
-        this.notificationService.showNotification({
-          theme: NotificationTheme.SUCCESS,
-          message: `Welcome to shout, ${formValue.firstName}!`
-        });
-      },
-      error => {
-        if (this.loadingTimeout) {
-          clearTimeout(this.loadingTimeout);
-        }
-        this.state = State.ERROR;
-      }
-    );
-  }
-
-  get isNormalState(): boolean {
-    return this.state === State.NORMAL;
-  }
-
-  get isErrorState(): boolean {
-    return this.state === State.ERROR;
-  }
-
-  get isLoadingState(): boolean {
-    return this.state === State.LOADING;
+    this.store.dispatch(new SignUp(formValue.firstName, formValue.lastName, formValue.email, formValue.username, formValue.password));
   }
 
   hasRequiredError(controlName: string): boolean {

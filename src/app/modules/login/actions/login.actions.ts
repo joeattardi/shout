@@ -1,5 +1,7 @@
 import { Action } from '@ngrx/store';
 
+import { User } from '../../core/core.types';
+
 export enum LoginActionTypes {
   LOGIN = '[Login] log in',
   LOGIN_SUCCESS = '[Login] login successful',
@@ -14,6 +16,7 @@ export class Login implements Action {
 
 export class LoginSuccess implements Action {
   readonly type = LoginActionTypes.LOGIN_SUCCESS;
+  constructor(public user: User) {}
 }
 
 export class LoginAuthError implements Action {

@@ -2,8 +2,8 @@
   <div id="signup-form">
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div id="signup-form-header">
-        <h1 @fade *ngIf="isNormalState || isLoadingState"><fa-icon [icon]="faComment"></fa-icon></h1>
-        <div @fade *ngIf="isErrorState" class="status-message status-message-error">
+        <h1 @fade *ngIf="!(error$ | async)"><fa-icon [icon]="faComment"></fa-icon></h1>
+        <div @fade *ngIf="error$ | async" class="status-message status-message-error">
           <fa-icon [icon]="faExclamationTriangle"></fa-icon>
           <div class="message">Oops! We encountered an error while processing your signup. Please try again.</div>
         </div>
@@ -50,9 +50,9 @@
       </div>
 
       <div id="button-container">
-        <button class="button-primary" [disabled]="!signupForm.valid || isLoadingState">
-          <span *ngIf="!isLoadingState">Sign Up</span>
-          <span *ngIf="isLoadingState"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
+        <button class="button-primary" [disabled]="!signupForm.valid || (loading$ | async)">
+          <span *ngIf="!(loading$ | async)">Sign Up</span>
+          <span *ngIf="loading$ | async"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
         </button>
         <button type="button" routerLink="/">Cancel</button>
       </div>

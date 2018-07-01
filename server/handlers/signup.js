@@ -17,6 +17,8 @@ exports.handler = async function(req, res) {
 
   logger.info(`Received signup request for new user "${req.body.firstName} ${req.body.lastName}", username "${req.body.username}"`);
 
+  // TODO check for username being taken
+
   try {
     logger.debug('Creating new user');
     const hashedPassword = await passwords.hashPassword(req.body.password);
