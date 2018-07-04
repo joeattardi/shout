@@ -15,7 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { CoreModule } from './modules/core/core.module';
 
 import { reducers } from './reducers';
-import { UserEffects } from './effects';
+import { CoreEffects, UserEffects } from './effects';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/chat', pathMatch: 'full' },
@@ -37,7 +37,7 @@ const appRoutes: Routes = [
       name: 'Shout Store DevTools',
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([UserEffects])
+    EffectsModule.forRoot([CoreEffects, UserEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

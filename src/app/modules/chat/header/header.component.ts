@@ -1,20 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { faChevronDown, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthService } from '../../core/auth.service';
-import { NotificationService } from '../../core/notification/notification.service';
-import { NotificationTheme } from '../../core/notification/notification.types';
 import { User } from '../../core/core.types';
 
 import { State } from '../../../reducers';
 import { getUserState } from '../../../reducers/user.reducer';
 import { getUserMenuState } from '../reducers/user-menu.reducer';
 import { ShowUserMenu, HideUserMenu } from '../actions';
+import { LogOut } from '../../../actions';
 
 @Component({
   selector: 'app-header',
@@ -32,14 +29,9 @@ export class HeaderComponent {
 
   userMenuOpen$: Observable<boolean>;
 
-  @ViewChild('userMenu') UserMenu;
+  @ViewChild('userMenu') userMenu;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private notificationService: NotificationService,
-    private store: Store<State>
-  ) {
+  constructor(private store: Store<State>) {
     this.user$ = this.store.select(getUserState);
     this.userMenuOpen$ = this.store.select(getUserMenuState);
   }
@@ -50,15 +42,11 @@ export class HeaderComponent {
 
   hideUserMenu(): void {
     this.store.dispatch(new HideUserMenu());
-    this.UserMenu.hide();
+    this.userMenu.hide();
   }
 
   logOut(): void {
-    this.authService.logOut();
-    this.router.navigate(['/home']);
-    this.notificationService.showNotification({
-      theme: NotificationTheme.SUCCESS,
-      message: 'You have been logged out.'
-    });
+    this.hideUserMenu();
+    this.store.dispatch(new LogOut());
   }
 }
