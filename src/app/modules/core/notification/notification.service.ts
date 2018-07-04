@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 
+import { Store } from '@ngrx/store';
+
+import { State } from '../../../reducers';
 import { Notification } from './notification.types';
+import { ShowNotification, RemoveNotification } from '../actions';
 
 @Injectable()
 export class NotificationService {
-  notifications: Notification[] = [];
+  constructor(private store: Store<State>) {}
 
   showNotification(notificationToShow: Notification) {
-    this.notifications = [notificationToShow, ...this.notifications];
+    this.store.dispatch(new ShowNotification(notificationToShow));
 
     if (!notificationToShow.sticky) {
-      setTimeout(() => this.removeNotification(notificationToShow), 5000);
+      setTimeout(() => this.store.dispatch(new RemoveNotification(notificationToShow)), 5000);
     }
-  }
-
-  removeNotification(notificationToRemove: Notification) {
-    this.notifications = this.notifications.filter(notification => notification !== notificationToRemove);
   }
 }

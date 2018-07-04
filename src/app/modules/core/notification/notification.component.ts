@@ -1,10 +1,13 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { Store } from '@ngrx/store';
 
 import { faCheckCircle, faExclamationTriangle, faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { Notification } from './notification.types';
-import { NotificationService } from './notification.service';
+
+import { State } from '../../../reducers';
+import { RemoveNotification } from '../actions';
 
 @Component({
   selector: 'app-notification',
@@ -21,10 +24,10 @@ export class NotificationComponent {
     close: faTimes
   };
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private store: Store<State>) {}
 
   closeButtonClicked(): void {
-    this.notificationService.removeNotification(this.notification);
+    this.store.dispatch(new RemoveNotification(this.notification));
   }
 
   get icon() {

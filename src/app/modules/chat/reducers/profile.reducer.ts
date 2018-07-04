@@ -1,5 +1,4 @@
 import { ProfileActionTypes, ProfileAction } from '../actions';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface ProfileState {
   loading: boolean;
