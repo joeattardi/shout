@@ -3,7 +3,7 @@
   <main>
     <div id="sidebar"></div>
     <div id="content">
-      <app-spinner *ngIf="isLoadingState" size="10em" borderWidth="1.1em" [overlay]="true"></app-spinner>
+      <app-spinner *ngIf="loading$ | async" size="10em" borderWidth="1.1em" [overlay]="true"></app-spinner>
       <router-outlet></router-outlet>
     </div>
   </main>

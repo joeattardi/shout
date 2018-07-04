@@ -3,17 +3,17 @@
     <div class="modal-title">Edit Profile</div>
       <div class="modal-body">
         <div class="column" id="profile-avatar-column">
-          <svg [appIdenticon]="identiconUsername"></svg>
+          <svg [appIdenticon]="user.username"></svg>
           <!-- <button>Upload new picture</button> -->
         </div>
 
         <div #mainColumn class="column" id="profile-main-column">
           <div id="profile-form-header">
-            <div @fade *ngIf="isErrorState" class="status-message status-message-error">
+            <div @fade *ngIf="error$ | async" class="status-message status-message-error">
               <fa-icon [icon]="icons.error"></fa-icon>
               <div class="message">Oops! An error occurred while updating your profile. Please try again.</div>
             </div>
-            <div @fade *ngIf="isPasswordIncorrectState" class="status-message status-message-error">
+            <div @fade *ngIf="authError$ | async" class="status-message status-message-error">
               Your current password was incorrect.
             </div>
           </div>
@@ -70,8 +70,8 @@
 
       <div class="modal-footer">
         <button type="button" (click)="closeModal()">Cancel</button>
-        <button class="button-primary" [disabled]="isSavingState || !form.valid">
-          <span *ngIf="!isSavingState; else loading">Save</span>
+        <button class="button-primary" [disabled]="(loading$ | async) || !form.valid">
+          <span *ngIf="!(loading$ | async); else loading">Save</span>
           <ng-template #loading>
             <span><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
           </ng-template>

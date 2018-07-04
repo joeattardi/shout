@@ -1,13 +1,15 @@
 import { LoginActionTypes, LoginAction } from '../actions/login.actions';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+import { State as AppState } from '../../../reducers';
+
 export interface LoginState {
   loading: boolean;
   error: boolean;
   authError: boolean;
 }
 
-export interface State {
+export interface State extends AppState {
   login: LoginState;
 }
 

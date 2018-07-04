@@ -5,12 +5,8 @@ import { tap } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
-import { User } from '../core/core.types';
-
 @Injectable()
 export class AuthService {
-  currentUser: User = null;
-
   constructor(private httpClient: HttpClient) {}
 
   login(username: string, password: string) {
@@ -36,13 +32,11 @@ export class AuthService {
 
   getCurrentUser() {
     const token = localStorage.getItem('token');
-    return this.httpClient
-      .get('/api/current_user', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .pipe(tap((response: any) => (this.currentUser = response.user)));
+    return this.httpClient.get('/api/current_user', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
   checkUsernameTaken(username: string) {
@@ -50,15 +44,12 @@ export class AuthService {
   }
 
   logOut() {
-    this.currentUser = null;
-
     localStorage.removeItem('token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('user');
   }
 
   isLoggedIn() {
-    this.currentUser = JSON.parse(localStorage.getItem('user'));
     return !!this.getToken() && moment().isBefore(this.getExpiration());
   }
 

@@ -5,11 +5,11 @@
     [popperTarget]="header"
     popperPlacement="bottom-end"
     popperTrigger="click"
-    (popperOnShown)="userMenuOpen = true"
-    (popperOnHidden)="userMenuOpen = false">
-    <svg [appIdenticon]="user.username"></svg>
-    <span id="user-name">{{ user.firstName }} {{ user.lastName }}</span>
-    <fa-icon [icon]="icons.chevronDown" [class.open]="userMenuOpen"></fa-icon>
+    (popperOnShown)="showUserMenu()"
+    (popperOnHidden)="hideUserMenu()">
+    <svg [appIdenticon]="(user$ | async)?.username"></svg>
+    <span id="user-name">{{ (user$ | async)?.firstName }} {{ (user$ | async)?.lastName }}</span>
+    <fa-icon [icon]="icons.chevronDown" [class.open]="userMenuOpen$ | async"></fa-icon>
   </div>
 </header>
 
@@ -17,15 +17,15 @@
   <div class="popup-menu">
     <div id="user-menu-header">
       <div id="user-avatar">
-        <svg [appIdenticon]="user.username"></svg>
+        <svg [appIdenticon]="(user$ | async)?.username"></svg>
       </div>
       <div id="user-name">
-        <div id="user-full-name">{{ user.firstName }} {{ user.lastName }}</div>
-        <div>{{ user.username }}</div>
+        <div id="user-full-name">{{ (user$ | async)?.firstName }} {{ (user$ | async)?.lastName }}</div>
+        <div>{{ (user$ | async)?.username }}</div>
       </div>
     </div>
 
-    <div><a [routerLink]="['edit-profile']" (click)="hidePopupMenu()">Edit Profile</a></div>
+    <div><a [routerLink]="['edit-profile']" (click)="hideUserMenu()">Edit Profile</a></div>
 
     <button (click)="logOut()">Log out</button>
   </div>

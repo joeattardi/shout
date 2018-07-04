@@ -1,12 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { faChevronDown, faChevronUp, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { faChevronDown, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from '../../core/auth.service';
 import { NotificationService } from '../../core/notification/notification.service';
 import { NotificationTheme } from '../../core/notification/notification.types';
 import { User } from '../../core/core.types';
+
+import { State } from '../../../reducers';
+import { getUserState } from '../../../reducers/user.reducer';
+import { getUserMenuState } from '../reducers/user-menu.reducer';
+import { ShowUserMenu, HideUserMenu } from '../actions';
 
 @Component({
   selector: 'app-header',
@@ -20,14 +28,29 @@ export class HeaderComponent {
     user: faUser
   };
 
-  userMenuOpen = false;
+  user$: Observable<User>;
 
-  @ViewChild('userMenu') popupMenu;
+  userMenuOpen$: Observable<boolean>;
 
-  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {}
+  @ViewChild('userMenu') UserMenu;
 
-  get user(): User {
-    return this.authService.currentUser;
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService,
+    private store: Store<State>
+  ) {
+    this.user$ = this.store.select(getUserState);
+    this.userMenuOpen$ = this.store.select(getUserMenuState);
+  }
+
+  showUserMenu(): void {
+    this.store.dispatch(new ShowUserMenu());
+  }
+
+  hideUserMenu(): void {
+    this.store.dispatch(new HideUserMenu());
+    this.UserMenu.hide();
   }
 
   logOut(): void {
@@ -37,9 +60,5 @@ export class HeaderComponent {
       theme: NotificationTheme.SUCCESS,
       message: 'You have been logged out.'
     });
-  }
-
-  hidePopupMenu(): void {
-    this.popupMenu.hide();
   }
 }

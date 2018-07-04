@@ -2,52 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../core/auth.service';
-import { User } from '../../core/core.types';
+import { Store } from '@ngrx/store';
 
-enum State {
-  LOADING,
-  EDITING_PROFILE,
-  NORMAL
-}
+import { Observable } from 'rxjs';
+
+import { getLoadingState } from '../../../reducers/loading.reducer';
+
+import { AuthService } from '../../core/auth.service';
+import { State } from '../../../reducers';
+import { User } from '../../core/core.types';
+import { GetCurrentUser } from '../../../actions';
 
 @Component({
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  constructor(private authService: AuthService, private title: Title, private router: Router) {}
+  loading$: Observable<boolean>;
 
-  state = State.NORMAL;
+  constructor(private authService: AuthService, private title: Title, private router: Router, private store: Store<State>) {
+    this.loading$ = this.store.select(getLoadingState);
+  }
 
   ngOnInit(): void {
     this.title.setTitle('shout');
-
-    this.state = State.LOADING;
-    this.authService.getCurrentUser().subscribe(
-      () => {
-        this.state = State.NORMAL;
-      },
-      errorResponse => {
-        this.authService.logOut();
-        this.router.navigate(['/home']);
-      }
-    );
-  }
-
-  get user(): User {
-    return this.authService.currentUser;
-  }
-
-  get isLoadingState(): boolean {
-    return this.state === State.LOADING;
-  }
-
-  get isNormalState(): boolean {
-    return this.state === State.NORMAL;
-  }
-
-  get isEditingProfileState(): boolean {
-    return this.state === State.EDITING_PROFILE;
+    this.store.dispatch(new GetCurrentUser());
   }
 }

@@ -1,24 +1,22 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthService } from '../../core/auth.service';
-import { NotificationService } from '../../core/notification/notification.service';
-import { NotificationTheme } from '../../core/notification/notification.types';
 import { User } from '../../core/core.types';
-import { UserService } from '../../core/user.service';
+
+import { SaveProfile } from '../actions';
+import { getProfileLoadingState, getProfileErrorState, getProfileAuthErrorState } from '../reducers';
+import { getUserState } from '../../../reducers/user.reducer';
+import { State } from '../../../reducers';
 
 import { emailValidator, passwordMatchValidator } from '../../shared/validators';
-
-enum State {
-  NORMAL,
-  SAVING,
-  PASSWORD_INCORRECT,
-  ERROR
-}
 
 @Component({
   selector: 'app-profile',
@@ -31,41 +29,77 @@ enum State {
     ])
   ]
 })
-export class ProfileComponent implements AfterViewInit, OnInit {
+export class ProfileComponent implements AfterViewInit, OnDestroy, OnInit {
   icons = {
     error: faExclamationTriangle
   };
 
-  form: FormGroup;
+  private destroy$ = new Subject<void>();
 
-  state = State.NORMAL;
+  form: FormGroup;
 
   user: User;
 
-  identiconUsername: string;
+  loading$: Observable<boolean>;
+
+  error$: Observable<boolean>;
+
+  authError$: Observable<boolean>;
 
   @ViewChild('firstName') firstNameField: ElementRef;
 
   @ViewChild('mainColumn') mainColumn: ElementRef;
 
-  constructor(
-    authService: AuthService,
-    private router: Router,
-    fb: FormBuilder,
-    private userService: UserService,
-    private notificationService: NotificationService
-  ) {
-    this.user = authService.currentUser;
-    this.identiconUsername = this.user.username;
-
+  constructor(private router: Router, fb: FormBuilder, private store: Store<State>) {
     this.form = fb.group({
-      firstName: [this.user.firstName, Validators.required],
-      lastName: [this.user.lastName, Validators.required],
-      email: [this.user.email, Validators.compose([Validators.required, emailValidator])],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, emailValidator])],
       currentPassword: [''],
       password: [''],
       confirmPassword: ['']
     });
+
+    this.loading$ = this.store.select(getProfileLoadingState);
+
+    this.error$ = this.store.select(getProfileErrorState);
+    this.error$.pipe(takeUntil(this.destroy$)).subscribe(error => {
+      if (error) {
+        this.mainColumn.nativeElement.scrollTop = 0;
+      }
+    });
+
+    this.authError$ = this.store.select(getProfileAuthErrorState);
+    this.authError$.pipe(takeUntil(this.destroy$)).subscribe(authError => {
+      if (authError) {
+        this.form.patchValue({
+          currentPassword: '',
+          password: '',
+          confirmPassword: ''
+        });
+
+        this.mainColumn.nativeElement.scrollTop = 0;
+      }
+    });
+
+    this.store
+      .select(getUserState)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.user = user;
+
+        if (user) {
+          this.form.patchValue({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email
+          });
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   ngOnInit(): void {
@@ -98,34 +132,44 @@ export class ProfileComponent implements AfterViewInit, OnInit {
   }
 
   onSubmit(): void {
-    this.state = State.SAVING;
-
     const formValue = this.form.value;
-    this.userService
-      .updateProfile(formValue.firstName, formValue.lastName, formValue.email, formValue.currentPassword, formValue.password)
-      .subscribe(
-        () => {
-          this.closeModal();
-          this.notificationService.showNotification({
-            theme: NotificationTheme.SUCCESS,
-            message: 'Your profile was updated successfully.'
-          });
-        },
-        errorResponse => {
-          if (errorResponse.status === 403) {
-            this.state = State.PASSWORD_INCORRECT;
-            this.form.patchValue({
-              currentPassword: '',
-              password: '',
-              confirmPassword: ''
-            });
-          } else {
-            this.state = State.ERROR;
-          }
 
-          this.mainColumn.nativeElement.scrollTop = 0;
-        }
-      );
+    this.store.dispatch(
+      new SaveProfile({
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        email: formValue.email,
+        currentPassword: formValue.currentPassword,
+        newPassword: formValue.password
+      })
+    );
+
+    // this.userService
+    //   .updateProfile(formValue.firstName, formValue.lastName, formValue.email, formValue.currentPassword, formValue.password)
+    //   .subscribe(
+    //     () => {
+    //       this.store.dispatch(new SaveProfileSuccess());
+    //       this.closeModal();
+    //       this.notificationService.showNotification({
+    //         theme: NotificationTheme.SUCCESS,
+    //         message: 'Your profile was updated successfully.'
+    //       });
+    //     },
+    //     errorResponse => {
+    //       if (errorResponse.status === 403) {
+    //         this.store.dispatch(new SaveProfileAuthError());
+    //         this.form.patchValue({
+    //           currentPassword: '',
+    //           password: '',
+    //           confirmPassword: ''
+    //         });
+    //       } else {
+    //         this.store.dispatch(new SaveProfileError());
+    //       }
+
+    //       this.mainColumn.nativeElement.scrollTop = 0;
+    //     }
+    //   );
   }
 
   hasRequiredError(controlName: string): boolean {
@@ -149,21 +193,5 @@ export class ProfileComponent implements AfterViewInit, OnInit {
 
   get hasConfirmPasswordError(): boolean {
     return this.hasRequiredError('confirmPassword') || this.hasPasswordMatchError;
-  }
-
-  get isSavingState(): boolean {
-    return this.state === State.SAVING;
-  }
-
-  get isNormalState(): boolean {
-    return this.state === State.NORMAL;
-  }
-
-  get isErrorState(): boolean {
-    return this.state === State.ERROR;
-  }
-
-  get isPasswordIncorrectState(): boolean {
-    return this.state === State.PASSWORD_INCORRECT;
   }
 }

@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxPopperModule } from 'ngx-popper';
 
@@ -12,6 +15,9 @@ import { HeaderComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { SharedModule } from '../shared/shared.module';
+
+import { reducers } from './reducers';
+import { ProfileEffects } from './effects';
 
 const routes: Routes = [
   {
@@ -31,7 +37,9 @@ const routes: Routes = [
     NgxPopperModule.forRoot({
       disableDefaultStyling: true
     }),
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature('chat', reducers),
+    EffectsModule.forFeature([ProfileEffects])
   ],
   providers: [AuthGuard],
   declarations: [ChatComponent, HeaderComponent, ProfileComponent]

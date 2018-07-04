@@ -39,7 +39,6 @@ export class SignUpEffects {
   signupSuccess$: Observable<Action> = this.actions$.pipe(
     ofType(SignUpActionTypes.SIGN_UP_SUCCESS),
     tap((action: SignUpSuccess) => {
-      this.authService.currentUser = action.user;
       this.router.navigate(['/chat']);
       this.notificationService.showNotification({
         theme: NotificationTheme.SUCCESS,

@@ -44,7 +44,6 @@ export class LoginEffects {
   loginSuccess$: Observable<Action> = this.actions$.pipe(
     ofType(LoginActionTypes.LOGIN_SUCCESS),
     tap((action: LoginSuccess) => {
-      this.authService.currentUser = action.user;
       this.router.navigate(['/chat']);
       this.notificationService.showNotification({
         theme: NotificationTheme.SUCCESS,
