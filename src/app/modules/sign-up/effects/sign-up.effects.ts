@@ -14,6 +14,7 @@ import { SignUpActionTypes, SignUp, SignUpSuccess, SignUpError } from '../action
 import { AuthService } from '../../core/auth.service';
 import { NotificationService } from '../../core/notification/notification.service';
 import { NotificationTheme } from '../../core/notification/notification.types';
+import { UpdateCurrentUser } from '../../../actions';
 
 @Injectable()
 export class SignUpEffects {
@@ -35,7 +36,7 @@ export class SignUpEffects {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   signupSuccess$: Observable<Action> = this.actions$.pipe(
     ofType(SignUpActionTypes.SIGN_UP_SUCCESS),
     tap((action: SignUpSuccess) => {
@@ -45,6 +46,7 @@ export class SignUpEffects {
         message: `Welcome to shout, ${action.user.firstName}!`,
         icon: faComment
       });
-    })
+    }),
+    map((action: SignUpSuccess) => new UpdateCurrentUser(action.user))
   );
 }

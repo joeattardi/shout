@@ -14,6 +14,7 @@ import { LoginActionTypes, Login, LoginSuccess, LoginError, LoginAuthError } fro
 import { AuthService } from '../../core/auth.service';
 import { NotificationService } from '../../core/notification/notification.service';
 import { NotificationTheme } from '../../core/notification/notification.types';
+import { UpdateCurrentUser } from '../../../actions';
 
 @Injectable()
 export class LoginEffects {
@@ -40,7 +41,7 @@ export class LoginEffects {
     })
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   loginSuccess$: Observable<Action> = this.actions$.pipe(
     ofType(LoginActionTypes.LOGIN_SUCCESS),
     tap((action: LoginSuccess) => {
@@ -50,6 +51,7 @@ export class LoginEffects {
         message: `Welcome back, ${action.user.firstName}!`,
         icon: faComment
       });
-    })
+    }),
+    map((action: LoginSuccess) => new UpdateCurrentUser(action.user))
   );
 }

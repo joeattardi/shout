@@ -20,6 +20,7 @@ import { CoreEffects, UserEffects } from './effects';
 const appRoutes: Routes = [
   { path: '', redirectTo: '/chat', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'admin', loadChildren: './modules/admin/admin.module#AdminModule' },
   { path: 'chat', loadChildren: './modules/chat/chat.module#ChatModule' },
   { path: 'login', loadChildren: './modules/login/login.module#LoginModule' },
   { path: 'signup', loadChildren: './modules/sign-up/sign-up.module#SignUpModule' }

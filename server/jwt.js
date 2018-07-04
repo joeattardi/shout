@@ -21,13 +21,19 @@ if (existsSync(jwtKeyPath)) {
   logger.error(`JWT private key "${jwtKeyPath}" not found`);
 }
 
-function sign(subject, expiresIn) {
-  logger.info(`Creating JWT for user ${subject}`);
-  return jwt.sign({}, jwtKey, {
-    algorithm: 'RS256',
-    expiresIn,
-    subject
-  });
+function sign(user, expiresIn) {
+  logger.info(`Creating JWT for user ${user.username}`);
+  return jwt.sign(
+    {
+      admin: user.admin
+    },
+    jwtKey,
+    {
+      algorithm: 'RS256',
+      expiresIn,
+      subject: user.username
+    }
+  );
 }
 
 module.exports = {

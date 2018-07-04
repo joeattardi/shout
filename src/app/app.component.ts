@@ -1,15 +1,17 @@
 import { trigger, style, transition, animate } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { fadeAnimation } from './fade.animation';
 
+import { AuthService } from './modules/core/auth.service';
 import { Notification } from './modules/core/notification/notification.types';
 
 import { State } from './reducers';
 import { getNotificationState } from './modules/core/reducers';
+import { GetCurrentUser } from './actions';
 
 @Component({
   selector: 'app-root',
@@ -29,14 +31,20 @@ import { getNotificationState } from './modules/core/reducers';
     ])
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   notifications$: Observable<Notification[]>;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<State>, private authService: AuthService) {
     this.notifications$ = this.store.select(getNotificationState);
   }
 
-  public getRouterOutletState(outlet) {
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.store.dispatch(new GetCurrentUser());
+    }
+  }
+
+  getRouterOutletState(outlet) {
     return outlet.isActivated ? outlet.activatedRoute : '';
   }
 }

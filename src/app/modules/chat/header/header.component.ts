@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { faChevronDown, faComment, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faComment, faUser, faToolbox } from '@fortawesome/free-solid-svg-icons';
 
 import { User } from '../../core/core.types';
 
@@ -22,7 +22,8 @@ export class HeaderComponent {
   icons = {
     chevronDown: faChevronDown,
     comment: faComment,
-    user: faUser
+    user: faUser,
+    admin: faToolbox
   };
 
   user$: Observable<User>;

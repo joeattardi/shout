@@ -17,7 +17,8 @@ exports.handler = async function(req, res) {
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
-          email: user.email
+          email: user.email,
+          admin: user.admin
         }
       });
     } else {

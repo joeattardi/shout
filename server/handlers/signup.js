@@ -31,7 +31,7 @@ exports.handler = async function(req, res) {
     });
 
     logger.debug(`Successfully created user with id ${user.id}`);
-    const token = jwt.sign(user.username, jwt.jwtExpireTime);
+    const token = jwt.sign(user, jwt.jwtExpireTime);
     res.status(201).json({
       result: Result.SUCCESS,
       token,
@@ -40,7 +40,8 @@ exports.handler = async function(req, res) {
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
-        email: user.email
+        email: user.email,
+        admin: user.admin
       }
     });
   } catch (error) {
