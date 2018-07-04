@@ -1,0 +1,31 @@
+@import '../../../../variables';
+
+header {
+  background: $header-color;
+  padding: 0.5em;
+  color: #FFFFFF;
+  display: flex;
+  user-select: none;
+
+  #logo {
+    display: flex;
+    align-items: center;
+  }
+
+  #title {
+    flex-grow: 1;
+    font-size: 1.2em;
+    margin-left: 0.25em;
+    font-weight: bold;
+  }
+
+  #chat-link-container {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    
+    a {
+      color: #FFFFFF;
+    }
+  }
+}

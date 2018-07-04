@@ -1,1 +1,9 @@
-<h1>admin!</h1>
+<div id="outer-container">
+  <app-admin-header></app-admin-header>
+  <main>
+    <div id="sidebar"></div>
+    <div id="content">
+      <app-spinner *ngIf="loading$ | async" size="10em" borderWidth="1.1em" [overlay]="true"></app-spinner>
+    </div>
+  </main>
+</div>

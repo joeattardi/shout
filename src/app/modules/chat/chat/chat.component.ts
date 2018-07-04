@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { getLoadingState } from '../../../reducers/loading.reducer';
 
 import { State } from '../../../reducers';
-import { GetCurrentUser } from '../../../actions';
 
 @Component({
   templateUrl: './chat.component.html',
@@ -23,6 +22,5 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle('shout');
-    // this.store.dispatch(new GetCurrentUser());
   }
 }
