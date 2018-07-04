@@ -9,7 +9,7 @@ import { User } from '../../core/core.types';
 
 import { State } from '../../../reducers';
 import { getUserState } from '../../../reducers/user.reducer';
-import { getUserMenuState } from '../reducers/user-menu.reducer';
+import { getUserMenuState } from '../reducers';
 import { ShowUserMenu, HideUserMenu } from '../actions';
 import { LogOut } from '../../../actions';
 

@@ -5,8 +5,6 @@ const initialState = false;
 
 export type UserMenuState = boolean;
 
-export const getUserMenuState = createFeatureSelector<UserMenuState>('userMenuOpen');
-
 export function userMenuReducer(state: UserMenuState = initialState, action): UserMenuState {
   switch (action.type) {
     case UserMenuActionTypes.SHOW_USER_MENU:

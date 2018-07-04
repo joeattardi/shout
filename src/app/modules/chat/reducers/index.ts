@@ -21,6 +21,8 @@ export const reducers: ActionReducerMap<ChatState> = {
 
 export const getChatState = createFeatureSelector<ChatState>('chat');
 
+export const getUserMenuState = createSelector(getChatState, state => state.userMenuOpen);
+
 export const getProfileState = createSelector(getChatState, state => state.profile);
 export const getProfileLoadingState = createSelector(getProfileState, getLoading);
 export const getProfileErrorState = createSelector(getProfileState, getError);
