@@ -5,6 +5,8 @@
     "db:create": "sequelize db:create",
     "db:drop": "sequelize db:drop",
     "db:migrate": "sequelize db:migrate",
+    "db:seed": "sequelize db:seed:all",
+    "db:seed:undo": "sequelize db:seed:undo:all",
     "ng": "ng",
     "start": "node server/index.js",
     "start:dev": "concurrently -n client,server \"ng serve --progress=false\" \"npm:start:server\"",
