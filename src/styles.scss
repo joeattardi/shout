@@ -139,6 +139,11 @@ a {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.2s;
+    outline: none;
+
+    &.menu-item-active {
+      background: lighten($sidebar-color, 10%);
+    }
 
     &:hover {
       background: lighten($sidebar-color, 5%);

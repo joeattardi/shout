@@ -2,11 +2,12 @@
   <app-admin-header></app-admin-header>
   <main>
     <div id="sidebar">
-      <div class="menu-item"><fa-icon [icon]="icons.user"></fa-icon> Users</div>
-      <div class="menu-item"><fa-icon [icon]="icons.rooms"></fa-icon> Rooms</div>
+      <div class="menu-item" routerLinkActive="menu-item-active" [routerLink]="['/admin/users']"><fa-icon [icon]="icons.user"></fa-icon> Users</div>
+      <div class="menu-item" routerLinkActive="menu-item-active" [routerLink]="['/admin/rooms']"><fa-icon [icon]="icons.rooms"></fa-icon> Rooms</div>
     </div>
     <div id="content">
       <app-spinner *ngIf="loading$ | async" size="10em" borderWidth="1.1em" [overlay]="true"></app-spinner>
+      <router-outlet></router-outlet>
     </div>
   </main>
 </div>

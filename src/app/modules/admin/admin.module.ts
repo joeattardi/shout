@@ -8,6 +8,8 @@ import { SharedModule } from '../shared/shared.module';
 
 import { AdminComponent } from './admin/admin.component';
 import { HeaderComponent } from './header/header.component';
+import { RoomsComponent } from './rooms/rooms.component';
+import { UsersComponent } from './users/users.component';
 
 import { AdminGuard } from './admin-guard.service';
 
@@ -15,13 +17,23 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AdminGuard],
-    component: AdminComponent
+    component: AdminComponent,
+    children: [
+      {
+        path: 'users',
+        component: UsersComponent
+      },
+      {
+        path: 'rooms',
+        component: RoomsComponent
+      }
+    ]
   }
 ];
 
 @NgModule({
   imports: [CommonModule, FontAwesomeModule, RouterModule.forChild(routes), SharedModule],
   providers: [AdminGuard],
-  declarations: [AdminComponent, HeaderComponent]
+  declarations: [AdminComponent, HeaderComponent, RoomsComponent, UsersComponent]
 })
 export class AdminModule {}
