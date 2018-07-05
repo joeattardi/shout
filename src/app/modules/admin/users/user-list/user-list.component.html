@@ -2,23 +2,29 @@
   <input type="search" placeholder="Search by name or username">
 </div>
 
-<div class="spinner-container" *ngIf="loading; else userList">
+<div class="spinner-container" *ngIf="loading">
   <app-spinner size="10em" borderWidth="1.1em" color="#106991"></app-spinner>
 </div>
 
-<ng-template #userList>
-  <div id="user-list" *ngIf="!loading">
-    <div class="user-entry" *ngFor="let user of users">
-      <div class="user-avatar">
-        <svg [appIdenticon]="user.username"></svg>
-      </div>
-      <div class="user-details">
-        <div class="user-full-name"><fa-icon [icon]="icons.admin" *ngIf="user.admin"></fa-icon> {{ user.firstName }} {{ user.lastName }}</div>
-        <div class="user-username">{{ user.username }}</div>
-      </div>
-      <div class="delete-button">
-        <fa-icon [icon]="icons.delete"></fa-icon>
-      </div>
+<div *ngIf="error" class="status-message status-message-error">
+  <fa-icon [icon]="icons.error"></fa-icon>
+  <div class="message">
+    An error occurred while loading the user list.
+    <button class="button-inverse" (click)="onRetry()">Try again</button>
+  </div>
+</div>
+
+<div id="user-list" *ngIf="!loading && !error">
+  <div class="user-entry" *ngFor="let user of users">
+    <div class="user-avatar">
+      <svg [appIdenticon]="user.username"></svg>
+    </div>
+    <div class="user-details">
+      <div class="user-full-name"><fa-icon [icon]="icons.admin" *ngIf="user.admin"></fa-icon> {{ user.firstName }} {{ user.lastName }}</div>
+      <div class="user-username">{{ user.username }}</div>
+    </div>
+    <div class="delete-button">
+      <fa-icon [icon]="icons.delete"></fa-icon>
     </div>
   </div>
-</ng-template>
+</div>

@@ -48,6 +48,19 @@ button {
       background: lighten($button-color, 10%);
     }
   }
+
+  &.button-inverse {
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    &:disabled:hover {
+      background: transparent;
+    }
+  }
 }
 
 input {

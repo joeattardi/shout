@@ -2,4 +2,8 @@
 
 <button class="button-primary">Create User</button>
 
-<app-admin-user-list [loading]="loading$ | async" [users]="users$ | async"></app-admin-user-list>
+<app-admin-user-list
+  [error]="error$ | async"
+  [loading]="loading$ | async"
+  [users]="users$ | async"
+  (retry)="retryLoadUsers()"></app-admin-user-list>

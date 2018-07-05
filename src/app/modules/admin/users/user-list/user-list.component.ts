@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { faToolbox, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faToolbox, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { User } from '../../../core/core.types';
 
@@ -12,9 +12,17 @@ import { User } from '../../../core/core.types';
 export class UserListComponent {
   icons = {
     admin: faToolbox,
-    delete: faTrashAlt
+    delete: faTrashAlt,
+    error: faExclamationTriangle
   };
 
   @Input() users: User[];
   @Input() loading = false;
+  @Input() error = false;
+
+  @Output() retry = new EventEmitter<void>();
+
+  onRetry(): void {
+    this.retry.emit();
+  }
 }

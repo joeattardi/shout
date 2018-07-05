@@ -17,7 +17,8 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
   switch (action.type) {
     case UsersActionTypes.LOAD_USERS:
       return {
-        ...state,
+        users: [],
+        error: false,
         loading: true
       };
     case UsersActionTypes.LOAD_USERS_SUCCESS:
