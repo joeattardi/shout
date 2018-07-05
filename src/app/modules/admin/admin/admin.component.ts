@@ -4,6 +4,8 @@ import { Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
+import { faComments, faUser } from '@fortawesome/free-solid-svg-icons';
+
 import { getLoadingState } from '../../../reducers/loading.reducer';
 import { State } from '../../../reducers';
 
@@ -12,6 +14,11 @@ import { State } from '../../../reducers';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+  icons = {
+    user: faUser,
+    rooms: faComments
+  };
+
   loading$: Observable<boolean>;
 
   constructor(private title: Title, private store: Store<State>) {
