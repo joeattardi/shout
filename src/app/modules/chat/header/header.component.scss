@@ -15,26 +15,11 @@ header {
   }
 
   #admin-container {
-    display: flex;
-    align-items: center;
-    font-size: 0.8em;
     margin-right: 0.25em;
-
-    a {
-      color: #FFFFFF;
-    }
   }
 
   #user-container {
-    cursor: pointer;
-    padding: 0.25em;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.25s;
-
     fa-icon {
-      font-size: 0.7em;
       margin-left: 0.5em;
       transition: transform 0.2s;
 
@@ -44,17 +29,9 @@ header {
     }
 
     svg {
-      width: 1em;
-      height: 1em;
+      width: 1.2em;
+      height: 1.2em;
       margin-right: 0.25em;
-    }
-
-    #user-name {
-      font-size: 0.8em;
-    }
-
-    &:hover {
-      background: lighten($header-color, 5%);
     }
   }
 }
@@ -78,5 +55,11 @@ header {
 
   #user-full-name {
     font-weight: bold;
+  }
+}
+
+.action-button {
+  &:hover {
+    background: lighten($header-color, 5%);
   }
 }

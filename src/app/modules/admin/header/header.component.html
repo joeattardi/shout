@@ -1,7 +1,7 @@
 <header>
   <div id="logo"><fa-icon [icon]="icons.logo"></fa-icon></div>
   <div id="title">Administration</div>
-  <div id="chat-link-container">
-    <a [routerLink]="['/chat']"><fa-icon [icon]="icons.logo"></fa-icon> Go Back</a>
+  <div (click)="goToChat()" id="chat-button" class="action-button">
+    <fa-icon [icon]="icons.logo"></fa-icon> Go Back
   </div>
 </header>

@@ -1,9 +1,10 @@
 <header #header>
   <div id="logo"><fa-icon [icon]="icons.comment"></fa-icon></div>
-  <div id="admin-container">
-    <a [routerLink]="['/admin']"><fa-icon [icon]="icons.admin"></fa-icon> Administration</a>
+  <div (click)="goToAdmin()" id="admin-container" class="action-button">
+    <fa-icon [icon]="icons.admin"></fa-icon> Administration
   </div>
   <div id="user-container"
+    class="action-button"
     [popper]="userMenu"
     [popperTarget]="header"
     popperPlacement="bottom-end"

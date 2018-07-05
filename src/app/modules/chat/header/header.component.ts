@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -32,7 +33,7 @@ export class HeaderComponent {
 
   @ViewChild('userMenu') userMenu;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<State>, private router: Router) {
     this.user$ = this.store.select(getUserState);
     this.userMenuOpen$ = this.store.select(getUserMenuState);
   }
@@ -49,5 +50,9 @@ export class HeaderComponent {
   logOut(): void {
     this.hideUserMenu();
     this.store.dispatch(new LogOut());
+  }
+
+  goToAdmin(): void {
+    this.router.navigate(['/admin']);
   }
 }

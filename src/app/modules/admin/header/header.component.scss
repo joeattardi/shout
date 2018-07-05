@@ -18,14 +18,10 @@ header {
     margin-left: 0.25em;
     font-weight: bold;
   }
+}
 
-  #chat-link-container {
-    display: flex;
-    align-items: center;
-    font-size: 0.8em;
-    
-    a {
-      color: #FFFFFF;
-    }
+.action-button {
+  &:hover {
+    background: lighten($header-color, 5%);
   }
 }
