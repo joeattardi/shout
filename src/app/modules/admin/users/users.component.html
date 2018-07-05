@@ -2,13 +2,14 @@
 
 <button class="button-primary">Create User</button>
 
-<app-confirm-modal *ngIf="(deleteModal$ | async)?.show"
+<app-confirm-modal *ngIf="deleteModalState.show"
   title="Delete user?"
-  body="Are you sure you want to delete {{ (deleteModal$ | async)?.user.firstName }} {{ (deleteModal$ | async)?.user.lastName }}?"
-  (confirm)="confirmDelete()"
+  body="Are you sure you want to delete {{ deleteModalState.user.firstName }} {{ deleteModalState.user.lastName }}?"
+  (confirm)="confirmDelete(deleteModalState.user)"
   (cancel)="cancelDelete()"></app-confirm-modal>
 
 <app-admin-user-list
+  [currentUser]="currentUser$ | async"
   [error]="error$ | async"
   [loading]="loading$ | async"
   [users]="users$ | async"

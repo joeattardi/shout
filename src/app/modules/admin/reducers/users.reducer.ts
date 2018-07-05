@@ -69,6 +69,11 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
           show: false
         }
       };
+    case UsersActionTypes.DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        users: state.users.filter(user => user !== action.user)
+      };
     default:
       return state;
   }

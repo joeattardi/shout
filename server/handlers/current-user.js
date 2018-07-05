@@ -1,3 +1,5 @@
+const { pick } = require('lodash');
+
 const User = require('../../models').User;
 const { Result, sendResult } = require('../api');
 
@@ -13,13 +15,7 @@ exports.handler = async function(req, res) {
     if (user) {
       return res.status(200).json({
         result: Result.SUCCESS,
-        user: {
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          admin: user.admin
-        }
+        user: pick(user, ['id', 'username', 'firstName', 'lastName', 'email', 'admin'])
       });
     } else {
       sendResult(res, 404, Result.NOT_FOUND, 'User not found');

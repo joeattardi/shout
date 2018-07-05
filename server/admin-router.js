@@ -4,6 +4,7 @@ const expressJwt = require('express-jwt');
 const jwt = require('./jwt');
 const { Result, sendResult } = require('./api');
 
+const deleteUser = require('./handlers/admin/delete-user');
 const users = require('./handlers/admin/users');
 
 const authenticationCheck = expressJwt({
@@ -20,6 +21,7 @@ function adminCheck(req, res, next) {
 
 const router = express.Router();
 
+router.delete('/users/:userId', authenticationCheck, adminCheck, deleteUser.validation, deleteUser.handler);
 router.get('/users', authenticationCheck, adminCheck, users.handler);
 
 module.exports = router;

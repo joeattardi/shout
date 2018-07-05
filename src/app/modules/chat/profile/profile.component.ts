@@ -143,33 +143,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy, OnInit {
         newPassword: formValue.password
       })
     );
-
-    // this.userService
-    //   .updateProfile(formValue.firstName, formValue.lastName, formValue.email, formValue.currentPassword, formValue.password)
-    //   .subscribe(
-    //     () => {
-    //       this.store.dispatch(new SaveProfileSuccess());
-    //       this.closeModal();
-    //       this.notificationService.showNotification({
-    //         theme: NotificationTheme.SUCCESS,
-    //         message: 'Your profile was updated successfully.'
-    //       });
-    //     },
-    //     errorResponse => {
-    //       if (errorResponse.status === 403) {
-    //         this.store.dispatch(new SaveProfileAuthError());
-    //         this.form.patchValue({
-    //           currentPassword: '',
-    //           password: '',
-    //           confirmPassword: ''
-    //         });
-    //       } else {
-    //         this.store.dispatch(new SaveProfileError());
-    //       }
-
-    //       this.mainColumn.nativeElement.scrollTop = 0;
-    //     }
-    //   );
   }
 
   hasRequiredError(controlName: string): boolean {

@@ -7,7 +7,9 @@ export enum UsersActionTypes {
   LOAD_USERS_ERROR = '[Admin] load users error',
   DELETE_USER = '[Admin] delete user',
   DELETE_USER_CONFIRM = '[Admin] delete user confirm',
-  DELETE_USER_CANCEL = '[Admin] delete user cancel'
+  DELETE_USER_CANCEL = '[Admin] delete user cancel',
+  DELETE_USER_SUCCESS = '[Admin] delete user success',
+  DELETE_USER_ERROR = '[Admin] delete user error'
 }
 
 export class LoadUsers implements Action {
@@ -30,10 +32,28 @@ export class DeleteUser implements Action {
 
 export class DeleteUserConfirm implements Action {
   readonly type = UsersActionTypes.DELETE_USER_CONFIRM;
+  constructor(public user: User) {}
 }
 
 export class DeleteUserCancel implements Action {
   readonly type = UsersActionTypes.DELETE_USER_CANCEL;
 }
 
-export type UsersAction = LoadUsers | LoadUsersSuccess | LoadUsersError | DeleteUser | DeleteUserConfirm | DeleteUserCancel;
+export class DeleteUserSuccess implements Action {
+  readonly type = UsersActionTypes.DELETE_USER_SUCCESS;
+  constructor(public user: User) {}
+}
+
+export class DeleteUserError implements Action {
+  readonly type = UsersActionTypes.DELETE_USER_ERROR;
+}
+
+export type UsersAction =
+  | LoadUsers
+  | LoadUsersSuccess
+  | LoadUsersError
+  | DeleteUser
+  | DeleteUserConfirm
+  | DeleteUserCancel
+  | DeleteUserSuccess
+  | DeleteUserError;

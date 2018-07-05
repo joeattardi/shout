@@ -41,7 +41,8 @@ exports.sign = function(user, expiresIn) {
   logger.info(`Creating JWT for user ${user.username}`);
   return jwt.sign(
     {
-      admin: user.admin
+      admin: user.admin,
+      id: user.id
     },
     jwtKey,
     {
