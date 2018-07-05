@@ -126,3 +126,22 @@ a {
     margin-right: 0.5em;
   }
 }
+
+#sidebar {
+  background: $sidebar-color;
+  padding: 0.5em;
+  width: 13em;
+  color: #FFFFFF;
+
+  .menu-item {
+    margin: 0.25em;
+    padding: 0.5em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: lighten($sidebar-color, 5%);
+    }
+  }
+}
