@@ -1,4 +1,4 @@
-<app-modal>
+<app-modal (close)="cancel.emit()">
   <div class="modal-title">{{ title }}</div>
 
   <div class="modal-body">

@@ -21,8 +21,13 @@ export class UserListComponent {
   @Input() error = false;
 
   @Output() retry = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<User>();
 
   onRetry(): void {
     this.retry.emit();
+  }
+
+  onDelete(user: User) {
+    this.delete.emit(user);
   }
 }
