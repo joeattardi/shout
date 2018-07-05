@@ -1,3 +1,5 @@
 <h1>Users</h1>
 
-<app-admin-user-list></app-admin-user-list>
+<button class="button-primary">Create User</button>
+
+<app-admin-user-list [loading]="loading$ | async" [users]="users$ | async"></app-admin-user-list>

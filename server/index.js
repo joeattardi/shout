@@ -45,7 +45,7 @@ db.sequelize
 
 app.use(bodyParser.json());
 app.use('/api', router);
-app.use('/admin', adminRouter);
+app.use('/api/admin', adminRouter);
 app.use(express.static(path.join(__dirname, '../dist/shout')));
 
 app.use(function(err, req, res, next) {

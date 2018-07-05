@@ -45,6 +45,7 @@
     "express-validator": "^5.2.0",
     "jdenticon": "^2.1.0",
     "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "ngx-popper": "^4.0.1",
     "pg": "^7.4.3",

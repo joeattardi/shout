@@ -1,6 +1,6 @@
 <header #header>
   <div id="logo"><fa-icon [icon]="icons.comment"></fa-icon></div>
-  <div (click)="goToAdmin()" id="admin-container" class="action-button">
+  <div *ngIf="(user$ | async)?.admin" (click)="goToAdmin()" id="admin-container" class="action-button">
     <fa-icon [icon]="icons.admin"></fa-icon> Administration
   </div>
   <div id="user-container"

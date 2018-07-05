@@ -1,4 +1,55 @@
+@import '../../../../../variables';
+
+.spinner-container {
+  margin: 2em;
+}
+
+#user-search {
+  margin: 0.5em;
+
+  input {
+    width: 100%;
+  }
+}
+
 #user-list {
-  border: 1px solid #999999;
-  border-radius: 5px;
+  .user-entry {
+    display: flex;
+    font-size: 0.9em;
+    border: 1px solid $light-brand-color;
+    border-radius: 5px;
+    padding: 0.5em;
+    margin: 0.5em;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: lighten($light-brand-color, 15%);
+    }
+
+    svg {
+      width: 2.5em;
+      height: 2.5em;
+      margin-right: 0.25em;
+    }
+
+    .delete-button {
+      fa-icon {
+        font-size: 1.5em;
+      }
+
+      &:hover {
+        color: $error-color;
+      }
+    }
+
+    .user-details {
+      flex-grow: 1;
+
+      .user-full-name {
+        font-weight: bold;
+      }
+    }
+  }
 }

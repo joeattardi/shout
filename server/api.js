@@ -5,7 +5,8 @@ exports.Result = {
   LOGIN_INCORRECT: 'login_incorrect',
   LOGGED_IN: 'logged_in',
   AVAILABLE: 'available',
-  TAKEN: 'taken'
+  TAKEN: 'taken',
+  NOT_AUTHORIZED: 'not_authorized'
 };
 
 exports.sendResult = function(res, status, result, message) {
