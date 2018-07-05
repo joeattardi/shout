@@ -2,10 +2,12 @@
   display: flex;
   overflow: hidden;
   height: 100vh;
+
   main {
     position: relative;
   }
-  /deep/ router-outlet ~ * {
+
+  /deep/ router-outlet.main ~ * {
     position: absolute;
     width: 100%;
     height: 100%;

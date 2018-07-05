@@ -10,6 +10,7 @@ import { AdminComponent } from './admin/admin.component';
 import { HeaderComponent } from './header/header.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { UsersComponent } from './users/users.component';
+import { UserListComponent } from './users/user-list/user-list.component';
 
 import { AdminGuard } from './admin-guard.service';
 
@@ -34,6 +35,6 @@ const routes: Routes = [
 @NgModule({
   imports: [CommonModule, FontAwesomeModule, RouterModule.forChild(routes), SharedModule],
   providers: [AdminGuard],
-  declarations: [AdminComponent, HeaderComponent, RoomsComponent, UsersComponent]
+  declarations: [AdminComponent, HeaderComponent, RoomsComponent, UsersComponent, UserListComponent]
 })
 export class AdminModule {}
