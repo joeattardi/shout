@@ -1,0 +1,13 @@
+<app-modal>
+  <div class="modal-title">{{ title }}</div>
+
+  <div class="modal-body">
+    <fa-icon [icon]="icons.question"></fa-icon>
+    {{ body }}
+  </div>
+
+  <div class="modal-footer">
+    <button (click)="cancel.emit()">{{ cancelButtonText }}</button>
+    <button (click)="confirm.emit()" class="button-primary">{{ confirmButtonText }}</button>
+  </div>
+</app-modal>
