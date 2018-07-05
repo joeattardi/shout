@@ -15,13 +15,7 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-const router = require('./router');
-
 const version = require('../package').version;
-const db = require('../models');
-
-const app = express();
-
 process.stdout.write('================================================================\n');
 process.stdout.write('shout!\n');
 process.stdout.write(`Version ${version}\n`);
@@ -30,6 +24,13 @@ process.stdout.write('Copyright 2018 by Joe Attardi (joe@attardi.net)\n');
 process.stdout.write('================================================================\n');
 
 logger.info(`Server starting up on ${new Date().toString()}`);
+
+const jwt = require('./jwt');
+const router = require('./router');
+const adminRouter = require('./admin-router');
+const db = require('../models');
+
+const app = express();
 
 logger.info('Verifying database connection');
 db.sequelize
@@ -44,6 +45,7 @@ db.sequelize
 
 app.use(bodyParser.json());
 app.use('/api', router);
+app.use('/admin', adminRouter);
 app.use(express.static(path.join(__dirname, '../dist/shout')));
 
 app.use(function(err, req, res, next) {
