@@ -3,7 +3,7 @@ import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/s
 import { State as AppState } from '../../../reducers';
 
 import { LoadingState, loadingReducer } from './loading.reducer';
-import { UsersState, usersReducer, getUserList, getUsersLoading, getUsersError, getConfirmDeleteModal, getUserEdit } from './users.reducer';
+import { UsersState, usersReducer, getUserList, getUsersLoading, getUsersError, getConfirmDeleteModal, getUserEdit } from './users';
 
 export interface AdminState {
   loading: LoadingState;
