@@ -5,7 +5,9 @@ const { Result, sendResult } = require('../../api');
 
 exports.handler = async function(req, res) {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      order: [['lastName', 'asc'], ['firstName', 'asc']]
+    });
     const userData = users.map(user => pick(user, ['id', 'username', 'firstName', 'lastName', 'email', 'admin']));
 
     res.status(200).json({
