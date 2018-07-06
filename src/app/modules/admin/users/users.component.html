@@ -14,6 +14,12 @@
 
 <app-confirm-modal *ngIf="deleteModalState.show"
   title="Delete user?"
-  body="Are you sure you want to delete {{ deleteModalState.user.firstName }} {{ deleteModalState.user.lastName }}?"
+  confirmButtonType="button-primary-danger"
+  confirmButtonText="Delete"
   (confirm)="confirmDelete(deleteModalState.user)"
-  (cancel)="cancelDelete()"></app-confirm-modal>
+  (cancel)="cancelDelete()">
+  <div>
+    <div>Are you sure you want to delete the user <strong>{{ deleteModalState.user.firstName }} {{ deleteModalState.user.lastName }}</strong>?</div>
+    <div>This operation cannot be undone.</div>
+  </div>
+</app-confirm-modal>

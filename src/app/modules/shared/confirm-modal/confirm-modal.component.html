@@ -3,11 +3,11 @@
 
   <div class="modal-body">
     <fa-icon [icon]="icons.question"></fa-icon>
-    {{ body }}
+    <ng-content></ng-content>
   </div>
 
   <div class="modal-footer">
     <button (click)="cancel.emit()">{{ cancelButtonText }}</button>
-    <button (click)="confirm.emit()" class="button-primary">{{ confirmButtonText }}</button>
+    <button (click)="confirm.emit()" [class]="confirmButtonType">{{ confirmButtonText }}</button>
   </div>
 </app-modal>

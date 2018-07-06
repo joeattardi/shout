@@ -40,7 +40,6 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
     case UsersActionTypes.LOAD_USERS:
       return {
         ...state,
-        users: [],
         error: false,
         loading: true
       };
@@ -54,6 +53,7 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
     case UsersActionTypes.LOAD_USERS_ERROR:
       return {
         ...state,
+        users: [],
         loading: false,
         error: true
       };
