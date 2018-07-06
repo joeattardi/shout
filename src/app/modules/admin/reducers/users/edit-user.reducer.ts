@@ -68,3 +68,7 @@ export function editUserReducer(state = initialState, action: UsersAction): Edit
       return state;
   }
 }
+
+export const getUser = (state: EditUserState) => state.user;
+export const getUserLoading = (state: EditUserState) => state.loading;
+export const getUserError = (state: EditUserState) => state.error;

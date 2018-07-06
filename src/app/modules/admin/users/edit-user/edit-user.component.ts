@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -15,8 +15,9 @@ import { State } from '../../../../reducers';
 
 import { AdminService } from '../../admin.service';
 import { LoadUser, SaveUser, DeleteUser, CreateUser } from '../../actions';
-import { EditUserState } from '../../reducers/users.reducer';
-import { getUserEditState } from '../../reducers';
+import { EditUserState } from '../../reducers/users/edit-user.reducer';
+import { getUserEditState, getUserEditLoadingState, getUserEditErrorState, getEditedUserState } from '../../reducers';
+import { User } from '../../../core/core.types';
 
 @Component({
   templateUrl: './edit-user.component.html',
@@ -41,7 +42,11 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
 
   identiconUsername: string;
 
-  userEditState: EditUserState;
+  loading$: Observable<boolean>;
+
+  error$: Observable<boolean>;
+
+  user: User;
 
   modalTitle = 'Edit User';
 
@@ -70,7 +75,7 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
   onSubmit(): void {
     const formValue = this.form.value;
     this.store.dispatch(
-      new SaveUser(this.userEditState.user.id, {
+      new SaveUser(this.user.id, {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
         username: formValue.username,
@@ -104,34 +109,37 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
       }
     }
 
-    this.store
-      .select(getUserEditState)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(userEditState => {
-        this.userEditState = userEditState;
+    this.loading$ = this.store.select(getUserEditLoadingState);
+    this.error$ = this.store.select(getUserEditErrorState);
 
-        if (this.userEditState.user && !this.formInitialized) {
-          this.identiconUsername = this.userEditState.user.username;
+    this.error$.pipe(takeUntil(this.destroy$)).subscribe(error => {
+      if (error) {
+        this.mainColumn.nativeElement.scrollTop = 0;
+      }
+    });
+
+    this.store
+      .select(getEditedUserState)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.user = user;
+
+        if (this.user && !this.formInitialized) {
+          this.identiconUsername = this.user.username;
 
           this.form.patchValue({
-            firstName: this.userEditState.user.firstName,
-            lastName: this.userEditState.user.lastName,
-            username: this.userEditState.user.username,
-            email: this.userEditState.user.email,
-            admin: this.userEditState.user.admin
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            username: this.user.username,
+            email: this.user.email,
+            admin: this.user.admin
           });
 
           this.formInitialized = true;
 
           this.form
             .get('username')
-            .setAsyncValidators(
-              usernameTakenValidator(username => this.adminService.checkUsernameTaken(username, this.userEditState.user.id))
-            );
-        }
-
-        if (this.userEditState.error) {
-          this.mainColumn.nativeElement.scrollTop = 0;
+            .setAsyncValidators(usernameTakenValidator(username => this.adminService.checkUsernameTaken(username, this.user.id)));
         }
       });
 
@@ -170,7 +178,7 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   deleteUser(): void {
-    this.store.dispatch(new DeleteUser(this.userEditState.user));
+    this.store.dispatch(new DeleteUser(this.user));
   }
 
   hasRequiredError(controlName: string): boolean {
@@ -206,6 +214,6 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   get isEditMode(): boolean {
-    return this.userEditState.user === null || Object.keys(this.userEditState.user).length > 0;
+    return this.user === null || Object.keys(this.user).length > 0;
   }
 }
