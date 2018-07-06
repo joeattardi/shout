@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { EffectsModule } from '@ngrx/effects';
@@ -53,6 +54,7 @@ const routes: Routes = [
     FontAwesomeModule,
     RouterModule.forChild(routes),
     SharedModule,
+    ReactiveFormsModule,
     StoreModule.forFeature('admin', reducers),
     EffectsModule.forFeature([UsersEffects])
   ],

@@ -1,5 +1,5 @@
 import { trigger, style, transition, animate } from '@angular/animations';
-import { Component, EventEmitter, Output, HostBinding, HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, Output, HostBinding, HostListener } from '@angular/core';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,6 +18,8 @@ export class ModalComponent {
   icons = {
     close: faTimes
   };
+
+  @Input() zIndex: number;
 
   @Output() close = new EventEmitter<void>();
 

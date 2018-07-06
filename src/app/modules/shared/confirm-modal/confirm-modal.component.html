@@ -1,4 +1,4 @@
-<app-modal (close)="cancel.emit()">
+<app-modal [zIndex]="999" (close)="cancel.emit()">
   <div class="modal-title">{{ title }}</div>
 
   <div class="modal-body">

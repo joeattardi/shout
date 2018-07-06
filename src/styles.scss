@@ -61,6 +61,19 @@ button {
       background: transparent;
     }
   }
+
+  &.button-danger {
+    border-color: $danger-color;
+    color: $danger-color;
+
+    &:hover {
+      background: lighten($danger-color, 35%);
+    }
+
+    &:disabled:hover {
+      background: transparent;
+    }
+  }
 }
 
 input {

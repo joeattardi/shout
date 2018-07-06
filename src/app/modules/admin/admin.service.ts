@@ -23,4 +23,39 @@ export class AdminService {
       }
     });
   }
+
+  getUser(userId: number) {
+    return this.httpClient.get(`/api/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.getToken()}`
+      }
+    });
+  }
+
+  saveUser(userId: number, user: User) {
+    return this.httpClient.put(
+      `/api/admin/users/${userId}`,
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        email: user.email,
+        admin: user.admin,
+        password: user.password
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`
+        }
+      }
+    );
+  }
+
+  checkUsernameTaken(username: string, userId: number) {
+    return this.httpClient.get(`/api/admin/username_check?username=${username}&userId=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.getToken()}`
+      }
+    });
+  }
 }

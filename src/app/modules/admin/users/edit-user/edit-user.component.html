@@ -1,48 +1,86 @@
-<app-modal (close)="closeModal()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-modal [zIndex]="100" (close)="closeModal()">
 
-  <div class="modal-title">Edit User</div>
+    <div class="modal-title">Edit User</div>
 
-  <div class="modal-body">
-    <div class="column" id="user-avatar-column">
-      <svg appIdenticon="joe"></svg>
+    <div class="modal-body">
+      <div class="column" id="user-avatar-column">
+        <svg [appIdenticon]="identiconUsername"></svg>
+      </div>
+
+      <div #mainColumn class="column" id="user-main-column">
+        <div id="user-form-header">
+          <div @fade *ngIf="userEditState.error" class="status-message status-message-error">
+            <fa-icon [icon]="icons.error"></fa-icon>
+            <div class="message">An error occurred while saving this user.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="first-name">First name</label>
+          <input #firstName formControlName="firstName" id="first-name" type="text" [class.error]="hasRequiredError('firstName')">
+          <div class="error" *ngIf="!hasRequiredError('firstName')">&nbsp;</div>
+          <div class="error" *ngIf="hasRequiredError('firstName')">First name is required.</div>
+        </div>
+
+        <div class="row">
+          <label for="last-name">Last name</label>
+          <input id="last-name" formControlName="lastName" type="text" [class.error]="hasRequiredError('lastName')">
+          <div class="error" *ngIf="!hasRequiredError('lastName')">&nbsp;</div>
+          <div class="error" *ngIf="hasRequiredError('lastName')">Last name is required.</div>
+        </div>
+
+        <div class="row">
+          <label for="username">Username</label>
+          <input id="username" formControlName="username" type="text" [class.error]="hasUsernameError">
+          <div class="error" *ngIf="!hasUsernameError">&nbsp;</div>
+          <div class="error" *ngIf="hasRequiredError('username')">Username is required.</div>
+          <div class="error" *ngIf="hasUsernameTakenError">That username is already taken.</div>
+        </div>
+
+        <div class="row">
+          <label for="email">Email</label>
+          <input id="email" formControlName="email" type="email" [class.error]="hasEmailError">
+          <div class="error" *ngIf="!hasEmailError">&nbsp;</div>
+          <div class="error" *ngIf="hasRequiredError('email')">Email is required.</div>
+          <div class="error" *ngIf="hasInvalidEmailError">Invalid email address.</div>
+        </div>
+
+        <div class="row">
+          <label>Administrator</label>
+          <input id="admin" formControlName="admin" type="checkbox">
+          <label class="inline" for="admin">User is an administrator</label>
+          <div class="error">&nbsp;</div>
+        </div>
+
+        <div class="row">
+          <label for="password">Password</label>
+          <input id="password" formControlName="password" type="password">
+          <div clas="error">&nbsp;</div>
+        </div>
+
+        <div class="row">
+          <label for="confirm-password">Confirm password</label>
+          <input id="confirm-password" formControlName="confirmPassword" type="password" [class.error]="hasConfirmPasswordError">
+          <div class="error" *ngIf="!hasConfirmPasswordError">&nbsp;</div>
+          <div class="error" *ngIf="hasRequiredError('confirmPassword')">Please confirm the new password.</div>
+          <div class="error" *ngIf="hasPasswordMatchError && !hasRequiredError('confirmPassword')">Passwords do not match.</div>
+        </div>
+      </div>
     </div>
 
-    <div class="column" id="user-main-column">
-      <div class="row">
-        <label for="first-name">First name</label>
-        <input #firstName id="first-name" type="text">
+    <div class="modal-footer">
+      <div class="delete-button-container">
+        <button type="button" (click)="deleteUser()" [disabled]="userEditState.loading" class="button-danger">Delete User</button>
       </div>
-
-      <div class="row">
-        <label for="last-name">Last name</label>
-        <input id="last-name" type="text">
-      </div>
-
-      <div class="row">
-        <label for="username">Username</label>
-        <input id="username" type="text">
-      </div>
-
-      <div class="row">
-        <label for="email">Email</label>
-        <input id="email" type="email">
-      </div>
-
-      <div class="row">
-        <label for="password">Password</label>
-        <input id="password" type="password">
-      </div>
-
-      <div class="row">
-        <label for="confirm-password">Confirm password</label>
-        <input id="confirm-password" type="password">
-      </div>
+      <button [disabled]="userEditState.loading" type="button" (click)="closeModal()">Cancel</button>
+      <button class="button-primary" [disabled]="!form.valid || userEditState.loading">
+        <span *ngIf="!userEditState.loading; else loading">Save</span>
+        <ng-template #loading>
+          <span><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
+        </ng-template>
+      </button>
     </div>
-  </div>
 
-  <div class="modal-footer">
-    <button type="button" (click)="closeModal()">Cancel</button>
-    <button class="button-primary">Save</button>
-  </div>
-
-</app-modal>
+  </app-modal>
+</form>

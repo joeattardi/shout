@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, map, distinctUntilChanged, switchMap, first } from 'rxjs/operators';
 import { validate } from 'email-validator';
 
 import { AuthService } from '../core/auth.service';
@@ -24,19 +24,20 @@ export function emailValidator(control: AbstractControl): ValidationErrors | nul
   return null;
 }
 
-export function usernameTakenValidator(authService: AuthService) {
+export function usernameTakenValidator(checkFn) {
   return (control: AbstractControl) => {
     return control.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(value => authService.checkUsernameTaken(value)),
+      switchMap(value => checkFn(value)),
       map(res => {
         if (res['result'] === 'taken') {
-          return control.setErrors({ usernameTaken: true });
+          return { usernameTaken: true };
+        } else {
+          return null;
         }
-
-        return control.setErrors(null);
-      })
+      }),
+      first()
     );
   };
 }

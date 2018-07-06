@@ -54,7 +54,7 @@
           <span *ngIf="!(loading$ | async)">Sign Up</span>
           <span *ngIf="loading$ | async"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
         </button>
-        <button type="button" routerLink="/">Cancel</button>
+        <button type="button" [disabled]="loading$ | async" routerLink="/">Cancel</button>
       </div>
     </form>
   </div>

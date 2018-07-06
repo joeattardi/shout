@@ -35,7 +35,8 @@ export class UserListComponent {
     this.retry.emit();
   }
 
-  onDelete(user: User) {
+  onDelete(user: User, event: Event) {
+    event.stopPropagation();
     this.delete.emit(user);
   }
 

@@ -23,7 +23,7 @@
       <div class="user-full-name"><fa-icon [icon]="icons.admin" *ngIf="user.admin"></fa-icon> {{ user.firstName }} {{ user.lastName }}</div>
       <div class="user-username">{{ user.username }}</div>
     </div>
-    <div *ngIf="user.id !== currentUser.id" class="delete-button" (click)="onDelete(user)">
+    <div *ngIf="user.id !== currentUser.id" class="delete-button" (click)="onDelete(user, $event)">
       <fa-icon [icon]="icons.delete"></fa-icon>
     </div>
   </div>

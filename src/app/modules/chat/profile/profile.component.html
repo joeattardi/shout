@@ -69,7 +69,7 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" (click)="closeModal()">Cancel</button>
+        <button [disabled]="loading$ | async" type="button" (click)="closeModal()">Cancel</button>
         <button class="button-primary" [disabled]="(loading$ | async) || !form.valid">
           <span *ngIf="!(loading$ | async); else loading">Save</span>
           <ng-template #loading>

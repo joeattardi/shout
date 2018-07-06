@@ -3,7 +3,7 @@ import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/s
 import { State as AppState } from '../../../reducers';
 
 import { LoadingState, loadingReducer } from './loading.reducer';
-import { UsersState, usersReducer, getUserList, getUsersLoading, getUsersError, getConfirmDeleteModal } from './users.reducer';
+import { UsersState, usersReducer, getUserList, getUsersLoading, getUsersError, getConfirmDeleteModal, getUserEdit } from './users.reducer';
 
 export interface AdminState {
   loading: LoadingState;
@@ -26,5 +26,6 @@ export const getUserListState = createSelector(getUsersState, getUserList);
 export const getUsersLoadingState = createSelector(getUsersState, getUsersLoading);
 export const getUsersErrorState = createSelector(getUsersState, getUsersError);
 export const getUsersDeleteModalState = createSelector(getUsersState, getConfirmDeleteModal);
+export const getUserEditState = createSelector(getUsersState, getUserEdit);
 
 export const getLoadingState = createSelector(getAdminState, state => state.loading);

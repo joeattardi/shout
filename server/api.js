@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator/check');
+
 exports.Result = {
   SUCCESS: 'success',
   ERROR: 'error',
@@ -14,4 +16,16 @@ exports.sendResult = function(res, status, result, message) {
     result,
     message
   });
+};
+
+exports.validate = function(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      result: exports.Result.ERROR,
+      errors: errors.mapped()
+    });
+  }
+
+  next();
 };

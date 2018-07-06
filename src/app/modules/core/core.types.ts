@@ -5,4 +5,5 @@ export interface User {
   firstName?: string;
   lastName?: string;
   admin?: boolean;
+  password?: string;
 }

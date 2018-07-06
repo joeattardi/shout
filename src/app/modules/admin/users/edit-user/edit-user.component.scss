@@ -26,15 +26,27 @@
     label {
       display: block;
       font-size: 0.8em;
+
+      &.inline {
+        display: inline;
+      }
     }
 
-    input {
+    input[type="text"], input[type="email"], input[type="password"] {
       width: 100%;
+    }
+
+    div.error {
+      font-size: 0.8em;
+      color: $error-color;
     }
   }
 }
 
 .modal-footer {
   display: flex;
-  justify-content: flex-end;
+  
+  .delete-button-container {
+    flex-grow: 1;
+  }
 }

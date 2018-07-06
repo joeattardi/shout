@@ -43,7 +43,7 @@ export class SignUpComponent implements AfterViewInit, OnInit {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         email: ['', Validators.compose([Validators.required, emailValidator])],
-        username: ['', Validators.required, usernameTakenValidator(this.authService)],
+        username: ['', Validators.required, usernameTakenValidator(username => this.authService.checkUsernameTaken(username))],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required]
       },
