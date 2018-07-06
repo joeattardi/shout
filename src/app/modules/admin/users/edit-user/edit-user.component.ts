@@ -14,7 +14,7 @@ import { emailValidator, passwordMatchValidator, usernameTakenValidator } from '
 import { State } from '../../../../reducers';
 
 import { AdminService } from '../../admin.service';
-import { LoadUser, SaveUser, DeleteUser } from '../../actions';
+import { LoadUser, SaveUser, DeleteUser, CreateUser } from '../../actions';
 import { EditUserState } from '../../reducers/users.reducer';
 import { getUserEditState } from '../../reducers';
 
@@ -43,6 +43,8 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
 
   userEditState: EditUserState;
 
+  modalTitle = 'Edit User';
+
   @ViewChild('firstName') firstNameField: ElementRef;
 
   @ViewChild('mainColumn') mainColumn: ElementRef;
@@ -52,7 +54,7 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
     private router: Router,
     private store: Store<State>,
     fb: FormBuilder,
-    adminService: AdminService
+    private adminService: AdminService
   ) {
     this.form = fb.group({
       firstName: ['', Validators.required],
@@ -63,6 +65,44 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
       password: [''],
       confirmPassword: ['']
     });
+  }
+
+  onSubmit(): void {
+    const formValue = this.form.value;
+    this.store.dispatch(
+      new SaveUser(this.userEditState.user.id, {
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        username: formValue.username,
+        email: formValue.email,
+        password: formValue.password,
+        admin: formValue.admin
+      })
+    );
+  }
+
+  ngAfterViewInit(): void {
+    this.firstNameField.nativeElement.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+
+  ngOnInit(): void {
+    if (this.route.snapshot.params.id === 'new') {
+      this.modalTitle = 'Create User';
+      this.store.dispatch(new CreateUser());
+
+      this.form.get('password').setValidators([Validators.required]);
+      this.form.get('confirmPassword').setValidators([Validators.required]);
+      this.form.setValidators(passwordMatchValidator);
+    } else {
+      const userId = parseInt(this.route.snapshot.params.id, 10);
+      if (userId) {
+        this.store.dispatch(new LoadUser(userId));
+      }
+    }
 
     this.store
       .select(getUserEditState)
@@ -85,43 +125,15 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
 
           this.form
             .get('username')
-            .setAsyncValidators(usernameTakenValidator(username => adminService.checkUsernameTaken(username, this.userEditState.user.id)));
+            .setAsyncValidators(
+              usernameTakenValidator(username => this.adminService.checkUsernameTaken(username, this.userEditState.user.id))
+            );
         }
 
         if (this.userEditState.error) {
           this.mainColumn.nativeElement.scrollTop = 0;
         }
       });
-  }
-
-  onSubmit(): void {
-    const formValue = this.form.value;
-
-    this.store.dispatch(
-      new SaveUser(this.userEditState.user.id, {
-        firstName: formValue.firstName,
-        lastName: formValue.lastName,
-        username: formValue.username,
-        email: formValue.email,
-        password: formValue.password,
-        admin: formValue.admin
-      })
-    );
-  }
-
-  ngAfterViewInit(): void {
-    this.firstNameField.nativeElement.focus();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-  }
-
-  ngOnInit(): void {
-    const userId = parseInt(this.route.snapshot.params.id, 10);
-    if (userId) {
-      this.store.dispatch(new LoadUser(userId));
-    }
 
     this.form
       .get('username')
@@ -191,5 +203,9 @@ export class EditUserComponent implements AfterViewInit, OnDestroy, OnInit {
 
   get hasUsernameError(): boolean {
     return this.hasRequiredError('username') || this.hasUsernameTakenError;
+  }
+
+  get isEditMode(): boolean {
+    return this.userEditState.user === null || Object.keys(this.userEditState.user).length > 0;
   }
 }

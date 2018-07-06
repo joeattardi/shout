@@ -38,8 +38,7 @@ exports.validation = [
     .not()
     .isEmpty(),
   query('userId', 'User ID is required')
-    .not()
-    .isEmpty()
+    .optional()
     .isInt()
     .withMessage('User ID must be a number')
 ];

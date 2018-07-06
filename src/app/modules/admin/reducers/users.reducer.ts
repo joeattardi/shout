@@ -140,6 +140,15 @@ export function usersReducer(state = initialState, action: UsersAction): UsersSt
           error: true
         }
       };
+    case UsersActionTypes.CREATE_USER:
+      return {
+        ...state,
+        edit: {
+          user: {},
+          loading: false,
+          error: false
+        }
+      };
     default:
       return state;
   }

@@ -16,7 +16,8 @@ export enum UsersActionTypes {
   LOAD_USER_ERROR = '[Admin] load user error',
   SAVE_USER = '[Admin] save user',
   SAVE_USER_SUCCESS = '[Admin] save user success',
-  SAVE_USER_ERROR = '[Admin] save user error'
+  SAVE_USER_ERROR = '[Admin] save user error',
+  CREATE_USER = '[Admin] create user'
 }
 
 export class LoadUsers implements Action {
@@ -88,6 +89,10 @@ export class SaveUserError implements Action {
   readonly type = UsersActionTypes.SAVE_USER_ERROR;
 }
 
+export class CreateUser implements Action {
+  readonly type = UsersActionTypes.CREATE_USER;
+}
+
 export type UsersAction =
   | LoadUsers
   | LoadUsersSuccess
@@ -103,4 +108,5 @@ export type UsersAction =
   | LoadUserError
   | SaveUser
   | SaveUserSuccess
-  | SaveUserError;
+  | SaveUserError
+  | CreateUser;

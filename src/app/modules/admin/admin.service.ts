@@ -33,26 +33,48 @@ export class AdminService {
   }
 
   saveUser(userId: number, user: User) {
-    return this.httpClient.put(
-      `/api/admin/users/${userId}`,
-      {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        admin: user.admin,
-        password: user.password
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${this.authService.getToken()}`
+    if (userId) {
+      return this.httpClient.put(
+        `/api/admin/users/${userId}`,
+        {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username,
+          email: user.email,
+          admin: user.admin,
+          password: user.password
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getToken()}`
+          }
         }
-      }
-    );
+      );
+    } else {
+      return this.httpClient.post(
+        '/api/admin/users',
+        {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.username,
+          email: user.email,
+          admin: user.admin,
+          password: user.password
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getToken()}`
+          }
+        }
+      );
+    }
   }
 
   checkUsernameTaken(username: string, userId: number) {
-    return this.httpClient.get(`/api/admin/username_check?username=${username}&userId=${userId}`, {
+    const url = userId
+      ? `/api/admin/username_check?username=${username}&userId=${userId}`
+      : `/api/admin/username_check?username=${username}`;
+    return this.httpClient.get(url, {
       headers: {
         Authorization: `Bearer ${this.authService.getToken()}`
       }
