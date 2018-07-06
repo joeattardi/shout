@@ -1,0 +1,40 @@
+@import '../../../../../variables';
+
+.modal-body {
+  display: flex;
+  width: 35em;
+  height: 25em;
+
+  svg {
+    width: 10em;
+    height: 10em;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #user-main-column {
+    flex-grow: 1;
+    overflow-y: scroll;
+  }
+
+  .row {
+    margin: 0.25em 0.25em 0 0.25em;
+
+    label {
+      display: block;
+      font-size: 0.8em;
+    }
+
+    input {
+      width: 100%;
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}

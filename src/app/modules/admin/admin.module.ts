@@ -12,7 +12,9 @@ import { SharedModule } from '../shared/shared.module';
 import { AdminComponent } from './admin/admin.component';
 import { HeaderComponent } from './header/header.component';
 import { RoomsComponent } from './rooms/rooms.component';
+
 import { UsersComponent } from './users/users.component';
+import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 
 import { AdminGuard } from './admin-guard.service';
@@ -29,7 +31,13 @@ const routes: Routes = [
     children: [
       {
         path: 'users',
-        component: UsersComponent
+        component: UsersComponent,
+        children: [
+          {
+            path: ':id',
+            component: EditUserComponent
+          }
+        ]
       },
       {
         path: 'rooms',
@@ -49,6 +57,6 @@ const routes: Routes = [
     EffectsModule.forFeature([UsersEffects])
   ],
   providers: [AdminGuard, AdminService],
-  declarations: [AdminComponent, HeaderComponent, RoomsComponent, UsersComponent, UserListComponent]
+  declarations: [AdminComponent, HeaderComponent, RoomsComponent, UsersComponent, EditUserComponent, UserListComponent]
 })
 export class AdminModule {}

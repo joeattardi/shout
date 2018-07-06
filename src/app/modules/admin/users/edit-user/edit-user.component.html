@@ -1,0 +1,48 @@
+<app-modal (close)="closeModal()">
+
+  <div class="modal-title">Edit User</div>
+
+  <div class="modal-body">
+    <div class="column" id="user-avatar-column">
+      <svg appIdenticon="joe"></svg>
+    </div>
+
+    <div class="column" id="user-main-column">
+      <div class="row">
+        <label for="first-name">First name</label>
+        <input #firstName id="first-name" type="text">
+      </div>
+
+      <div class="row">
+        <label for="last-name">Last name</label>
+        <input id="last-name" type="text">
+      </div>
+
+      <div class="row">
+        <label for="username">Username</label>
+        <input id="username" type="text">
+      </div>
+
+      <div class="row">
+        <label for="email">Email</label>
+        <input id="email" type="email">
+      </div>
+
+      <div class="row">
+        <label for="password">Password</label>
+        <input id="password" type="password">
+      </div>
+
+      <div class="row">
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" type="password">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" (click)="closeModal()">Cancel</button>
+    <button class="button-primary">Save</button>
+  </div>
+
+</app-modal>

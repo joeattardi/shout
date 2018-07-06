@@ -8,6 +8,8 @@
   (confirm)="confirmDelete(deleteModalState.user)"
   (cancel)="cancelDelete()"></app-confirm-modal>
 
+<router-outlet></router-outlet>
+
 <app-admin-user-list
   [currentUser]="currentUser$ | async"
   [error]="error$ | async"

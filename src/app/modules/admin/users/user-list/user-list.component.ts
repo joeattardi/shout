@@ -1,5 +1,6 @@
 import { trigger, style, transition, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { faExclamationTriangle, faToolbox, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -28,11 +29,17 @@ export class UserListComponent {
   @Output() retry = new EventEmitter<void>();
   @Output() delete = new EventEmitter<User>();
 
+  constructor(private router: Router) {}
+
   onRetry(): void {
     this.retry.emit();
   }
 
   onDelete(user: User) {
     this.delete.emit(user);
+  }
+
+  onEdit(user: User) {
+    this.router.navigate(['/admin', 'users', user.id]);
   }
 }
