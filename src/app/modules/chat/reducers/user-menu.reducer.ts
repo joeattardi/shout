@@ -1,4 +1,3 @@
-import { createFeatureSelector } from '@ngrx/store';
 import { UserMenuActionTypes } from '../actions';
 
 const initialState = false;
