@@ -1,18 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { Store } from '@ngrx/store';
+
+import { AuthService } from '../core/auth.service';
 import { SignUpComponent } from './sign-up.component';
+import { dispatch } from '../../../../node_modules/rxjs/internal/observable/range';
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
   let fixture: ComponentFixture<SignUpComponent>;
 
+  const mockAuthService = {};
+
+  const mockStore = {
+    select() {},
+    dispatch() {}
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, NoopAnimationsModule],
       declarations: [SignUpComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: AuthService, useValue: mockAuthService }, { provide: Store, useValue: mockStore }]
     });
 
     fixture = TestBed.createComponent(SignUpComponent);
