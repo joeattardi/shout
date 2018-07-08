@@ -45,8 +45,8 @@
           <h2>Password</h2>
 
           <div class="row">
-            <label for="currentPassword">Current password</label>
-            <input id="currentPassword" formControlName="currentPassword" type="password" [class.error]="hasRequiredError('currentPassword')">
+            <label for="current-password">Current password</label>
+            <input id="current-password" formControlName="currentPassword" type="password" [class.error]="hasRequiredError('currentPassword')">
             <div class="error" *ngIf="!hasRequiredError('currentPassword')">&nbsp;</div>
             <div class="error" *ngIf="hasRequiredError('currentPassword')">Current password is required.</div>
           </div>
@@ -58,8 +58,8 @@
           </div>
 
           <div class="row">
-            <label for="confirmPassword">Confirm password</label>
-            <input id="confirmPassword" formControlName="confirmPassword" type="password" [class.error]="hasConfirmPasswordError">
+            <label for="confirm-password">Confirm password</label>
+            <input id="confirm-password" formControlName="confirmPassword" type="password" [class.error]="hasConfirmPasswordError">
             <div class="error" *ngIf="!hasConfirmPasswordError">&nbsp;</div>
             <div class="error" *ngIf="hasRequiredError('confirmPassword')">Please confirm your new password.</div>
             <div class="error" *ngIf="hasPasswordMatchError && !hasRequiredError('confirmPassword')">Passwords do not match.</div>
@@ -69,7 +69,7 @@
       </div>
 
       <div class="modal-footer">
-        <button [disabled]="loading$ | async" type="button" (click)="closeModal()">Cancel</button>
+        <button class="cancel-button" [disabled]="loading$ | async" type="button" (click)="closeModal()">Cancel</button>
         <button class="button-primary" [disabled]="(loading$ | async) || !form.valid">
           <span *ngIf="!(loading$ | async); else loading">Save</span>
           <ng-template #loading>
