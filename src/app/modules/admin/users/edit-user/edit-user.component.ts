@@ -15,8 +15,7 @@ import { State } from '../../../../reducers';
 
 import { AdminService } from '../../admin.service';
 import { LoadUser, SaveUser, DeleteUser, CreateUser } from '../../actions';
-import { EditUserState } from '../../reducers/users/edit-user.reducer';
-import { getUserEditState, getUserEditLoadingState, getUserEditErrorState, getEditedUserState } from '../../reducers';
+import { getUserEditLoadingState, getUserEditErrorState, getEditedUserState } from '../../reducers';
 import { User } from '../../../core/core.types';
 
 @Component({

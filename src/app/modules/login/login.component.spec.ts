@@ -11,7 +11,6 @@ import { Login } from './actions/login.actions';
 import { MockStore } from '../../testing/store.mock';
 
 describe('LoginComponent', () => {
-  let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let mockStore: MockStore<any>;
 
@@ -38,7 +37,6 @@ describe('LoginComponent', () => {
 
     fixture = TestBed.createComponent(LoginComponent);
     fixture.detectChanges();
-    component = fixture.componentInstance;
   });
 
   it('should disable the login button when the form is empty', () => {

@@ -74,7 +74,7 @@
       <div class="delete-button-container">
         <button *ngIf="isEditMode" type="button" (click)="deleteUser()" [disabled]="loading$ | async" class="button-danger">Delete User</button>
       </div>
-      <button [disabled]="loading$ | async" type="button" (click)="closeModal()">Cancel</button>
+      <button class="cancel-button" [disabled]="loading$ | async" type="button" (click)="closeModal()">Cancel</button>
       <button class="button-primary" [disabled]="!form.valid || (loading$ | async)">
         <span *ngIf="!(loading$ | async); else loading">Save</span>
         <ng-template #loading>
