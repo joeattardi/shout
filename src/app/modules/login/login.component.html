@@ -3,10 +3,10 @@
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div id="login-form-header">
         <h1 @fade *ngIf="!(authError$ | async) && !(error$ | async)"><fa-icon [icon]="faComment"></fa-icon></h1>
-        <div @fade *ngIf="(authError$ | async)" class="status-message status-message-error">
+        <div @fade *ngIf="(authError$ | async)" class="status-message status-message-error" id="auth-error">
           <div class="message">Looks like your username or password wasn't correct. Please try again.</div>
         </div>
-        <div @fade *ngIf="(error$ | async)" class="status-message status-message-error">
+        <div @fade *ngIf="(error$ | async)" class="status-message status-message-error" id="login-error">
             <fa-icon [icon]="faExclamationTriangle"></fa-icon>
             <div class="message">Oops! We encountered an error while logging you in. Please try again.</div>
           </div>

@@ -11,7 +11,7 @@ import { State } from '../../../reducers';
 import { LoadUsers, DeleteUser, DeleteUserCancel, DeleteUserConfirm } from '../actions';
 import { getUserListState, getUsersLoadingState, getUsersErrorState, getUsersDeleteModalState } from '../reducers';
 import { getUserState } from '../../../reducers/user.reducer';
-import { ConfirmDeleteModalState } from '../reducers/users.reducer';
+import { ConfirmDeleteModalState } from '../reducers/users/delete-modal.reducer';
 
 @Component({
   templateUrl: './users.component.html',
