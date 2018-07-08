@@ -10,6 +10,8 @@ import { Store } from '@ngrx/store';
 import { EditUserComponent } from './edit-user.component';
 
 import { MockStore } from '../../../../testing/store.mock';
+import { checkRequired, setFieldValue } from '../../../../testing/test-helpers';
+
 import { AdminService } from '../../admin.service';
 import { DeleteUser } from '../../actions';
 
@@ -99,15 +101,13 @@ describe('Admin EditUserComponent', () => {
       fakeAsync(() => {
         mockAdminService.checkUsernameTaken.and.returnValue(of({ result: 'taken' }));
         const usernameField = fixture.nativeElement.querySelector('#username');
-        usernameField.value = 'foo';
-        usernameField.dispatchEvent(new Event('input'));
+        setFieldValue(fixture, usernameField, 'foo');
         tick(500);
         fixture.detectChanges();
         expect(usernameField.classList).toContain('ng-invalid');
 
         mockAdminService.checkUsernameTaken.and.returnValue(of({ result: 'available' }));
-        usernameField.value = 'bar';
-        usernameField.dispatchEvent(new Event('input'));
+        setFieldValue(fixture, usernameField, 'bar');
         tick(500);
         fixture.detectChanges();
         expect(usernameField.classList).toContain('ng-valid');
@@ -119,31 +119,19 @@ describe('Admin EditUserComponent', () => {
       expect(confirmPasswordField.classList).toContain('ng-valid');
 
       const passwordField = fixture.nativeElement.querySelector('#password');
-      passwordField.value = 'abc123';
-      passwordField.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
-
+      setFieldValue(fixture, passwordField, 'abc123');
       expect(confirmPasswordField.classList).toContain('ng-invalid');
 
-      confirmPasswordField.value = 'abc123';
-      confirmPasswordField.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
+      setFieldValue(fixture, confirmPasswordField, 'abc123');
       expect(confirmPasswordField.classList).toContain('ng-valid');
     });
 
     it('should mark the confirm password field as invalid if the passwords do not match', () => {
       const passwordField = fixture.nativeElement.querySelector('#password');
-      passwordField.value = 'abc123';
-      passwordField.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
+      setFieldValue(fixture, passwordField, 'abc123');
 
       const confirmPasswordField = fixture.nativeElement.querySelector('#confirm-password');
-      confirmPasswordField.value = 'def456';
-      confirmPasswordField.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
-
-      confirmPasswordField.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      setFieldValue(fixture, confirmPasswordField, 'def456');
       expect(confirmPasswordField.classList).toContain('error');
     });
 
@@ -172,32 +160,16 @@ describe('Admin EditUserComponent', () => {
     });
 
     describe('required fields', () => {
-      function checkRequired(fieldSelector, value = 'foo') {
-        const field = fixture.nativeElement.querySelector(fieldSelector);
-        field.value = '';
-        field.dispatchEvent(new Event('input'));
-        field.dispatchEvent(new Event('blur'));
-        fixture.detectChanges();
-        expect(field.classList).toContain('ng-invalid');
-        expect(field.classList).toContain('error');
-
-        field.value = value;
-        field.dispatchEvent(new Event('input'));
-        fixture.detectChanges();
-        expect(field.classList).toContain('ng-valid');
-        expect(field.classList).not.toContain('error');
-      }
-
       it('should require the first name', () => {
-        checkRequired('#first-name');
+        checkRequired(fixture, '#first-name');
       });
 
       it('should require the last name', () => {
-        checkRequired('#last-name');
+        checkRequired(fixture, '#last-name');
       });
 
       it('should require the email', () => {
-        checkRequired('#email', 'foo@foo.com');
+        checkRequired(fixture, '#email', 'foo@foo.com');
       });
 
       it(
@@ -205,22 +177,34 @@ describe('Admin EditUserComponent', () => {
         fakeAsync(() => {
           mockAdminService.checkUsernameTaken.and.returnValue(of({ result: 'available' }));
           const usernameField = fixture.nativeElement.querySelector('#username');
-          usernameField.value = '';
-          usernameField.dispatchEvent(new Event('input'));
-          usernameField.dispatchEvent(new Event('blur'));
+          setFieldValue(fixture, usernameField, '');
           tick(500);
           fixture.detectChanges();
           expect(usernameField.classList).toContain('ng-invalid');
           expect(usernameField.classList).toContain('error');
 
-          usernameField.value = 'foo';
-          usernameField.dispatchEvent(new Event('input'));
+          setFieldValue(fixture, usernameField, 'foo');
           tick(500);
           fixture.detectChanges();
           expect(usernameField.classList).toContain('ng-valid');
           expect(usernameField.classList).not.toContain('error');
         })
       );
+
+      it('should require a valid email address', () => {
+        const emailField = fixture.nativeElement.querySelector('#email');
+        setFieldValue(fixture, emailField, 'invalidEmail');
+        expect(emailField.classList).toContain('ng-invalid');
+        expect(emailField.classList).toContain('error');
+
+        setFieldValue(fixture, emailField, 'joe@invalid@email@');
+        expect(emailField.classList).toContain('ng-invalid');
+        expect(emailField.classList).toContain('error');
+
+        setFieldValue(fixture, emailField, 'joe@foo.com');
+        expect(emailField.classList).toContain('ng-valid');
+        expect(emailField.classList).not.toContain('error');
+      });
     });
 
     it('should navigate back to the user list when the cancel button is clicked', () => {
@@ -350,19 +334,7 @@ describe('Admin EditUserComponent', () => {
     });
 
     it('should require a password', () => {
-      const field = fixture.nativeElement.querySelector('#password');
-      field.value = '';
-      field.dispatchEvent(new Event('input'));
-      field.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
-      expect(field.classList).toContain('ng-invalid');
-      expect(field.classList).toContain('error');
-
-      field.value = 'abc123';
-      field.dispatchEvent(new Event('input'));
-      fixture.detectChanges();
-      expect(field.classList).toContain('ng-valid');
-      expect(field.classList).not.toContain('error');
+      checkRequired(fixture, '#password');
     });
   });
 });

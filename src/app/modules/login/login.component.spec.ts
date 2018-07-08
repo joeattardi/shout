@@ -9,6 +9,7 @@ import { LoginComponent } from './login.component';
 import { Login } from './actions/login.actions';
 
 import { MockStore } from '../../testing/store.mock';
+import { checkRequired, setFieldValue } from '../../testing/test-helpers';
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -45,35 +46,19 @@ describe('LoginComponent', () => {
   });
 
   it('should require the username field', () => {
-    const usernameField = fixture.nativeElement.querySelector('#username');
-    expect(usernameField.classList).toContain('ng-invalid');
-
-    usernameField.value = 'foo';
-    usernameField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    expect(usernameField.classList).toContain('ng-valid');
+    checkRequired(fixture, '#username');
   });
 
   it('should require the password field', () => {
-    const passwordField = fixture.nativeElement.querySelector('#password');
-    expect(passwordField.classList).toContain('ng-invalid');
-
-    passwordField.value = 'foo';
-    passwordField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    expect(passwordField.classList).toContain('ng-valid');
+    checkRequired(fixture, '#password');
   });
 
   it('should enable the login button when the form is valid', () => {
     const usernameField = fixture.nativeElement.querySelector('#username');
-    usernameField.value = 'foo';
-    usernameField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    setFieldValue(fixture, usernameField, 'foo');
 
     const passwordField = fixture.nativeElement.querySelector('#password');
-    passwordField.value = 'bar';
-    passwordField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    setFieldValue(fixture, passwordField, 'bar');
 
     const loginButton = fixture.nativeElement.querySelector('#button-container button');
     expect(loginButton.disabled).toBe(false);
@@ -83,14 +68,10 @@ describe('LoginComponent', () => {
     spyOn(mockStore, 'dispatch');
 
     const usernameField = fixture.nativeElement.querySelector('#username');
-    usernameField.value = 'foo';
-    usernameField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    setFieldValue(fixture, usernameField, 'foo');
 
     const passwordField = fixture.nativeElement.querySelector('#password');
-    passwordField.value = 'bar';
-    passwordField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    setFieldValue(fixture, passwordField, 'bar');
 
     const loginButton = fixture.nativeElement.querySelector('#button-container button');
     loginButton.click();
@@ -113,14 +94,10 @@ describe('LoginComponent', () => {
 
   it('should show a loading spinner and disable the login button while loading', () => {
     const usernameField = fixture.nativeElement.querySelector('#username');
-    usernameField.value = 'foo';
-    usernameField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    setFieldValue(fixture, usernameField, 'foo');
 
     const passwordField = fixture.nativeElement.querySelector('#password');
-    passwordField.value = 'bar';
-    passwordField.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
+    setFieldValue(fixture, passwordField, 'bar');
 
     mockStore.next({
       login: {
