@@ -8,6 +8,7 @@ import { fadeAnimation } from './fade.animation';
 
 import { AuthService } from './modules/core/auth.service';
 import { Notification } from './modules/core/notification/notification.types';
+import { RemoveNotification } from './modules/core/actions';
 
 import { State } from './reducers';
 import { getNotificationState } from './modules/core/reducers';
@@ -42,6 +43,10 @@ export class AppComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.store.dispatch(new GetCurrentUser());
     }
+  }
+
+  removeNotification(notification: Notification) {
+    this.store.dispatch(new RemoveNotification(notification));
   }
 
   getRouterOutletState(outlet) {

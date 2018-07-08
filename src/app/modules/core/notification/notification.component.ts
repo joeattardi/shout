@@ -1,13 +1,8 @@
-import { Component, Input } from '@angular/core';
-
-import { Store } from '@ngrx/store';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { faCheckCircle, faExclamationTriangle, faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { Notification } from './notification.types';
-
-import { State } from '../../../reducers';
-import { RemoveNotification } from '../actions';
 
 @Component({
   selector: 'app-notification',
@@ -17,6 +12,8 @@ import { RemoveNotification } from '../actions';
 export class NotificationComponent {
   @Input() notification: Notification;
 
+  @Output() remove = new EventEmitter<void>();
+
   icons = {
     success: faCheckCircle,
     error: faExclamationTriangle,
@@ -24,10 +21,8 @@ export class NotificationComponent {
     close: faTimes
   };
 
-  constructor(private store: Store<State>) {}
-
   closeButtonClicked(): void {
-    this.store.dispatch(new RemoveNotification(this.notification));
+    this.remove.emit();
   }
 
   get icon() {

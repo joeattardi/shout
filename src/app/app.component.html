@@ -1,6 +1,6 @@
 <div id="notification-container">
   <div @notification *ngFor="let notification of (notifications$ | async)">
-    <app-notification [notification]="notification"></app-notification>
+    <app-notification [notification]="notification" (remove)="removeNotification(notification)"></app-notification>
   </div>
 </div>
 <div [@fadeAnimation]="getRouterOutletState(o)">
