@@ -19,7 +19,7 @@ describe('AuthService', () => {
     authService = new AuthService(httpClient);
   });
 
-  it('should post the username and password to /api/login', () => {
+  it('should POST the username and password to /api/login', () => {
     authService.login('foo', 'bar').subscribe(result => {
       authService.logOut();
     });
