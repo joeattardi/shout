@@ -1,13 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  const httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
-
   let authService: AuthService;
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
