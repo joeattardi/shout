@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    const token = localStorage.getItem('token');
+    const token = this.getToken();
     return this.httpClient.get('/api/current_user', {
       headers: {
         Authorization: `Bearer ${token}`
