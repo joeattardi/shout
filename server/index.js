@@ -26,6 +26,8 @@ process.stdout.write('==========================================================
 logger.info(`Server starting up on ${new Date().toString()}`);
 
 const jwt = require('./jwt');
+jwt.init();
+
 const router = require('./router');
 const adminRouter = require('./admin-router');
 const db = require('../models');

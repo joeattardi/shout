@@ -25,7 +25,8 @@ exports.handler = async function(req, res) {
       lastName: req.body.lastName,
       email: req.body.email,
       username: req.body.username,
-      password: hashedPassword
+      password: hashedPassword,
+      admin: false
     });
 
     logger.debug(`Successfully created user with id ${user.id}`);
