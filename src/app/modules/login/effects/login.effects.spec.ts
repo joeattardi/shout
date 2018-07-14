@@ -38,59 +38,63 @@ describe('LoginEffects', () => {
     effects = TestBed.get(LoginEffects);
   });
 
-  it('should return LOGIN_SUCCESS on successful login', () => {
-    mockAuthService.login.and.returnValue(
-      of({
-        user: { username: 'joe' }
-      })
-    );
+  describe('login$', () => {
+    it('should return LOGIN_SUCCESS on successful login', () => {
+      mockAuthService.login.and.returnValue(
+        of({
+          user: { username: 'joe' }
+        })
+      );
 
-    const action = new Login('joe', 'foo');
-    actions$ = hot('--a-', { a: action });
+      const action = new Login('joe', 'foo');
+      actions$ = hot('--a-', { a: action });
 
-    const completion = new LoginSuccess({ username: 'joe' });
-    const expected = cold('--b', { b: completion });
+      const completion = new LoginSuccess({ username: 'joe' });
+      const expected = cold('--b', { b: completion });
 
-    expect(effects.login$).toBeObservable(expected);
+      expect(effects.login$).toBeObservable(expected);
+    });
+
+    it('should return LOGIN_AUTH_ERROR when the login is incorrect', () => {
+      mockAuthService.login.and.returnValue(throwError({ status: 403 }));
+
+      const action = new Login('joe', 'foo');
+      actions$ = hot('--a-', { a: action });
+
+      const completion = new LoginAuthError();
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.login$).toBeObservable(expected);
+    });
+
+    it('should return LOGIN_ERROR on login error', () => {
+      mockAuthService.login.and.returnValue(throwError({ status: 500 }));
+
+      const action = new Login('joe', 'foo');
+      actions$ = hot('--a-', { a: action });
+
+      const completion = new LoginError();
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.login$).toBeObservable(expected);
+    });
   });
 
-  it('should return LOGIN_AUTH_ERROR when the login is incorrect', () => {
-    mockAuthService.login.and.returnValue(throwError({ status: 403 }));
+  describe('loginSuccess$', () => {
+    it('should navigate to /chat, show a notification, and return UPDATE_CURRENT_USER on login success', () => {
+      const action = new LoginSuccess({ firstName: 'Joe' });
+      actions$ = hot('--a-', { a: action });
 
-    const action = new Login('joe', 'foo');
-    actions$ = hot('--a-', { a: action });
+      const completion = new UpdateCurrentUser({ firstName: 'Joe' });
+      const expected = cold('--b', { b: completion });
 
-    const completion = new LoginAuthError();
-    const expected = cold('--b', { b: completion });
-
-    expect(effects.login$).toBeObservable(expected);
-  });
-
-  it('should return LOGIN_ERROR on login error', () => {
-    mockAuthService.login.and.returnValue(throwError({ status: 500 }));
-
-    const action = new Login('joe', 'foo');
-    actions$ = hot('--a-', { a: action });
-
-    const completion = new LoginError();
-    const expected = cold('--b', { b: completion });
-
-    expect(effects.login$).toBeObservable(expected);
-  });
-
-  it('should navigate to /chat, show a notification, and return UPDATE_CURRENT_USER on login success', () => {
-    const action = new LoginSuccess({ firstName: 'Joe' });
-    actions$ = hot('--a-', { a: action });
-
-    const completion = new UpdateCurrentUser({ firstName: 'Joe' });
-    const expected = cold('--b', { b: completion });
-
-    expect(effects.loginSuccess$).toBeObservable(expected);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/chat']);
-    expect(mockNotificationService.showNotification).toHaveBeenCalledWith({
-      theme: NotificationTheme.SUCCESS,
-      message: 'Welcome back, Joe!',
-      icon: faComment
+      expect(effects.loginSuccess$).toBeObservable(expected);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/chat']);
+      expect(mockNotificationService.showNotification).toHaveBeenCalledWith({
+        theme: NotificationTheme.SUCCESS,
+        message: 'Welcome back, Joe!',
+        icon: faComment
+      });
     });
   });
 });

@@ -36,49 +36,53 @@ describe('SignUpEffects', () => {
     effects = TestBed.get(SignUpEffects);
   });
 
-  it('should return SIGN_UP_SUCCESS on signup', () => {
-    mockAuthService.signup.and.returnValue(
-      of({
-        user: {
-          username: 'joe'
-        }
-      })
-    );
+  describe('signup$', () => {
+    it('should return SIGN_UP_SUCCESS on signup', () => {
+      mockAuthService.signup.and.returnValue(
+        of({
+          user: {
+            username: 'joe'
+          }
+        })
+      );
 
-    const action = new SignUp('Joe', 'Foo', 'joe@foo.com', 'joe', 'foo');
-    actions$ = hot('--a', { a: action });
+      const action = new SignUp('Joe', 'Foo', 'joe@foo.com', 'joe', 'foo');
+      actions$ = hot('--a', { a: action });
 
-    const completion = new SignUpSuccess({ username: 'joe' });
-    const expected = cold('--b', { b: completion });
+      const completion = new SignUpSuccess({ username: 'joe' });
+      const expected = cold('--b', { b: completion });
 
-    expect(effects.signup$).toBeObservable(expected);
+      expect(effects.signup$).toBeObservable(expected);
+    });
+
+    it('should return SIGN_UP_ERROR on signup error', () => {
+      mockAuthService.signup.and.returnValue(throwError({ status: 500 }));
+
+      const action = new SignUp('Joe', 'Foo', 'joe@foo.com', 'joe', 'foo');
+      actions$ = hot('--a', { a: action });
+
+      const completion = new SignUpError();
+      const expected = cold('--b', { b: completion });
+
+      expect(effects.signup$).toBeObservable(expected);
+    });
   });
 
-  it('should return SIGN_UP_ERROR on signup error', () => {
-    mockAuthService.signup.and.returnValue(throwError({ status: 500 }));
+  describe('signupSuccess$', () => {
+    it('should navigate to /chat, show a notification, and return UPDATE_CURRENT_USER on successful signup', () => {
+      const action = new SignUpSuccess({ firstName: 'Joe' });
+      actions$ = hot('--a', { a: action });
 
-    const action = new SignUp('Joe', 'Foo', 'joe@foo.com', 'joe', 'foo');
-    actions$ = hot('--a', { a: action });
+      const completion = new UpdateCurrentUser({ firstName: 'Joe' });
+      const expected = cold('--b', { b: completion });
 
-    const completion = new SignUpError();
-    const expected = cold('--b', { b: completion });
-
-    expect(effects.signup$).toBeObservable(expected);
-  });
-
-  it('should navigate to /chat, show a notification, and return UPDATE_CURRENT_USER on successful signup', () => {
-    const action = new SignUpSuccess({ firstName: 'Joe' });
-    actions$ = hot('--a', { a: action });
-
-    const completion = new UpdateCurrentUser({ firstName: 'Joe' });
-    const expected = cold('--b', { b: completion });
-
-    expect(effects.signupSuccess$).toBeObservable(expected);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/chat']);
-    expect(mockNotificationService.showNotification).toHaveBeenCalledWith({
-      theme: NotificationTheme.SUCCESS,
-      message: 'Welcome to shout, Joe!',
-      icon: faComment
+      expect(effects.signupSuccess$).toBeObservable(expected);
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/chat']);
+      expect(mockNotificationService.showNotification).toHaveBeenCalledWith({
+        theme: NotificationTheme.SUCCESS,
+        message: 'Welcome to shout, Joe!',
+        icon: faComment
+      });
     });
   });
 });
