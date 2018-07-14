@@ -59,7 +59,7 @@ export class UsersEffects {
   );
 
   @Effect()
-  deleteUserSucces$ = this.actions$.pipe(
+  deleteUserSuccess$ = this.actions$.pipe(
     ofType(UsersActionTypes.DELETE_USER_SUCCESS),
     tap((action: DeleteUserSuccess) => {
       this.router.navigate(['/admin', 'users']);
