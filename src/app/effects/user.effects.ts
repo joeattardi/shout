@@ -7,13 +7,12 @@ import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { AuthService } from '../modules/core/auth.service';
-import { UserService } from '../modules/core/user.service';
 
 import { UserActionTypes, GetCurrentUserSuccess } from '../actions';
 
 @Injectable()
 export class UserEffects {
-  constructor(private actions$: Actions, private authService: AuthService, private userService: UserService) {}
+  constructor(private actions$: Actions, private authService: AuthService) {}
 
   @Effect()
   getCurrentUser$: Observable<Action> = this.actions$.pipe(
