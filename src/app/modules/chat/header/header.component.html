@@ -23,9 +23,9 @@
       <div id="user-avatar">
         <svg [appIdenticon]="(user$ | async)?.username"></svg>
       </div>
-      <div id="user-name">
+      <div id="menu-user-name">
         <div id="user-full-name">{{ (user$ | async)?.firstName }} {{ (user$ | async)?.lastName }}</div>
-        <div>{{ (user$ | async)?.username }}</div>
+        <div id="user-username">{{ (user$ | async)?.username }}</div>
       </div>
     </div>
 
