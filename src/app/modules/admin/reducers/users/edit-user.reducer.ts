@@ -59,7 +59,9 @@ export function editUserReducer(state = initialState, action: UsersAction): Edit
 
     case UsersActionTypes.CREATE_USER:
       return {
-        user: {},
+        user: {
+          admin: false
+        },
         loading: false,
         error: false
       };
