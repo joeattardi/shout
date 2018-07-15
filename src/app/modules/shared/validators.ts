@@ -3,8 +3,6 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { debounceTime, map, distinctUntilChanged, switchMap, first } from 'rxjs/operators';
 import { validate } from 'email-validator';
 
-import { AuthService } from '../core/auth.service';
-
 export function passwordMatchValidator(form: AbstractControl): ValidationErrors | null {
   const password = form.get('password').value;
   const confirmPassword = form.get('confirmPassword').value;
