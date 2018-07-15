@@ -124,7 +124,7 @@ describe('profile', () => {
     expect(res.json).toHaveBeenCalledWith({
       result: Result.LOGIN_INCORRECT,
       message: 'Current password is incorrect'
-    })
+    });
   });
 
   it('should return a 500 if an error occurs while loading the user', async () => {
