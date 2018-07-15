@@ -10,15 +10,20 @@ exports.handler = async function(req, res) {
   logger.info(`Request initiated by user "${req.user.sub}"`);
 
   const userId = parseInt(req.params.userId);
-  const user = await loadUser(userId);
-  if (!user) {
-    return sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
-  }
 
-  if (await updateUser(user, req.body)) {
-    sendResult(res, 200, Result.SUCCESS, 'User updated');
-  } else {
-    sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
+  try {
+    const user = await loadUser(userId);
+    if (!user) {
+      return sendResult(res, 404, Result.ERROR, 'User not found');
+    }
+
+    if (await updateUser(user, req.body)) {
+      sendResult(res, 200, Result.SUCCESS, 'User updated');
+    } else {
+      sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
+    }
+  } catch (error) {
+    return sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };
 
@@ -31,6 +36,7 @@ async function loadUser(id) {
     });
   } catch (error) {
     logger.error(`Error while loading user id ${id}: ${error}`);
+    throw error;
   }
 }
 

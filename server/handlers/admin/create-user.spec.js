@@ -1,20 +1,17 @@
 const rewire = require('rewire');
 
-const { Result } = require('../api');
+const { Result } = require('../../api');
 
-const logger = require('../logger');
+const createUser = rewire('./create-user');
+
+const logger = require('../../logger');
 logger.transports.forEach(t => (t.silent = true));
 
-const signup = rewire('./signup');
-
 const mockUser = jasmine.createSpyObj('User', ['create']);
-signup.__set__('User', mockUser);
+createUser.__set__('User', mockUser);
 
 const mockPasswords = jasmine.createSpyObj('passwords', ['hashPassword']);
-signup.__set__('passwords', mockPasswords);
-
-const mockJwt = jasmine.createSpyObj('jwt', ['sign']);
-signup.__set__('jwt', mockJwt);
+createUser.__set__('passwords', mockPasswords);
 
 const req = {
   body: {
@@ -22,6 +19,7 @@ const req = {
     lastName: 'Foo',
     email: 'joe@foo.com',
     username: 'joe',
+    admin: false,
     password: 'foo'
   }
 };
@@ -30,48 +28,45 @@ const res = jasmine.createSpyObj('res', ['status', 'json']);
 res.status.and.returnValue(res);
 res.json.and.returnValue(res);
 
-describe('signup', () => {
+describe('create-user', () => {
   beforeEach(() => {
     res.status.calls.reset();
     res.json.calls.reset();
   });
 
-  it('should sign up a user', async () => {
-    mockPasswords.hashPassword.and.returnValue('hashed_password');
-
+  it('should create the user and return a 201', async () => {
     mockUser.create.and.returnValue({
+      id: 1,
       firstName: 'Joe',
       lastName: 'Foo',
       email: 'joe@foo.com',
       username: 'joe',
-      password: 'hashed_password',
-      admin: false
+      admin: false,
+      password: 'foo'
     });
 
-    mockJwt.sign.and.returnValue('jwt_token');
-    mockJwt.jwtExpireTime = 3600;
+    mockPasswords.hashPassword.and.returnValue('hashed_password');
 
-    await signup.handler(req, res);
+    await createUser.handler(req, res);
+    expect(mockUser.create).toHaveBeenCalledWith({
+      firstName: 'Joe',
+      lastName: 'Foo',
+      email: 'joe@foo.com',
+      username: 'joe',
+      admin: false,
+      password: 'hashed_password'
+    });
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
       result: Result.SUCCESS,
-      token: 'jwt_token',
-      expiresIn: 3600,
-      user: {
-        firstName: 'Joe',
-        lastName: 'Foo',
-        username: 'joe',
-        email: 'joe@foo.com',
-        admin: false
-      }
+      message: 'User created'
     });
   });
 
-  it('should return a 500 if there is an error', async () => {
-    mockPasswords.hashPassword.and.returnValue('hashed_password');
+  it('should return a 500 if there was an error', async () => {
     mockUser.create.and.throwError('error');
 
-    await signup.handler(req, res);
+    await createUser.handler(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       result: Result.ERROR,

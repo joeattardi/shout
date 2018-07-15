@@ -27,6 +27,11 @@ res.status.and.returnValue(res);
 res.json.and.returnValue(res);
 
 describe('login', () => {
+  beforeEach(() => {
+    res.status.calls.reset();
+    res.json.calls.reset();
+  });
+
   it('should issue a token and return the user if login was successful', async () => {
     mockUser.findOne.and.returnValue({
       username: 'joe',

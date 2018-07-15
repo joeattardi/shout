@@ -23,7 +23,6 @@ exports.handler = async function(req, res) {
       sendResult(res, 404, Result.NOT_FOUND, 'User not found');
     }
   } catch (error) {
-    console.log(error);
     sendResult(res, 500, Result.ERROR, 'An unexpected error has occurred');
   }
 };

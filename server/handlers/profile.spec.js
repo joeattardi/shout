@@ -18,6 +18,11 @@ res.status.and.returnValue(res);
 res.json.and.returnValue(res);
 
 describe('profile', () => {
+  beforeEach(() => {
+    res.status.calls.reset();
+    res.json.calls.reset();
+  });
+
   it('should update the user profile', async () => {
     const req = {
       user: {
