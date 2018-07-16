@@ -1,4 +1,5 @@
 const rewire = require('rewire');
+const { Op } = require('sequelize');
 
 const { Result } = require('../../api');
 
@@ -29,7 +30,11 @@ describe('users', () => {
       }
     ]);
 
-    await users.handler({}, res);
+    const req = {
+      query: {}
+    };
+
+    await users.handler(req, res);
     expect(mockUser.findAll).toHaveBeenCalledWith({
       order: [['lastName', 'asc'], ['firstName', 'asc']]
     });
@@ -49,10 +54,55 @@ describe('users', () => {
     });
   });
 
+  it('should search the users if a query is specified', async () => {
+    mockUser.findAll.and.returnValue([
+      {
+        id: 1,
+        firstName: 'Joe',
+        lastName: 'Foo',
+        email: 'joe@foo.com',
+        admin: false,
+        password: 'hashed_password'
+      }
+    ]);
+
+    const req = {
+      query: {
+        query: 'joe'
+      }
+    };
+
+    await users.handler(req, res);
+    expect(mockUser.findAll).toHaveBeenCalledWith({
+      order: [['lastName', 'asc'], ['firstName', 'asc']],
+      where: {
+        [Op.or]: [
+          {
+            firstName: {
+              [Op.iLike]: '%joe%'
+            }
+          },
+          {
+            lastName: {
+              [Op.iLike]: '%joe%'
+            }
+          },
+          {
+            username: {
+              [Op.iLike]: '%joe%'
+            }
+          }
+        ]
+      }
+    });
+  });
+
   it('should return a 500 if there is an error', async () => {
     mockUser.findAll.and.throwError('error');
 
-    await users.handler({}, res);
+    const req = { query: {} };
+
+    await users.handler(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       result: Result.ERROR,

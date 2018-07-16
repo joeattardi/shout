@@ -16,6 +16,14 @@ export class AdminService {
     });
   }
 
+  searchUsers(searchTerm) {
+    return this.httpClient.get(`/api/admin/users?query=${searchTerm}`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.getToken()}`
+      }
+    });
+  }
+
   deleteUser(user: User) {
     return this.httpClient.delete(`/api/admin/users/${user.id}`, {
       headers: {

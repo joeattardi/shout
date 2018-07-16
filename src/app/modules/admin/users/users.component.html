@@ -10,7 +10,8 @@
   [loading]="loading$ | async"
   [users]="users$ | async"
   (retry)="retryLoadUsers()"
-  (delete)="deleteUser($event)"></app-admin-user-list>
+  (delete)="deleteUser($event)"
+  (searchUsers)="searchUsers($event)"></app-admin-user-list>
 
 <app-confirm-modal *ngIf="deleteModalState.show"
   title="Delete user?"

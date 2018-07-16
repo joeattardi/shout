@@ -100,7 +100,9 @@ describe('Admin Edit User Reducer', () => {
     };
     const newState = editUserReducer(state, new CreateUser());
     expect(newState).toEqual({
-      user: {},
+      user: {
+        admin: false
+      },
       loading: false,
       error: false
     });

@@ -1,5 +1,5 @@
 <div id="user-search">
-  <input type="search" placeholder="Search by name or username">
+  <input type="search" placeholder="Search by name or username" (input)="onSearch($event.target.value)">
 </div>
 
 <div class="spinner-container" *ngIf="loading">
@@ -15,7 +15,7 @@
 </div>
 
 <div id="user-list" *ngIf="!loading && !error">
-  <div (click)="onEdit(user)" class="user-entry" *ngFor="let user of users" @fade>
+  <div (click)="onEdit(user)" class="user-entry" *ngFor="let user of users">
     <div class="user-avatar">
       <svg [appIdenticon]="user.username"></svg>
     </div>

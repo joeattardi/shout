@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 import { Observable, of } from 'rxjs';
-import { delay, map, switchMap, tap, catchError } from 'rxjs/operators';
+import { debounceTime, map, switchMap, tap, catchError, withLatestFrom } from 'rxjs/operators';
+
+import { State } from '../../../reducers';
 
 import { AdminService } from '../admin.service';
 import { NotificationService } from '../../core/notification/notification.service';
@@ -13,8 +15,6 @@ import { NotificationTheme } from '../../core/notification/notification.types';
 
 import {
   UsersActionTypes,
-  LoadUsersSuccess,
-  LoadUsersError,
   DeleteUserConfirm,
   DeleteUserSuccess,
   DeleteUserError,
@@ -24,8 +24,11 @@ import {
   SaveUser,
   SaveUserSuccess,
   SaveUserError,
-  LoadUsers
+  SearchUsers,
+  SearchUsersSuccess,
+  SearchUsersError
 } from '../actions';
+import { getUsersSearchState } from '../reducers';
 
 @Injectable()
 export class UsersEffects {
@@ -33,19 +36,9 @@ export class UsersEffects {
     private actions$: Actions,
     private adminService: AdminService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private store: Store<State>
   ) {}
-
-  @Effect()
-  getUsers$: Observable<Action> = this.actions$.pipe(
-    ofType(UsersActionTypes.LOAD_USERS),
-    switchMap(() => {
-      return this.adminService.getUsers().pipe(
-        map((result: any) => new LoadUsersSuccess(result.users)),
-        catchError(error => of(new LoadUsersError()))
-      );
-    })
-  );
 
   @Effect()
   deleteUser$: Observable<Action> = this.actions$.pipe(
@@ -61,14 +54,15 @@ export class UsersEffects {
   @Effect()
   deleteUserSuccess$ = this.actions$.pipe(
     ofType(UsersActionTypes.DELETE_USER_SUCCESS),
-    tap((action: DeleteUserSuccess) => {
+    withLatestFrom(this.store.select(getUsersSearchState)),
+    tap(([action]: [DeleteUserSuccess, string]) => {
       this.router.navigate(['/admin', 'users']);
       this.notificationService.showNotification({
         theme: NotificationTheme.SUCCESS,
         message: `The user "${action.user.firstName} ${action.user.lastName}" was deleted.`
       });
     }),
-    map(() => new LoadUsers())
+    map(([action, searchTerm]) => new SearchUsers(searchTerm))
   );
 
   @Effect()
@@ -96,13 +90,26 @@ export class UsersEffects {
   @Effect()
   saveUserSuccess$ = this.actions$.pipe(
     ofType(UsersActionTypes.SAVE_USER_SUCCESS),
-    tap((action: SaveUserSuccess) => {
+    withLatestFrom(this.store.select(getUsersSearchState)),
+    tap(([action]: [SaveUserSuccess, string]) => {
       this.router.navigate(['/admin', 'users']);
       this.notificationService.showNotification({
         theme: NotificationTheme.SUCCESS,
         message: `The user "${action.user.firstName} ${action.user.lastName}" was saved.`
       });
     }),
-    map(() => new LoadUsers())
+    map(([action, searchTerm]) => new SearchUsers(searchTerm))
+  );
+
+  @Effect()
+  searchUsers$ = this.actions$.pipe(
+    ofType(UsersActionTypes.SEARCH_USERS),
+    debounceTime(300),
+    switchMap((action: SearchUsers) => {
+      return this.adminService.searchUsers(action.searchTerm).pipe(
+        map((result: any) => new SearchUsersSuccess(result.users)),
+        catchError(error => of(new SearchUsersError()))
+      );
+    })
   );
 }

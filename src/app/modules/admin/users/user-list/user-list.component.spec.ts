@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 
+import { setFieldValue } from '../../../../testing/test-helpers';
+
 import { UserListComponent } from './user-list.component';
 
 const mockRouter = jasmine.createSpyObj('Router', ['navigate']);
@@ -89,6 +91,18 @@ describe('Admin UserListComponent', () => {
     const retryButton = fixture.nativeElement.querySelector('#users-retry-button');
     retryButton.click();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should emit an event when a search term is entered', () => {
+    const spy = jasmine.createSpy('searchSpy');
+    component.searchUsers.subscribe((searchTerm: string) => {
+      spy(searchTerm);
+    });
+
+    const searchInput = fixture.nativeElement.querySelector('#user-search input');
+    setFieldValue(fixture, searchInput, 'foo');
+
+    expect(spy).toHaveBeenCalledWith('foo');
   });
 
   it('should show the user list only if it is not loading and there is not an error', () => {

@@ -17,7 +17,10 @@ export enum UsersActionTypes {
   SAVE_USER = '[Admin] save user',
   SAVE_USER_SUCCESS = '[Admin] save user success',
   SAVE_USER_ERROR = '[Admin] save user error',
-  CREATE_USER = '[Admin] create user'
+  CREATE_USER = '[Admin] create user',
+  SEARCH_USERS = '[Admin] search users',
+  SEARCH_USERS_SUCCESS = '[Admin] search users success',
+  SEARCH_USERS_ERROR = '[Admin] search users error'
 }
 
 export class LoadUsers implements Action {
@@ -93,6 +96,20 @@ export class CreateUser implements Action {
   readonly type = UsersActionTypes.CREATE_USER;
 }
 
+export class SearchUsers implements Action {
+  readonly type = UsersActionTypes.SEARCH_USERS;
+  constructor(public searchTerm: string) {}
+}
+
+export class SearchUsersSuccess implements Action {
+  readonly type = UsersActionTypes.SEARCH_USERS_SUCCESS;
+  constructor(public users: User[]) {}
+}
+
+export class SearchUsersError implements Action {
+  readonly type = UsersActionTypes.SEARCH_USERS_ERROR;
+}
+
 export type UsersAction =
   | LoadUsers
   | LoadUsersSuccess
@@ -109,4 +126,7 @@ export type UsersAction =
   | SaveUser
   | SaveUserSuccess
   | SaveUserError
-  | CreateUser;
+  | CreateUser
+  | SearchUsers
+  | SearchUsersSuccess
+  | SearchUsersError;

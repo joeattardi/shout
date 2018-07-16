@@ -8,8 +8,8 @@ import { takeUntil } from 'rxjs/operators';
 import { User } from '../../core/core.types';
 
 import { State } from '../../../reducers';
-import { LoadUsers, DeleteUser, DeleteUserCancel, DeleteUserConfirm } from '../actions';
-import { getUserListState, getUsersLoadingState, getUsersErrorState, getUsersDeleteModalState } from '../reducers';
+import { DeleteUser, DeleteUserCancel, DeleteUserConfirm, SearchUsers } from '../actions';
+import { getUserListState, getUsersLoadingState, getUsersErrorState, getUsersDeleteModalState, getUsersSearchState } from '../reducers';
 import { getUserState } from '../../../reducers/user.reducer';
 import { ConfirmDeleteModalState } from '../reducers/users/delete-modal.reducer';
 
@@ -24,13 +24,22 @@ export class UsersComponent implements OnDestroy, OnInit {
   loading$: Observable<boolean>;
   error$: Observable<boolean>;
   currentUser$: Observable<User>;
+
   deleteModalState: ConfirmDeleteModalState;
+  searchTerm: string;
 
   constructor(private store: Store<State>) {
     this.users$ = this.store.select(getUserListState);
     this.loading$ = this.store.select(getUsersLoadingState);
     this.error$ = this.store.select(getUsersErrorState);
     this.currentUser$ = this.store.select(getUserState);
+
+    this.store
+      .select(getUsersSearchState)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((searchTerm: string) => {
+        this.searchTerm = searchTerm;
+      });
 
     this.store
       .select(getUsersDeleteModalState)
@@ -41,7 +50,7 @@ export class UsersComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new LoadUsers());
+    this.store.dispatch(new SearchUsers(''));
   }
 
   ngOnDestroy(): void {
@@ -49,7 +58,7 @@ export class UsersComponent implements OnDestroy, OnInit {
   }
 
   retryLoadUsers(): void {
-    this.store.dispatch(new LoadUsers());
+    this.store.dispatch(new SearchUsers(this.searchTerm));
   }
 
   deleteUser(user: User): void {
@@ -62,5 +71,9 @@ export class UsersComponent implements OnDestroy, OnInit {
 
   cancelDelete(): void {
     this.store.dispatch(new DeleteUserCancel());
+  }
+
+  searchUsers(searchTerm: string): void {
+    this.store.dispatch(new SearchUsers(searchTerm));
   }
 }
