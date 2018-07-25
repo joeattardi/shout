@@ -1,19 +1,45 @@
 import { User } from '../../../core/core.types';
 import { UsersAction, UsersActionTypes } from '../../actions';
 
-export type UserListState = User[];
+export interface UserListState {
+  users: User[];
+  total: number;
+}
 
-const initialState: UserListState = [];
+const initialState: UserListState = {
+  users: [],
+  total: 0
+};
 
 export function userListReducer(state = initialState, action: UsersAction): UserListState {
   switch (action.type) {
-    case UsersActionTypes.LOAD_USERS_SUCCESS:
-    case UsersActionTypes.SEARCH_USERS_SUCCESS:
-      return action.users;
+    case UsersActionTypes.SEARCH_USERS:
+      return {
+        ...state,
+        users: [],
+        total: 0
+      };
 
-    case UsersActionTypes.LOAD_USERS_ERROR:
+    case UsersActionTypes.SEARCH_USERS_SUCCESS:
+      return {
+        ...state,
+        users: action.users,
+        total: action.total
+      };
+
     case UsersActionTypes.SEARCH_USERS_ERROR:
-      return [];
+      return {
+        ...state,
+        users: [],
+        total: 0
+      };
+
+    case UsersActionTypes.SEARCH_MORE_USERS_SUCCESS:
+      return {
+        ...state,
+        users: [...state.users, ...action.users],
+        total: action.total
+      };
 
     default:
       return state;

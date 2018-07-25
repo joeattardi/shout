@@ -164,4 +164,35 @@ describe('Admin UserListComponent', () => {
     deleteButton.click();
     expect(spy).toHaveBeenCalledWith(component.users[0]);
   });
+
+  it('should emit an event when the load more button is clicked', () => {
+    component.showLoadMore = true;
+    fixture.detectChanges();
+
+    const spy = jasmine.createSpy('loadMoreSpy');
+    component.loadMore.subscribe(() => {
+      spy();
+    });
+
+    const loadMoreButton = fixture.nativeElement.querySelector('#load-more-button button');
+    loadMoreButton.click();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should show the load more button if showLoadMore is true', () => {
+    component.showLoadMore = true;
+    fixture.detectChanges();
+
+    const loadMoreButton = fixture.nativeElement.querySelector('#load-more-button');
+    expect(loadMoreButton).not.toBeNull();
+  });
+
+  it('should show a spinner if loadingMore is true', () => {
+    component.showLoadMore = true;
+    component.loadingMore = true;
+    fixture.detectChanges();
+
+    const spinner = fixture.nativeElement.querySelector('#load-more-button button app-spinner');
+    expect(spinner).not.toBeNull();
+  });
 });

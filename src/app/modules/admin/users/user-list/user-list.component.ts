@@ -20,11 +20,14 @@ export class UserListComponent {
   @Input() currentUser: User;
   @Input() users: User[];
   @Input() loading = false;
+  @Input() loadingMore = false;
   @Input() error = false;
+  @Input() showLoadMore = false;
 
   @Output() retry = new EventEmitter<void>();
   @Output() delete = new EventEmitter<User>();
   @Output() searchUsers = new EventEmitter<string>();
+  @Output() loadMore = new EventEmitter<void>();
 
   constructor(private router: Router) {}
 
@@ -43,5 +46,9 @@ export class UserListComponent {
 
   onSearch(searchTerm: string) {
     this.searchUsers.emit(searchTerm);
+  }
+
+  onLoadMore() {
+    this.loadMore.emit();
   }
 }

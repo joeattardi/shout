@@ -11,7 +11,9 @@ import {
   getUsersError,
   getConfirmDeleteModal,
   getUserEdit,
-  getUsersSearch
+  getUsersSearch,
+  getUserListTotal,
+  getUsersLoadingMore
 } from './users';
 import { getUser, getUserLoading, getUserError } from './users/edit-user.reducer';
 
@@ -33,7 +35,9 @@ export const getAdminState = createFeatureSelector<AdminState>('admin');
 
 export const getUsersState = createSelector(getAdminState, state => state.users);
 export const getUserListState = createSelector(getUsersState, getUserList);
+export const getUserListTotalState = createSelector(getUsersState, getUserListTotal);
 export const getUsersLoadingState = createSelector(getUsersState, getUsersLoading);
+export const getUsersLoadingMoreState = createSelector(getUsersState, getUsersLoadingMore);
 export const getUsersSearchState = createSelector(getUsersState, getUsersSearch);
 export const getUsersErrorState = createSelector(getUsersState, getUsersError);
 export const getUsersDeleteModalState = createSelector(getUsersState, getConfirmDeleteModal);

@@ -26,7 +26,10 @@ import {
   SaveUserError,
   SearchUsers,
   SearchUsersSuccess,
-  SearchUsersError
+  SearchUsersError,
+  SearchMoreUsers,
+  SearchMoreUsersSuccess,
+  SearchMoreUsersError
 } from '../actions';
 import { getUsersSearchState } from '../reducers';
 
@@ -106,9 +109,20 @@ export class UsersEffects {
     ofType(UsersActionTypes.SEARCH_USERS),
     debounceTime(300),
     switchMap((action: SearchUsers) => {
-      return this.adminService.searchUsers(action.searchTerm).pipe(
-        map((result: any) => new SearchUsersSuccess(result.users)),
+      return this.adminService.searchUsers(action.searchTerm, action.offset).pipe(
+        map((result: any) => new SearchUsersSuccess(result.users, result.total)),
         catchError(error => of(new SearchUsersError()))
+      );
+    })
+  );
+
+  @Effect()
+  searchMoreUsers$ = this.actions$.pipe(
+    ofType(UsersActionTypes.SEARCH_MORE_USERS),
+    switchMap((action: SearchMoreUsers) => {
+      return this.adminService.searchUsers(action.searchTerm, action.offset).pipe(
+        map((result: any) => new SearchMoreUsersSuccess(result.users, result.total)),
+        catchError(error => of(new SearchMoreUsersError()))
       );
     })
   );

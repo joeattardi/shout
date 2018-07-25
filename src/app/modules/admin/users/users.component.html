@@ -8,9 +8,12 @@
   [currentUser]="currentUser$ | async"
   [error]="error$ | async"
   [loading]="loading$ | async"
-  [users]="users$ | async"
+  [loadingMore]="loadingMore$ | async"
+  [users]="users"
+  [showLoadMore]="(total$ | async) > users.length"
   (retry)="retryLoadUsers()"
   (delete)="deleteUser($event)"
+  (loadMore)="loadMoreUsers()"
   (searchUsers)="searchUsers($event)"></app-admin-user-list>
 
 <app-confirm-modal *ngIf="deleteModalState.show"

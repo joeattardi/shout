@@ -8,8 +8,16 @@ import { takeUntil } from 'rxjs/operators';
 import { User } from '../../core/core.types';
 
 import { State } from '../../../reducers';
-import { DeleteUser, DeleteUserCancel, DeleteUserConfirm, SearchUsers } from '../actions';
-import { getUserListState, getUsersLoadingState, getUsersErrorState, getUsersDeleteModalState, getUsersSearchState } from '../reducers';
+import { DeleteUser, DeleteUserCancel, DeleteUserConfirm, SearchUsers, SearchMoreUsers } from '../actions';
+import {
+  getUserListState,
+  getUsersLoadingState,
+  getUsersLoadingMoreState,
+  getUsersErrorState,
+  getUsersDeleteModalState,
+  getUsersSearchState,
+  getUserListTotalState
+} from '../reducers';
 import { getUserState } from '../../../reducers/user.reducer';
 import { ConfirmDeleteModalState } from '../reducers/users/delete-modal.reducer';
 
@@ -20,19 +28,22 @@ import { ConfirmDeleteModalState } from '../reducers/users/delete-modal.reducer'
 export class UsersComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
 
-  users$: Observable<User[]>;
   loading$: Observable<boolean>;
+  loadingMore$: Observable<boolean>;
   error$: Observable<boolean>;
+  total$: Observable<number>;
   currentUser$: Observable<User>;
 
+  users: User[];
   deleteModalState: ConfirmDeleteModalState;
   searchTerm: string;
 
   constructor(private store: Store<State>) {
-    this.users$ = this.store.select(getUserListState);
     this.loading$ = this.store.select(getUsersLoadingState);
+    this.loadingMore$ = this.store.select(getUsersLoadingMoreState);
     this.error$ = this.store.select(getUsersErrorState);
     this.currentUser$ = this.store.select(getUserState);
+    this.total$ = this.store.select(getUserListTotalState);
 
     this.store
       .select(getUsersSearchState)
@@ -46,6 +57,13 @@ export class UsersComponent implements OnDestroy, OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((deleteModalState: ConfirmDeleteModalState) => {
         this.deleteModalState = deleteModalState;
+      });
+
+    this.store
+      .select(getUserListState)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((users: User[]) => {
+        this.users = users;
       });
   }
 
@@ -75,5 +93,9 @@ export class UsersComponent implements OnDestroy, OnInit {
 
   searchUsers(searchTerm: string): void {
     this.store.dispatch(new SearchUsers(searchTerm));
+  }
+
+  loadMoreUsers(): void {
+    this.store.dispatch(new SearchMoreUsers(this.searchTerm, this.users.length));
   }
 }

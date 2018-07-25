@@ -2,9 +2,6 @@ import { Action } from '@ngrx/store';
 import { User } from '../../core/core.types';
 
 export enum UsersActionTypes {
-  LOAD_USERS = '[Admin] load users',
-  LOAD_USERS_SUCCESS = '[Admin] load users success',
-  LOAD_USERS_ERROR = '[Admin] load users error',
   DELETE_USER = '[Admin] delete user',
   DELETE_USER_CONFIRM = '[Admin] delete user confirm',
   DELETE_USER_CANCEL = '[Admin] delete user cancel',
@@ -20,20 +17,10 @@ export enum UsersActionTypes {
   CREATE_USER = '[Admin] create user',
   SEARCH_USERS = '[Admin] search users',
   SEARCH_USERS_SUCCESS = '[Admin] search users success',
-  SEARCH_USERS_ERROR = '[Admin] search users error'
-}
-
-export class LoadUsers implements Action {
-  readonly type = UsersActionTypes.LOAD_USERS;
-}
-
-export class LoadUsersSuccess implements Action {
-  readonly type = UsersActionTypes.LOAD_USERS_SUCCESS;
-  constructor(public users: User[]) {}
-}
-
-export class LoadUsersError implements Action {
-  readonly type = UsersActionTypes.LOAD_USERS_ERROR;
+  SEARCH_USERS_ERROR = '[Admin] search users error',
+  SEARCH_MORE_USERS = '[Admin] search more users',
+  SEARCH_MORE_USERS_SUCCESS = '[Admin] search more users success',
+  SEARCH_MORE_USERS_ERROR = '[Admin] search more users error'
 }
 
 export class DeleteUser implements Action {
@@ -98,22 +85,33 @@ export class CreateUser implements Action {
 
 export class SearchUsers implements Action {
   readonly type = UsersActionTypes.SEARCH_USERS;
-  constructor(public searchTerm: string) {}
+  constructor(public searchTerm: string, public offset = 0) {}
 }
 
 export class SearchUsersSuccess implements Action {
   readonly type = UsersActionTypes.SEARCH_USERS_SUCCESS;
-  constructor(public users: User[]) {}
+  constructor(public users: User[], public total: number) {}
 }
 
 export class SearchUsersError implements Action {
   readonly type = UsersActionTypes.SEARCH_USERS_ERROR;
 }
 
+export class SearchMoreUsers implements Action {
+  readonly type = UsersActionTypes.SEARCH_MORE_USERS;
+  constructor(public searchTerm: string, public offset = 0) {}
+}
+
+export class SearchMoreUsersSuccess implements Action {
+  readonly type = UsersActionTypes.SEARCH_MORE_USERS_SUCCESS;
+  constructor(public users: User[], public total: number) {}
+}
+
+export class SearchMoreUsersError implements Action {
+  readonly type = UsersActionTypes.SEARCH_MORE_USERS_ERROR;
+}
+
 export type UsersAction =
-  | LoadUsers
-  | LoadUsersSuccess
-  | LoadUsersError
   | DeleteUser
   | DeleteUserConfirm
   | DeleteUserCancel
@@ -129,4 +127,7 @@ export type UsersAction =
   | CreateUser
   | SearchUsers
   | SearchUsersSuccess
-  | SearchUsersError;
+  | SearchUsersError
+  | SearchMoreUsers
+  | SearchMoreUsersSuccess
+  | SearchMoreUsersError;

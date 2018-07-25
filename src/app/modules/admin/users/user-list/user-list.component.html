@@ -27,4 +27,12 @@
       <fa-icon [icon]="icons.delete"></fa-icon>
     </div>
   </div>
+
+  <div id="load-more-button" *ngIf="showLoadMore">
+    <button class="button-primary" (click)="onLoadMore()" [disabled]="loadingMore">
+      <span *ngIf="!loadingMore">Load More</span>
+      <span *ngIf="loadingMore"><app-spinner size="1.5em" borderWidth="0.25em"></app-spinner></span>
+    </button>
+  </div>
+
 </div>

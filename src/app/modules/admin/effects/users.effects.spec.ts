@@ -186,12 +186,12 @@ describe('UsersEffects', () => {
     it(
       'should search the users and return a SEARCH_USERS_SUCCESS',
       fakeAsync(() => {
-        mockAdminService.searchUsers.and.returnValue(of({ users: [{ username: 'joe' }] }));
+        mockAdminService.searchUsers.and.returnValue(of({ users: [{ username: 'joe' }], total: 1 }));
         actions$ = new ReplaySubject(1);
         (<ReplaySubject<any>>actions$).next(new SearchUsers('foo'));
 
         effects.searchUsers$.subscribe(result => {
-          expect(result).toEqual(new SearchUsersSuccess([{ username: 'joe' }]));
+          expect(result).toEqual(new SearchUsersSuccess([{ username: 'joe' }], 1));
         });
 
         tick(300);

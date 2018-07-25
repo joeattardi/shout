@@ -16,8 +16,8 @@ export class AdminService {
     });
   }
 
-  searchUsers(searchTerm) {
-    return this.httpClient.get(`/api/admin/users?query=${searchTerm}`, {
+  searchUsers(searchTerm: string, offset: number) {
+    return this.httpClient.get(`/api/admin/users?query=${searchTerm}&offset=${offset}`, {
       headers: {
         Authorization: `Bearer ${this.authService.getToken()}`
       }

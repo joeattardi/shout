@@ -49,6 +49,14 @@ describe('AdminService', () => {
     expect(req.request.headers.get('Authorization')).toBe('Bearer abc123');
   });
 
+  it('should search users', () => {
+    adminService.searchUsers('foo', 3).subscribe(() => {});
+
+    const req = httpTestingController.expectOne('/api/admin/users?query=foo&offset=3');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.get('Authorization')).toBe('Bearer abc123');
+  });
+
   it('should save a new user', () => {
     adminService
       .saveUser(null, {
