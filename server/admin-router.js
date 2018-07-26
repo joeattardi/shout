@@ -8,8 +8,11 @@ const createUser = require('./handlers/admin/users/create-user');
 const deleteUser = require('./handlers/admin/users/delete-user');
 const getUser = require('./handlers/admin/users/get-user');
 const updateUser = require('./handlers/admin/users/update-user');
-const usernameCheck = require('./handlers/admin/username-check');
 const users = require('./handlers/admin/users/users');
+
+const rooms = require('./handlers/admin/rooms/rooms');
+
+const usernameCheck = require('./handlers/admin/username-check');
 
 const authenticationCheck = expressJwt({
   secret: jwt.jwtPublicKey
@@ -30,6 +33,9 @@ router.get('/users/:userId', authenticationCheck, adminCheck, getUser.validation
 router.put('/users/:userId', authenticationCheck, adminCheck, updateUser.validation, validate, updateUser.handler);
 router.post('/users', authenticationCheck, adminCheck, createUser.validation, validate, createUser.handler);
 router.get('/users', authenticationCheck, adminCheck, users.handler);
+
+router.get('/rooms', authenticationCheck, adminCheck, rooms.handler);
+
 router.get('/username_check', authenticationCheck, adminCheck, usernameCheck.validation, usernameCheck.handler);
 
 module.exports = router;
