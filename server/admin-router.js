@@ -14,6 +14,7 @@ const createRoom = require('./handlers/admin/rooms/create-room');
 const deleteRoom = require('./handlers/admin/rooms/delete-room');
 const getRoom = require('./handlers/admin/rooms/get-room');
 const rooms = require('./handlers/admin/rooms/rooms');
+const updateRoom = require('./handlers/admin/rooms/update-room');
 
 const usernameCheck = require('./handlers/admin/username-check');
 
@@ -40,6 +41,7 @@ router.get('/users', authenticationCheck, adminCheck, users.handler);
 router.delete('/rooms/:room', authenticationCheck, adminCheck, deleteRoom.validation, validate, deleteRoom.handler);
 router.get('/rooms', authenticationCheck, adminCheck, rooms.handler);
 router.get('/rooms/:room', authenticationCheck, adminCheck, getRoom.validation, validate, getRoom.handler);
+router.put('/rooms/:room', authenticationCheck, adminCheck, updateRoom.validation, validate, updateRoom.handler);
 router.post('/rooms', authenticationCheck, adminCheck, createRoom.validation, validate, createRoom.handler);
 
 router.get('/username_check', authenticationCheck, adminCheck, usernameCheck.validation, usernameCheck.handler);
