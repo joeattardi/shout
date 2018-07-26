@@ -1,6 +1,6 @@
 const rewire = require('rewire');
 
-const { Result } = require('../../api');
+const { Result } = require('../../../api');
 
 const deleteUser = rewire('./delete-user');
 

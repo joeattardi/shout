@@ -1,11 +1,11 @@
 const rewire = require('rewire');
 const { Op } = require('sequelize');
 
-const { Result } = require('../../api');
+const { Result } = require('../../../api');
 
 const users = rewire('./users');
 
-const mockUser = jasmine.createSpyObj('User', ['findAll']);
+const mockUser = jasmine.createSpyObj('User', ['findAll', 'count']);
 users.__set__('User', mockUser);
 
 const res = jasmine.createSpyObj('res', ['status', 'json']);
@@ -30,13 +30,17 @@ describe('users', () => {
       }
     ]);
 
+    mockUser.count.and.returnValue(1);
+
     const req = {
       query: {}
     };
 
     await users.handler(req, res);
     expect(mockUser.findAll).toHaveBeenCalledWith({
-      order: [['lastName', 'asc'], ['firstName', 'asc']]
+      order: [['lastName', 'asc'], ['firstName', 'asc']],
+      offset: 0,
+      limit: 25
     });
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -50,7 +54,8 @@ describe('users', () => {
           username: 'joe',
           admin: false
         }
-      ]
+      ],
+      total: 1
     });
   });
 
@@ -93,7 +98,9 @@ describe('users', () => {
             }
           }
         ]
-      }
+      },
+      offset: 0,
+      limit: 25
     });
   });
 

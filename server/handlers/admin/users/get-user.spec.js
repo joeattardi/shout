@@ -1,6 +1,6 @@
 const rewire = require('rewire');
 
-const { Result } = require('../../api');
+const { Result } = require('../../../api');
 
 const getUser = rewire('./get-user');
 

@@ -2,8 +2,8 @@ const { pick } = require('lodash');
 
 const { Op } = require('sequelize');
 
-const User = require('../../../models').User;
-const { Result, sendResult } = require('../../api');
+const User = require('../../../../models').User;
+const { Result, sendResult } = require('../../../api');
 
 const PAGE_SIZE = 25;
 

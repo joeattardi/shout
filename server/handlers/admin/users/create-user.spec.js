@@ -1,10 +1,10 @@
 const rewire = require('rewire');
 
-const { Result } = require('../../api');
+const { Result } = require('../../../api');
 
 const createUser = rewire('./create-user');
 
-const logger = require('../../logger');
+const logger = require('../../../logger');
 logger.transports.forEach(t => (t.silent = true));
 
 const mockUser = jasmine.createSpyObj('User', ['create']);

@@ -1,9 +1,9 @@
 const { check } = require('express-validator/check');
 
-const User = require('../../../models').User;
-const logger = require('../../logger');
-const passwords = require('../../passwords');
-const { Result, sendResult } = require('../../api');
+const User = require('../../../../models').User;
+const logger = require('../../../logger');
+const passwords = require('../../../passwords');
+const { Result, sendResult } = require('../../../api');
 
 exports.handler = async function(req, res) {
   logger.info(`Creating new user "${req.body.firstName} ${req.body.lastName}", username "${req.body.username}"`);

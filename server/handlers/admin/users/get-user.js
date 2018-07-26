@@ -1,8 +1,8 @@
 const { param } = require('express-validator/check');
 const { pick } = require('lodash');
 
-const User = require('../../../models').User;
-const { Result, sendResult } = require('../../api');
+const User = require('../../../../models').User;
+const { Result, sendResult } = require('../../../api');
 
 exports.handler = async function(req, res) {
   const userId = parseInt(req.params.userId);

@@ -4,12 +4,12 @@ const expressJwt = require('express-jwt');
 const jwt = require('./jwt');
 const { Result, sendResult, validate } = require('./api');
 
-const createUser = require('./handlers/admin/create-user');
-const deleteUser = require('./handlers/admin/delete-user');
-const getUser = require('./handlers/admin/get-user');
-const updateUser = require('./handlers/admin/update-user');
+const createUser = require('./handlers/admin/users/create-user');
+const deleteUser = require('./handlers/admin/users/delete-user');
+const getUser = require('./handlers/admin/users/get-user');
+const updateUser = require('./handlers/admin/users/update-user');
 const usernameCheck = require('./handlers/admin/username-check');
-const users = require('./handlers/admin/users');
+const users = require('./handlers/admin/users/users');
 
 const authenticationCheck = expressJwt({
   secret: jwt.jwtPublicKey

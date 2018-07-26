@@ -1,7 +1,7 @@
 const { param, validationResult } = require('express-validator/check');
 
-const User = require('../../../models').User;
-const { Result, sendResult } = require('../../api');
+const User = require('../../../../models').User;
+const { Result, sendResult } = require('../../../api');
 
 exports.handler = async function(req, res) {
   const errors = validationResult(req);
