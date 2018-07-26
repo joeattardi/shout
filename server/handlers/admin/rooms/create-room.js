@@ -7,6 +7,7 @@ const Room = require('../../../../models').Room;
 const logger = require('../../../logger');
 
 const { Result, sendResult } = require('../../../api');
+const { getRoomForSlug } = require('./util');
 
 exports.handler = async function(req, res) {
   logger.info(`Creating new room "${req.body.name}"`);
@@ -55,16 +56,6 @@ async function getUniqueSlug(name) {
 
   logger.debug(`Found unique slug: ${uniqueSlug}`);
   return uniqueSlug.toLowerCase();
-}
-
-function getRoomForSlug(roomSlug) {
-  return Room.findOne({
-    where: {
-      slug: {
-        [Op.iLike]: roomSlug
-      }
-    }
-  });
 }
 
 exports.validation = [
