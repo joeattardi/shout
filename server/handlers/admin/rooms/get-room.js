@@ -2,21 +2,16 @@ const { Op } = require('sequelize');
 const { param } = require('express-validator/check');
 const { pick } = require('lodash');
 
+const logger = require('../../../logger');
 const Room = require('../../../../models').Room;
 const { Result, sendResult } = require('../../../api');
-const logger = require('../../../logger');
+const { getRoomForSlug } = require('./util');
 
 exports.handler = async function(req, res) {
   const roomSlug = req.params.room;
 
   try {
-    const room = await Room.findOne({
-      where: {
-        slug: {
-          [Op.iLike]: roomSlug
-        }
-      }
-    });
+    const room = await getRoomForSlug(roomSlug);
 
     if (room) {
       return res.status(200).json({

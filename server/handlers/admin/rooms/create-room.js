@@ -6,20 +6,13 @@ const Room = require('../../../../models').Room;
 const logger = require('../../../logger');
 
 const { Result, sendResult } = require('../../../api');
-const { getUniqueSlug } = require('./util');
+const { getUniqueSlug, getRoomForName } = require('./util');
 
 exports.handler = async function(req, res) {
   logger.info(`Creating new room "${req.body.name}"`);
 
   try {
-    const existingRoom = await Room.findOne({
-      where: {
-        name: {
-          [Op.iLike]: req.body.name
-        }
-      }
-    });
-
+    const existingRoom = await getRoomForName(req.body.name);
     if (existingRoom) {
       return sendResult(res, 400, Result.TAKEN, 'A room already exists with that name');
     }
