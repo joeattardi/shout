@@ -8,6 +8,14 @@ import { User } from '../core/core.types';
 export class AdminService {
   constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
+  searchRooms(searchTerm: string, offset: number) {
+    return this.httpClient.get(`/api/admin/rooms?query=${searchTerm}&offset=${offset}`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.getToken()}`
+      }
+    });
+  }
+
   getUsers() {
     return this.httpClient.get('/api/admin/users', {
       headers: {

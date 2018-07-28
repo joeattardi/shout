@@ -15,11 +15,15 @@ import {
   getUserListTotal,
   getUsersLoadingMore
 } from './users';
+
+import { roomsReducer, RoomsState, getRoomList, getRoomListTotal } from './rooms';
+
 import { getUser, getUserLoading, getUserError } from './users/edit-user.reducer';
 
 export interface AdminState {
   loading: LoadingState;
   users: UsersState;
+  rooms: RoomsState;
 }
 
 export interface State extends AppState {
@@ -28,7 +32,8 @@ export interface State extends AppState {
 
 export const reducers: ActionReducerMap<AdminState> = {
   loading: loadingReducer,
-  users: usersReducer
+  users: usersReducer,
+  rooms: roomsReducer
 };
 
 export const getAdminState = createFeatureSelector<AdminState>('admin');
@@ -41,6 +46,10 @@ export const getUsersLoadingMoreState = createSelector(getUsersState, getUsersLo
 export const getUsersSearchState = createSelector(getUsersState, getUsersSearch);
 export const getUsersErrorState = createSelector(getUsersState, getUsersError);
 export const getUsersDeleteModalState = createSelector(getUsersState, getConfirmDeleteModal);
+
+export const getRoomsState = createSelector(getAdminState, state => state.rooms);
+export const getRoomListState = createSelector(getRoomsState, getRoomList);
+export const getRoomListTotalState = createSelector(getRoomsState, getRoomListTotal);
 
 export const getUserEditState = createSelector(getUsersState, getUserEdit);
 export const getEditedUserState = createSelector(getUserEditState, getUser);

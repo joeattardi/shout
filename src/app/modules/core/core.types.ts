@@ -7,3 +7,10 @@ export interface User {
   admin?: boolean;
   password?: string;
 }
+
+export interface Room {
+  id?: number;
+  name?: string;
+  slug?: string;
+  description?: string;
+}

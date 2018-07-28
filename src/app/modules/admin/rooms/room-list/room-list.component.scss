@@ -1,0 +1,20 @@
+@import '../../../../../variables';
+
+#room-list {
+  .room-entry {
+    border: 1px solid $light-brand-color;
+    border-radius: 5px;
+    padding: 0.5em;
+    margin: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: lighten($light-brand-color, 15%);
+    }
+
+    .room-name {
+      font-weight: bold;
+    }
+  }
+}

@@ -12,7 +12,9 @@ import { SharedModule } from '../shared/shared.module';
 
 import { AdminComponent } from './admin/admin.component';
 import { HeaderComponent } from './header/header.component';
+
 import { RoomsComponent } from './rooms/rooms.component';
+import { RoomListComponent } from './rooms/room-list/room-list.component';
 
 import { UsersComponent } from './users/users.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
@@ -22,7 +24,7 @@ import { AdminGuard } from './admin-guard.service';
 import { AdminService } from './admin.service';
 
 import { reducers } from './reducers';
-import { UsersEffects } from './effects';
+import { UsersEffects, RoomsEffects } from './effects';
 
 const routes: Routes = [
   {
@@ -56,9 +58,9 @@ const routes: Routes = [
     SharedModule,
     ReactiveFormsModule,
     StoreModule.forFeature('admin', reducers),
-    EffectsModule.forFeature([UsersEffects])
+    EffectsModule.forFeature([UsersEffects, RoomsEffects])
   ],
   providers: [AdminGuard, AdminService],
-  declarations: [AdminComponent, HeaderComponent, RoomsComponent, UsersComponent, EditUserComponent, UserListComponent]
+  declarations: [AdminComponent, HeaderComponent, RoomsComponent, RoomListComponent, UsersComponent, EditUserComponent, UserListComponent]
 })
 export class AdminModule {}

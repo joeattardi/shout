@@ -1,0 +1,12 @@
+<div id="room-list">
+  <div class="room-entry" *ngFor="let room of rooms">
+    <div class="room-name">
+      <fa-icon [icon]="icons.chat"></fa-icon>
+      {{ room.name }}
+    </div>
+    <div class="room-description">
+      <span *ngIf="room.description">{{ room.description }}</span>
+      <span *ngIf="!room.description">&nbsp;</span>
+    </div>
+  </div>
+</div>
