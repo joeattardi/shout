@@ -15,4 +15,5 @@ export class RoomListComponent {
   };
 
   @Input() rooms: Room[];
+  @Input() loading = false;
 }

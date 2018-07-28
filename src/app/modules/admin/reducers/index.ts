@@ -16,7 +16,7 @@ import {
   getUsersLoadingMore
 } from './users';
 
-import { roomsReducer, RoomsState, getRoomList, getRoomListTotal } from './rooms';
+import { roomsReducer, RoomsState, getRoomList, getRoomListTotal, getRoomsLoading } from './rooms';
 
 import { getUser, getUserLoading, getUserError } from './users/edit-user.reducer';
 
@@ -50,6 +50,7 @@ export const getUsersDeleteModalState = createSelector(getUsersState, getConfirm
 export const getRoomsState = createSelector(getAdminState, state => state.rooms);
 export const getRoomListState = createSelector(getRoomsState, getRoomList);
 export const getRoomListTotalState = createSelector(getRoomsState, getRoomListTotal);
+export const getRoomsLoadingState = createSelector(getRoomsState, getRoomsLoading);
 
 export const getUserEditState = createSelector(getUsersState, getUserEdit);
 export const getEditedUserState = createSelector(getUserEditState, getUser);

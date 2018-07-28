@@ -1,4 +1,8 @@
-<div id="room-list">
+<div class="spinner-container" *ngIf="loading">
+  <app-spinner size="10em" borderWidth="1.1em" color="#106991"></app-spinner>
+</div>
+
+<div id="room-list" *ngIf="!loading">
   <div class="room-entry" *ngFor="let room of rooms">
     <div class="room-name">
       <fa-icon [icon]="icons.chat"></fa-icon>

@@ -3,4 +3,5 @@
 <button class="button-primary">Create Room</button>
 
 <app-admin-room-list
-  [rooms]="rooms"></app-admin-room-list>
+  [rooms]="rooms"
+  [loading]="loading$ | async"></app-admin-room-list>
