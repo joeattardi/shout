@@ -1,3 +1,7 @@
+<div id="room-search">
+  <input type="search" placeholder="Search rooms" (input)="onSearch($event.target.value)">
+</div>
+
 <div class="spinner-container" *ngIf="loading">
   <app-spinner size="10em" borderWidth="1.1em" color="#106991"></app-spinner>
 </div>

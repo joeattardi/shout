@@ -1,5 +1,17 @@
 @import '../../../../../variables';
 
+.spinner-container {
+  margin: 2em;
+}
+
+#room-search {
+  margin: 0.5em;
+
+  input {
+    width: 100%;
+  }
+}
+
 #room-list {
   .room-entry {
     border: 1px solid $light-brand-color;

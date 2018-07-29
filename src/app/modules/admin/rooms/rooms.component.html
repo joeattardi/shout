@@ -6,4 +6,5 @@
   [rooms]="rooms"
   [error]="error$ | async"
   [loading]="loading$ | async"
-  (retry)="retryLoadRooms()"></app-admin-room-list>
+  (retry)="retryLoadRooms()"
+  (searchRooms)="searchRooms($event)"></app-admin-room-list>

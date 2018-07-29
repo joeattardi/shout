@@ -20,8 +20,13 @@ export class RoomListComponent {
   @Input() error = false;
 
   @Output() retry = new EventEmitter<void>();
+  @Output() searchRooms = new EventEmitter<string>();
 
   onRetry(): void {
     this.retry.emit();
+  }
+
+  onSearch(searchTerm: string) {
+    this.searchRooms.emit(searchTerm);
   }
 }
