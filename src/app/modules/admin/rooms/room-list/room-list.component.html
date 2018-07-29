@@ -2,7 +2,15 @@
   <app-spinner size="10em" borderWidth="1.1em" color="#106991"></app-spinner>
 </div>
 
-<div id="room-list" *ngIf="!loading">
+<div *ngIf="error" class="status-message status-message-error">
+  <fa-icon [icon]="icons.error"></fa-icon>
+  <div class="message">
+    An error occurred while loading the room list.
+    <button id="rooms-retry-button" class="button-inverse" (click)="onRetry()">Try again</button>
+  </div>
+</div>
+
+<div id="room-list" *ngIf="!loading && !error">
   <div class="room-entry" *ngFor="let room of rooms">
     <div class="room-name">
       <fa-icon [icon]="icons.chat"></fa-icon>

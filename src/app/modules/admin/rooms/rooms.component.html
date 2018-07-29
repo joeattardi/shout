@@ -4,4 +4,6 @@
 
 <app-admin-room-list
   [rooms]="rooms"
-  [loading]="loading$ | async"></app-admin-room-list>
+  [error]="error$ | async"
+  [loading]="loading$ | async"
+  (retry)="retryLoadRooms()"></app-admin-room-list>

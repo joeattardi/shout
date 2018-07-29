@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
-import { State, getRoomListState, getRoomsLoadingState } from '../reducers';
+import { State, getRoomListState, getRoomsLoadingState, getRoomsErrorState } from '../reducers';
 
 import { Room } from '../../core/core.types';
 import { SearchRooms } from '../actions';
@@ -15,11 +15,13 @@ import { SearchRooms } from '../actions';
 export class RoomsComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
 
+  error$: Observable<boolean>;
   loading$: Observable<boolean>;
 
   rooms: Room[];
 
   constructor(private store: Store<State>) {
+    this.error$ = this.store.select(getRoomsErrorState);
     this.loading$ = this.store.select(getRoomsLoadingState);
 
     this.store
@@ -36,5 +38,9 @@ export class RoomsComponent implements OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     this.destroy$.next();
+  }
+
+  retryLoadRooms(): void {
+    this.store.dispatch(new SearchRooms(''));
   }
 }

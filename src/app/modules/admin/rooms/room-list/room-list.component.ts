@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { faComments } from '@fortawesome/free-solid-svg-icons';
+import { faComments, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { Room } from '../../../core/core.types';
 
@@ -11,9 +11,17 @@ import { Room } from '../../../core/core.types';
 })
 export class RoomListComponent {
   icons = {
-    chat: faComments
+    chat: faComments,
+    error: faExclamationTriangle
   };
 
   @Input() rooms: Room[];
   @Input() loading = false;
+  @Input() error = false;
+
+  @Output() retry = new EventEmitter<void>();
+
+  onRetry(): void {
+    this.retry.emit();
+  }
 }
